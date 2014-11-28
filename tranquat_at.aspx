@@ -117,6 +117,9 @@
                     alert(q_getMsg('lblDatea') + '錯誤。');
                     return;
                 }
+                if($('#chkEnda').prop('checked')){
+                	$('#tbbs').find('input[type="checkbox"]').prop('checked',true);
+                }
 				
 				if (q_cur == 1) {
                     $('#txtWorker').val(r_name);
@@ -413,6 +416,7 @@
 							<td><input id="txtDatea" type="text"  class="txt c1"/></td>
 							<td><span> </span></span><a id='lblNoa' class="lbl"> </a></td>
 							<td colspan="2"><input id="txtNoa" type="text" class="txt c1"/>	</td>
+							<td><input id="chkEnda" type="checkbox" style="float:right;"/><a style="float:right;">結案</a></td>
 						</tr>
 						<tr>
 							<td><span> </span><a id="lblStype" class="lbl"> </a></td>
@@ -536,6 +540,7 @@
 					<td align="center" style="width:80px;"><a id='lblVal10_s'>交櫃碼頭 </a></td>
 					<td align="center" style="width:80px;"><a id='lblPrice_s'></a></td>
 					<td align="center" style="width:200px;"><a id='lblMemo_s'></a></td>
+					<td align="center" style="width:30px;"><a id='lblEnda_s'>結案</a></td>
 				</tr>
 				<tr  style='background:#cad3ff;'>
 					<td align="center">
@@ -566,6 +571,7 @@
 					
 					<td><input id="txtPrice.*" type="text" style="width: 95%;text-align:right;"/></td>
 					<td><input id="txtMemo.*" type="text" style="width: 95%;"/></td>
+					<td><input id="chkEnda.*" type="checkbox"/></td>
 				</tr>
 			</table>
 		</div>
