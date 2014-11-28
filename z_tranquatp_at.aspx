@@ -32,6 +32,7 @@
 	            var t_para = new Array();
 	            try{
 	            	t_para = JSON.parse(q_getId()[3]);
+	            	$('#txtNoa').val(t_para.noa);
 	            }catch(e){
 	            }    
                 
