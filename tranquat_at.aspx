@@ -174,7 +174,7 @@
             }
 
             function btnPrint() {
-                q_box('z_tranquatp_at.aspx'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'tranquat', "95%", "95%", m_print);
+                q_box('z_tranquatp_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'tranquat', "95%", "95%", m_print);
             }
 
             function wrServer(key_value) {
@@ -501,7 +501,7 @@
 						<tr>
 							<td><span> </span><a id='lblMemo' class="lbl"> </a></td>
 							<td colspan='5'>
-								<textarea id="txtMemo" class="txt c1" style="height:100px;"> </textarea>
+								<textarea id="txtMemo" class="txt c1" rows="5" style="height:80px;"> </textarea>
 							</td>
 						</tr>
 						<tr>
