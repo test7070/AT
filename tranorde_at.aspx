@@ -21,7 +21,7 @@
             var q_readonly = ['txtNoa','txtWorker','txtWorker2'];
             var q_readonlys = [];
             var q_readonlyt = [];
-            var bbmNum = [];
+            var bbmNum = [['txtMount',10,0,1]];
             var bbsNum = [];
             var bbtNum = [];
             var bbmMask = [['txtDatea','999/99/99']];
@@ -43,7 +43,7 @@
                 bbsKey = ['noa', 'noq'];
                 bbtKey = ['noa', 'noq'];
                 q_brwCount();
-                q_gt(q_name, q_content, q_sqlCount, 1);
+                q_gt(q_name, q_content, q_sqlCount, 1, 0, '', r_accy);
             });
 
             function main() {
@@ -330,7 +330,7 @@
                 height: 35px;
             }
             .tbbm tr td {
-                width: 9%;
+                width: 12%;
             }
             .tbbm .tdZ {
                 width: 1%;
@@ -358,10 +358,6 @@
                 width: 100%;
                 float: left;
             }
-            .txt.c2 {
-                width: 130%;
-                float: left;
-            }
             .txt.num {
                 text-align: right;
             }
@@ -379,7 +375,7 @@
                 font-size: medium;
             }
             .dbbs {
-                width:1360px;
+                width:1000px;
             }
             .dbbs .tbbs {
                 margin: 0;
@@ -407,7 +403,7 @@
                 font-size: medium;
             }
             #dbbt {
-                width:1700px;
+                width:400px;
             }
             #tbbt {
                 margin: 0;
@@ -478,55 +474,61 @@
 						<td><input id="txtContract"  type="text"  class="txt c1"/></td>
 					</tr>
 					<tr>
+						<td><span> </span><a id="lblTranquatno" class="lbl"> </a></td>
+						<td><input id="txtTranquatno"  type="text" class="txt c1"/></td>
+						<td><span> </span><a id="lblTranquatnoq" class="lbl"> </a></td>
+						<td><input id="txtTranquatnoq"  type="text" class="txt c1"/></td>
+						<td></td>
+						<td><input id="btnImport" type="button" value="報價匯入" /></td>
+					</tr>
+					<tr>
 						<td><span> </span><a id="lblCustno" class="lbl"> </a></td>
-						<td colspan="2">
-							<input id="txtCustno"  type="text" class="txt" style="30%;"/>
-							<input id="txtComp"  type="text" class="txt" style="70%;"/>
-							<input id="txtNick"  type="text" class="txt" style="display:none;"/>
+						<td colspan="3">
+							<input id="txtCustno"  type="text" style="width:25%;float:left;"/>
+							<input id="txtComp"  type="text" style="width:75%;float:left;"/>
+							<input id="txtNick"  type="text" style="display:none;"/>
 						</td>
 					</tr>
 					<tr>
-						<tr>
-							<td><span> </span><a id="lblTel" class="lbl"> </a></td>
-							<td><input id="txtTel"  type="text" class="txt c1"/></td>
-						</tr>
-						<tr>
-							<td><span> </span><a id="lblFax" class="lbl"> </a></td>
-							<td><input id="txtFax"  type="text" class="txt c1"/></td>
-						</tr>
+						<td><span> </span><a id="lblTel" class="lbl"> </a></td>
+						<td colspan="3"><input id="txtTel"  type="text" class="txt c1"/></td>
+						<td><span> </span><a id="lblFax" class="lbl"> </a></td>
+						<td colspan="3"><input id="txtFax"  type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblProductno" class="lbl"> </a></td>
-						<td colspan="2">
-							<input id="txtProductno"  type="text" class="txt" style="30%;"/>
-							<input id="txtProduct"  type="text" class="txt" style="70%;"/>
+						<td colspan="3">
+							<input id="txtProductno"  type="text" style="width:25%;float:left;"/>
+							<input id="txtProduct"  type="text" style="width:75%;float:left;"/>
 						</td>
+						<td><span> </span><a id="lblMount" class="lbl"> </a></td>
+						<td><input id="txtMount"  type="text" class="txt c1 num"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblVal01" class="lbl"> </a></td>
-						<td><input id="txtVal01"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal01" class="txt c1"></select></td>
 						<td><span> </span><a id="lblVal02" class="lbl"> </a></td>
-						<td><input id="txtVal02"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal02" class="txt c1"></select></td>
 						<td><span> </span><a id="lblVal03" class="lbl"> </a></td>
-						<td><input id="txtVal03"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal03" class="txt c1"></select></td>
 						<td><span> </span><a id="lblVal04" class="lbl"> </a></td>
-						<td><input id="txtVal04"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal04" class="txt c1"></select></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblVal05" class="lbl"> </a></td>
-						<td><input id="txtVal05"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal05" class="txt c1"></select></td>
 						<td><span> </span><a id="lblVal06" class="lbl"> </a></td>
-						<td><input id="txtVal06"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal06" class="txt c1"></select></td>
 						<td><span> </span><a id="lblVal07" class="lbl"> </a></td>
-						<td><input id="txtVal07"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal07" class="txt c1"></select></td>
 						<td><span> </span><a id="lblVal08" class="lbl"> </a></td>
-						<td><input id="txtVal08"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal08" class="txt c1"></select></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblVal09" class="lbl"> </a></td>
-						<td><input id="txtVal09"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal09" class="txt c1"></select></td>
 						<td><span> </span><a id="lblVal10" class="lbl"> </a></td>
-						<td><input id="txtVal10"  type="text" class="txt c1"/></td>
+						<td><select id="chkVal10" class="txt c1"></select></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>
@@ -553,7 +555,6 @@
 					<td style="width:100px;"><a id='lbl_datea'>封條</a></td>
 					<td style="width:100px;"><a id='lbl_cust'>板架</a></td>
 					<td style="width:100px;"><a id='lbl_product'>預定時間</a></td>
-					<td style="width:100px;"><a id='lbl_product'>預定時間</a></td>
 					<td style="width:100px;"><a id='lbl_memo'>備註</a></td>
 				</tr>
 				<tr  style='background:#cad3ff;'>
@@ -564,11 +565,15 @@
 					<td><a id="lblNo.*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
 					
 					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
+					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
+					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
+					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
+					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
 				</tr>
 			</table>
 		</div>
 		<input id="q_sys" type="hidden" />
-		<div id="dbbt" style="display:none;">
+		<div id="dbbt">
 			<table id="tbbt">
 				<tbody>
 					<tr class="head" style="color:white; background:#003366;">
@@ -576,15 +581,17 @@
 						<input id="btnPlut" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
 						</td>
 						<td style="width:20px;"></td>
-						<td style="width:100px; text-align: center;">Straddrno</td>
-						<td style="width:100px; text-align: center;">Straddr</td>
+						<td style="width:300px; text-align: center;">起迄地點</td>
 					</tr>
 					<tr class="detail">
 						<td>
 							<input id="btnMinut..*"  type="button" style="font-size: medium; font-weight: bold;" value="－"/>
+							<input id="txtNoq..*" type="text" style="display: none;"/>
 						<td><a id="lblNo..*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
-						<td><input class="txt" id="txtStraddrno..*" type="text" style="width:95%;"/></td>
-						<td><input class="txt" id="txtStraddr..*" type="text" style="width:95%;"/></td>
+						<td>
+							<input class="txt" id="txtStraddrno..*" type="text" style="width:35%;float:left;"/>
+							<input class="txt" id="txtStraddr..*" type="text" style="width:60%;float:left;"/>
+						</td>
 					</tr>
 				</tbody>
 			</table>
