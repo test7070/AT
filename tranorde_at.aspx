@@ -56,6 +56,11 @@
 
             function mainPost() {
                 q_mask(bbmMask);
+                
+                $('#btnImport').click(function(e){
+                	t_noa = $.trom($('#txtNoa').val());
+                	t_custno = $.trom($('#txtCustno').val());
+                });
             }
             
             function q_funcPost(t_func, result) {
@@ -176,41 +181,8 @@
             function bbsAssign() {
                 for (var i = 0; i < q_bbsCount; i++) {
                     $('#lblNo_' + i).text(i + 1);
-                    
                     if (!$('#btnMinus_' + i).hasClass('isAssign')) {
-                    	$('#txtUno_'+i).focusout(function(e) {
-							var n = $(this).attr('id').replace('txtUno_', '');
-							var t_uno = $(this).val();
-							if(t_uno.length==19)
-								q_gt('workj', "where=^^noa='"+t_uno.substring(0,11)+"'^^", 0, 0, 0, JSON.stringify({action:"data_workj",n:n,uno:t_uno}));				
-						});
-                    	$('#txtProductno_' + i).bind('contextmenu', function(e) {
-                            /*滑鼠右鍵*/
-                            e.preventDefault();
-                            var n = $(this).attr('id').replace('txtProductno_', '');
-                            $('#btnProduct_'+n).click();
-                        });
-                        $('#txtCustno_' + i).bind('contextmenu', function(e) {
-                            /*滑鼠右鍵*/
-                            e.preventDefault();
-                            var n = $(this).attr('id').replace('txtCustno_', '');
-                            $('#btnCust_'+n).click();
-                        });
-                        $('#txtMechno_' + i).bind('contextmenu', function(e) {
-                            /*滑鼠右鍵*/
-                            e.preventDefault();
-                            var n = $(this).attr('id').replace('txtMechno_', '');
-                            $('#btnMech_'+n).click();
-                        });
-                        $('#txtLengthb_'+i).change(function(e){
-                    		sum();
-                    	});
-                    	$('#txtMount_'+i).change(function(e){
-                    		sum();
-                    	});
-                    	$('#txtWeight_'+i).change(function(e){
-                    		sum();
-                    	});
+                    	
                     }
                 }
                 _bbsAssign();
@@ -311,7 +283,7 @@
             }
             .dbbm {
                 float: left;
-                width: 800px;
+                width: 900px;
                 /*margin: -1px;
                  border: 1px black solid;*/
                 border-radius: 5px;
@@ -375,7 +347,7 @@
                 font-size: medium;
             }
             .dbbs {
-                width:1000px;
+                width:400px;
             }
             .dbbs .tbbs {
                 margin: 0;
@@ -471,18 +443,19 @@
 						<td><span> </span><a id="lblDatea" class="lbl"> </a></td>
 						<td><input id="txtDatea"  type="text"  class="txt c1"/></td>
 						<td><span> </span><a id="lblContract" class="lbl"> </a></td>
-						<td><input id="txtContract"  type="text"  class="txt c1"/></td>
+						<td colspan="3"><input id="txtContract"  type="text"  class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblTranquatno" class="lbl"> </a></td>
-						<td><input id="txtTranquatno"  type="text" class="txt c1"/></td>
-						<td><span> </span><a id="lblTranquatnoq" class="lbl"> </a></td>
-						<td><input id="txtTranquatnoq"  type="text" class="txt c1"/></td>
+						<td colspan="3">
+							<input id="txtTranquatno"  type="text" class="txt" style="float:left;width:80%;"/>
+							<input id="txtTranquatnoq"  type="text" class="txt" style="float:left;width:20%;"/>
+						</td>
 						<td></td>
 						<td><input id="btnImport" type="button" value="報價匯入" /></td>
 					</tr>
 					<tr>
-						<td><span> </span><a id="lblCustno" class="lbl"> </a></td>
+						<td><span> </span><a id="lblCust" class="lbl"> </a></td>
 						<td colspan="3">
 							<input id="txtCustno"  type="text" style="width:25%;float:left;"/>
 							<input id="txtComp"  type="text" style="width:75%;float:left;"/>
@@ -496,44 +469,120 @@
 						<td colspan="3"><input id="txtFax"  type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
-						<td><span> </span><a id="lblProductno" class="lbl"> </a></td>
+						<td><span> </span><a id="lblProduct" class="lbl"> </a></td>
 						<td colspan="3">
 							<input id="txtProductno"  type="text" style="width:25%;float:left;"/>
 							<input id="txtProduct"  type="text" style="width:75%;float:left;"/>
 						</td>
-						<td><span> </span><a id="lblMount" class="lbl"> </a></td>
+					</tr>
+					<tr>
+						<td><span> </span><a id="" class="lbl">船公司</a></td>
+						<td colspan="2"><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">船名</a></td>
+						<td colspan="2"><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">航次</a></td>
+						<td><input type="text" class="txt c1"/></td>
+					</tr>
+					<tr>
+						<td><span> </span><a id="" class="lbl">櫃型</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">櫃數</a></td>
 						<td><input id="txtMount"  type="text" class="txt c1 num"/></td>
+						<td><span> </span><a id="" class="lbl">領櫃地</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">交櫃地</a></td>
+						<td><input type="text" class="txt c1"/></td>
+					</tr>
+					<tr style="background-color: pink;">
+						<td><span> </span><a class="lbl" style="color:black;">出口</a></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td class="tdZ"></td>
+					</tr>
+					<tr style="background-color: pink;">
+						<td><span> </span><a id="" class="lbl">S/O</a></td>
+						<td><input type="text" id="txtSo" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">領櫃代號</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">卸貨港</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td></td>
+						<td class="tdZ"></td>
+					</tr>
+					<tr style="background-color: pink;">
+						<td><span> </span><a id="" class="lbl">報關日</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">開船日</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">到達日</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td></td>
+						<td class="tdZ"></td>
+					</tr>
+					<tr style="background-color: burlywood;">
+						<td><span> </span><a class="lbl" style="color:black;">進口</a></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td class="tdZ"></td>
+					</tr>
+					<tr style="background-color: burlywood;">
+						<td><span> </span><a id="" class="lbl">提單號碼</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">領櫃代號</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">領櫃編號</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">領櫃單</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td class="tdZ"></td>
+					</tr>
+					<tr style="background-color: burlywood;">
+						<td><span> </span><a id="" class="lbl">掛號</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">艙號</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">追蹤</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td></td>
+						<td></td>
+						<td class="tdZ"></td>
+					</tr>
+					<tr style="background-color: burlywood;">
+						<td><span> </span><a id="" class="lbl">FREE TIME</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">放行日</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">空/重櫃</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td></td>
+						<td></td>
+						<td class="tdZ"></td>
 					</tr>
 					<tr>
-						<td><span> </span><a id="lblVal01" class="lbl"> </a></td>
-						<td><select id="chkVal01" class="txt c1"></select></td>
-						<td><span> </span><a id="lblVal02" class="lbl"> </a></td>
-						<td><select id="chkVal02" class="txt c1"></select></td>
-						<td><span> </span><a id="lblVal03" class="lbl"> </a></td>
-						<td><select id="chkVal03" class="txt c1"></select></td>
-						<td><span> </span><a id="lblVal04" class="lbl"> </a></td>
-						<td><select id="chkVal04" class="txt c1"></select></td>
-					</tr>
-					<tr>
-						<td><span> </span><a id="lblVal05" class="lbl"> </a></td>
-						<td><select id="chkVal05" class="txt c1"></select></td>
-						<td><span> </span><a id="lblVal06" class="lbl"> </a></td>
-						<td><select id="chkVal06" class="txt c1"></select></td>
-						<td><span> </span><a id="lblVal07" class="lbl"> </a></td>
-						<td><select id="chkVal07" class="txt c1"></select></td>
-						<td><span> </span><a id="lblVal08" class="lbl"> </a></td>
-						<td><select id="chkVal08" class="txt c1"></select></td>
-					</tr>
-					<tr>
-						<td><span> </span><a id="lblVal09" class="lbl"> </a></td>
-						<td><select id="chkVal09" class="txt c1"></select></td>
-						<td><span> </span><a id="lblVal10" class="lbl"> </a></td>
-						<td><select id="chkVal10" class="txt c1"></select></td>
+						<td><span> </span><a class="lbl">報關行</a></td>
+						<td><input id="" type="text" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">電話</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">連絡人</a></td>
+						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">分機</a></td>
+						<td><input type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>
 						<td colspan="3" rowspan="2"><textarea id="txtMemo" class="txt c1" rows="3"></textarea></td>
 					</tr>
+					<tr></tr>
 					<tr>
 						<td><span> </span><a id="lblWorker" class="lbl"> </a></td>
 						<td><input id="txtWorker" type="text" class="txt c1"/></td>
@@ -551,11 +600,7 @@
 					</td>
 					<td style="width:20px;"> </td>
 					
-					<td style="width:100px;"><a id='lbl_uno'>櫃號</a></td>
-					<td style="width:100px;"><a id='lbl_datea'>封條</a></td>
-					<td style="width:100px;"><a id='lbl_cust'>板架</a></td>
-					<td style="width:100px;"><a id='lbl_product'>預定時間</a></td>
-					<td style="width:100px;"><a id='lbl_memo'>備註</a></td>
+					<td style="width:200px;"><a id='lbl_uno'>櫃號</a></td>
 				</tr>
 				<tr  style='background:#cad3ff;'>
 					<td align="center">
@@ -564,10 +609,6 @@
 					</td>
 					<td><a id="lblNo.*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
 					
-					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
-					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
-					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
-					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
 					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
 				</tr>
 			</table>
