@@ -60,6 +60,9 @@
                 $('#btnImport').click(function(e){
                 	t_noa = $.trim($('#txtNoa').val());
                 	t_custno = $.trim($('#txtCustno').val());
+                	t_where ="isnull(a.enda,0)=0 and ISNULL(b.enda,0)=0 and a.custno='"+t_custno+"'";
+                	
+                	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'tranquat', "95%", "95%", q_getMsg('popTranquat'));
                 });
             }
             
