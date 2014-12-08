@@ -35,13 +35,20 @@
             }
             
             function mainPost(){
-				q_getFormat();				
+				q_getFormat();	
+						
 			}
 			
             function refresh() {
                 _refresh();
+                /*for(var i=0;i<q_bbsCount;i++){
+                	$('#chkSel_'+i).click(function(e){
+                		t_checked = $(this).prop('checked');	
+                		$(".chkSel").prop('checked',false);
+                		$(this).prop('checked',t_checked);
+                	});
+                }*/
             }
-
 		</script>
 		<style type="text/css">
             #dmain {
@@ -182,7 +189,7 @@
 					<td align="center" style="width: 6%;"><a id='lblVal10'>交櫃碼頭</a></td>
 				</tr>
 				<tr  style='background:#cad3ff;'>
-					<td><input class="chk"  id="chkSel.*" type="radio" name="chkSel"/></td>
+					<td><input id="chkSel.*" type="radio" name="radSel"/></td>
 					<td><input id="txtDatea.*" type="text" class="txt c1" /></td>
 					<td><input id="txtStype.*" type="text" class="txt c1" /></td>
 					<td><input id="txtContract.*" type="text" class="txt c1" /></td>

@@ -62,7 +62,7 @@
                 	t_custno = $.trim($('#txtCustno').val());
                 	t_where ="isnull(a.enda,0)=0 and ISNULL(b.enda,0)=0 and a.custno='"+t_custno+"'";
                 	
-                	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'tranquat', "95%", "95%", q_getMsg('popTranquat'));
+                	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'quat_orde_at', "95%", "95%", q_getMsg('popTranquat'));
                 });
             }
             
@@ -104,6 +104,28 @@
             function q_boxClose(s2) {
                 var ret;
                 switch (b_pop) {
+                	case 'quat_orde_at':
+                        if (b_ret != null) {
+                        	as = b_ret;
+                        	if(as[0] != undefined && as.length>0){
+                        		$('#txtTranquatno').val(as[0].noa);
+                        		$('#txtTranquatnoq').val(as[0].noq);
+                        		$('#txtVal01').val(as[0].val01);
+                        		$('#txtVal02').val(as[0].val02);
+                        		$('#txtVal03').val(as[0].val03);
+                        		$('#txtVal04').val(as[0].val04);
+                        		$('#txtVal05').val(as[0].val05);
+                        		$('#txtVal06').val(as[0].val06);
+                        		$('#txtVal07').val(as[0].val07);
+                        		$('#txtVal08').val(as[0].val08);
+                        		$('#txtVal09').val(as[0].val09);
+                        		$('#txtVal10').val(as[0].val10);
+                        	}
+                        	
+                        }else{
+                        	Unlock(1);
+                        }
+                        break;
                     case q_name + '_s':
                         q_boxClose2(s2);
                         break;
@@ -479,22 +501,22 @@
 						</td>
 					</tr>
 					<tr>
-						<td><span> </span><a id="" class="lbl">船公司</a></td>
-						<td colspan="2"><input type="text" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">船名</a></td>
-						<td colspan="2"><input type="text" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">航次</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">船公司</a></td>
+						<td colspan="2"><input type="text" id="txtBoat" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">船名</a></td>
+						<td colspan="2"><input type="text" id="txtBoatName" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">航次</a></td>
+						<td><input type="text" id="txtShip" class="txt c1"/></td>
 					</tr>
 					<tr>
-						<td><span> </span><a id="" class="lbl">櫃型</a></td>
-						<td><input type="text" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">櫃數</a></td>
+						<td><span> </span><a class="lbl">櫃型</a></td>
+						<td><input type="text" id="txtCasetype" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">櫃數</a></td>
 						<td><input id="txtMount"  type="text" class="txt c1 num"/></td>
-						<td><span> </span><a id="" class="lbl">領櫃地</a></td>
-						<td><input type="text" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">交櫃地</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">領櫃地</a></td>
+						<td><input type="text" id="txtPort2" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">交櫃地</a></td>
+						<td><input type="text" id="txtEmpdock2" class="txt c1"/></td>
 					</tr>
 					<tr style="background-color: pink;">
 						<td><span> </span><a class="lbl" style="color:black;">出口</a></td>
@@ -510,10 +532,10 @@
 					<tr style="background-color: pink;">
 						<td><span> </span><a id="" class="lbl">S/O</a></td>
 						<td><input type="text" id="txtSo" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">領櫃代號</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a  class="lbl">領櫃代號</a></td>
+						<td><input type="text" id="txtDo1" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">卸貨港</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtPort" class="txt c1"/></td>
 						<td></td>
 						<td class="tdZ"></td>
 					</tr>
@@ -540,9 +562,9 @@
 					</tr>
 					<tr style="background-color: burlywood;">
 						<td><span> </span><a id="" class="lbl">提單號碼</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtDo2" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">領櫃代號</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtTakeno" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">領櫃編號</a></td>
 						<td><input type="text" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">領櫃單</a></td>
@@ -555,18 +577,18 @@
 						<td><span> </span><a id="" class="lbl">艙號</a></td>
 						<td><input type="text" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">追蹤</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtTrackno" class="txt c1"/></td>
 						<td></td>
 						<td></td>
 						<td class="tdZ"></td>
 					</tr>
 					<tr style="background-color: burlywood;">
 						<td><span> </span><a id="" class="lbl">FREE TIME</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtFreetime" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">放行日</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtRedate" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">空/重櫃</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtEf" class="txt c1"/></td>
 						<td></td>
 						<td></td>
 						<td class="tdZ"></td>
