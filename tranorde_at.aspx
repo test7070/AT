@@ -58,8 +58,8 @@
                 q_mask(bbmMask);
                 
                 $('#btnImport').click(function(e){
-                	t_noa = $.trom($('#txtNoa').val());
-                	t_custno = $.trom($('#txtCustno').val());
+                	t_noa = $.trim($('#txtNoa').val());
+                	t_custno = $.trim($('#txtCustno').val());
                 });
             }
             
