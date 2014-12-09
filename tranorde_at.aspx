@@ -485,7 +485,8 @@
 						<td><span> </span><a id="lblDatea" class="lbl"> </a></td>
 						<td><input id="txtDatea"  type="text"  class="txt c1"/></td>
 						<td><span> </span><a id="lblContract" class="lbl"> </a></td>
-						<td colspan="3"><input id="txtContract"  type="text"  class="txt c1"/></td>
+						<td colspan="2"><input id="txtContract"  type="text"  class="txt c1"/></td>
+						<td><input id="chkEnda" type="checkbox" />結案</td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblTranquatno" class="lbl"> </a></td>
