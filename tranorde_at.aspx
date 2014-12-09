@@ -24,7 +24,7 @@
             var bbmNum = [['txtMount',10,0,1]];
             var bbsNum = [];
             var bbtNum = [];
-            var bbmMask = [['txtDatea','999/99/99']];
+            var bbmMask = [['txtDatea','999/99/99'],['txtEtc','999/99/99'],['txtEta','999/99/99'],['txtEtd','999/99/99'],['txtRedate','999/99/99']];
             var bbsMask = [];
             var bbtMask = [];
             q_sqlCount = 6;
@@ -35,7 +35,9 @@
             q_desc = 1;
             brwCount2 = 5;
 
-            aPop = new Array();
+            aPop = new Array(['txtProductno', 'btnProduct', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
+            , ['txtStraddrno__', 'btnStraddr__', 'addr', 'noa,addr', 'txtStraddrno__,txtStraddr__', 'addr_b2.aspx']
+            , ['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,tel,fax', 'txtCustno,txtComp,txtNick,txtTel,txtFax', 'cust_b.aspx']);
 			
 			var z_mech = new Array();
             $(document).ready(function() {
@@ -56,6 +58,7 @@
 
             function mainPost() {
                 q_mask(bbmMask);
+                q_cmbParse("cmbStype", q_getMsg('stype').replace(/\^/g,','));
                 
                 $('#btnImport').click(function(e){
                 	t_noa = $.trim($('#txtNoa').val());
@@ -108,18 +111,17 @@
                         if (b_ret != null) {
                         	as = b_ret;
                         	if(as[0] != undefined && as.length>0){
+                        		$('#cmbStype').val(as[0].stype);
+                        		$('#txtContract').val(as[0].contract);
                         		$('#txtTranquatno').val(as[0].noa);
                         		$('#txtTranquatnoq').val(as[0].noq);
-                        		$('#txtVal01').val(as[0].val01);
-                        		$('#txtVal02').val(as[0].val02);
-                        		$('#txtVal03').val(as[0].val03);
-                        		$('#txtVal04').val(as[0].val04);
-                        		$('#txtVal05').val(as[0].val05);
-                        		$('#txtVal06').val(as[0].val06);
-                        		$('#txtVal07').val(as[0].val07);
-                        		$('#txtVal08').val(as[0].val08);
-                        		$('#txtVal09').val(as[0].val09);
-                        		$('#txtVal10').val(as[0].val10);
+                        		$('#txtTel').val(as[0].tel_cust);
+                        		$('#txtFax').val(as[0].fax_cust);
+                        		$('#txtProductno').val(as[0].productno);
+                        		$('#txtProduct').val(as[0].product);
+                        		$('#txtPort2').val(as[0].val09);
+                        		$('#txtEmpdock2').val(as[0].val10);
+                        		$('#txtCasetype').val(as[0].val01+as[0].val02+as[0].val03);
                         	}
                         	
                         }else{
@@ -192,6 +194,21 @@
             }
             function readonly(t_para, empty) {
                 _readonly(t_para, empty);
+                if (t_para) {
+                    $('#txtDatea').datepicker('destroy');
+                    $('#txtEtc').datepicker('destroy');
+                    $('#txtEtd').datepicker('destroy');
+                    $('#txtEta').datepicker('destroy');
+                    $('#txtRedate').datepicker('destroy');
+                    $('#btnImport').attr('disabled','disabled');
+                } else {	
+                    $('#txtDatea').datepicker();
+                    $('#txtEtc').datepicker();
+                    $('#txtEtd').datepicker();
+                    $('#txtEta').datepicker();
+                    $('#txtRedate').datepicker();
+                    $('#btnImport').removeAttr('disabled');
+                }
             }
 
             function btnMinus(id) {
@@ -476,8 +493,8 @@
 							<input id="txtTranquatno"  type="text" class="txt" style="float:left;width:80%;"/>
 							<input id="txtTranquatnoq"  type="text" class="txt" style="float:left;width:20%;"/>
 						</td>
-						<td></td>
-						<td><input id="btnImport" type="button" value="報價匯入" /></td>
+						<td><span> </span><a id="lblStype" class="lbl"> </a></td>
+						<td><select id="cmbStype" class="txt c1"> </select></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblCust" class="lbl"> </a></td>
@@ -486,6 +503,8 @@
 							<input id="txtComp"  type="text" style="width:75%;float:left;"/>
 							<input id="txtNick"  type="text" style="display:none;"/>
 						</td>
+						<td></td>
+						<td><input id="btnImport" type="button" value="報價匯入" /></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblTel" class="lbl"> </a></td>
@@ -502,11 +521,11 @@
 					</tr>
 					<tr>
 						<td><span> </span><a class="lbl">船公司</a></td>
-						<td colspan="2"><input type="text" id="txtBoat" class="txt c1"/></td>
+						<td colspan="2"><input type="text" id="txtVocc" class="txt c1" title="Vessel Operating Common Carrier"/></td>
 						<td><span> </span><a class="lbl">船名</a></td>
-						<td colspan="2"><input type="text" id="txtBoatName" class="txt c1"/></td>
+						<td colspan="2"><input type="text" id="txtVessel" class="txt c1"/></td>
 						<td><span> </span><a class="lbl">航次</a></td>
-						<td><input type="text" id="txtShip" class="txt c1"/></td>
+						<td><input type="text" id="txtVoyage" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a class="lbl">櫃型</a></td>
@@ -537,15 +556,17 @@
 						<td><span> </span><a id="" class="lbl">卸貨港</a></td>
 						<td><input type="text" id="txtPort" class="txt c1"/></td>
 						<td></td>
+						<td></td>
 						<td class="tdZ"></td>
 					</tr>
 					<tr style="background-color: pink;">
-						<td><span> </span><a id="" class="lbl">報關日</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">結關日</a></td>
+						<td><input type="text" id="txtEtc" class="txt c1" title="ESTIMATED TIME OF CLOSING"/></td>
 						<td><span> </span><a id="" class="lbl">開船日</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtEtd" class="txt c1" title="ESTIMATED TIME OF DELIVERY"/></td>
 						<td><span> </span><a id="" class="lbl">到達日</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtEta" class="txt c1" title="ESTIMATED TIME OF ARRIVAL"/></td>
+						<td></td>
 						<td></td>
 						<td class="tdZ"></td>
 					</tr>
@@ -566,16 +587,16 @@
 						<td><span> </span><a id="" class="lbl">領櫃代號</a></td>
 						<td><input type="text" id="txtTakeno" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">領櫃編號</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtOption1" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">領櫃單</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtOption2" class="txt c1"/></td>
 						<td class="tdZ"></td>
 					</tr>
 					<tr style="background-color: burlywood;">
-						<td><span> </span><a id="" class="lbl">掛號</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><span> </span><a class="lbl" title="Vessel Registration">掛號</a></td>
+						<td><input type="text" id="txtVr" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">艙號</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtManifest" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">追蹤</a></td>
 						<td><input type="text" id="txtTrackno" class="txt c1"/></td>
 						<td></td>
@@ -595,17 +616,17 @@
 					</tr>
 					<tr>
 						<td><span> </span><a class="lbl">報關行</a></td>
-						<td><input id="" type="text" class="txt c1"/></td>
-						<td><span> </span><a class="lbl">電話</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input id="txtCb" type="text" class="txt c1" title="customs broker"/></td>
 						<td><span> </span><a class="lbl">連絡人</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtCbconn" class="txt c1"/></td>
+						<td><span> </span><a class="lbl">電話</a></td>
+						<td><input type="text" id="txtCbtel" class="txt c1"/></td>
 						<td><span> </span><a class="lbl">分機</a></td>
-						<td><input type="text" class="txt c1"/></td>
+						<td><input type="text" id="txtCbext" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>
-						<td colspan="3" rowspan="2"><textarea id="txtMemo" class="txt c1" rows="3"></textarea></td>
+						<td colspan="7" rowspan="2"><textarea id="txtMemo" class="txt c1" rows="3"></textarea></td>
 					</tr>
 					<tr></tr>
 					<tr>
