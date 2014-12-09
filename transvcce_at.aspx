@@ -655,83 +655,7 @@
             function q_stPost() {
                 if (!(q_cur == 1 || q_cur == 2))
                     return false;
-               /* //檢查BBS個數是否和DBF一致
-                var t_noa = $.trim($('#txtNoa').val());
-                q_gt('view_transvcces', "where=^^ noa='"+t_noa+"'^^", 0, 0, 0, "checkBbsCount", r_accy);
-                */
-                //發送訊息至長輝
-                var t_noa = $.trim($('#txtNoa').val());
-                var t_array = new Array();
-                var t_noq,t_carno,t_sendid,t_msg;
-                for(var n=0;n<q_bbsCount;n++){
-                    t_noq = $.trim($('#txtNoq_'+n).val());
-                    t_carno = $.trim($('#txtCarno_'+n).val());
-                    t_sendid = $.trim($('#txtSendid_'+n).val());
-                    t_msg = $.trim($('#txtMemo').val());
-                    t_msg += (t_msg.length>0?',':'')+(($('#txtTrandate').val()+$('#txtTrantime').val()).length>0?'出車時間'+$('#txtTrandate').val()+'-'+$('#txtTrantime').val():'');
-                    t_msg += (t_msg.length>0?',':'')+ $.trim($('#txtAddr_'+n).val());
-                    t_msg += (t_msg.length>0?',':'')+ $.trim($('#txtMsg_'+n).val());    
-                    t_msg = t_msg.replace(/\u002c/g,'.');  
-                    
-                    if($('#chkIssend_'+n).prop('checked') && t_carno.length>0 && t_sendid.length>0 && t_msg.length>0){
-                        t_array.push({
-                            accy : r_accy,
-                            noa : t_noa,
-                            noq : t_noq,
-                            n : n,
-                            sendid : t_sendid,
-                            CarId: encodeURI(t_carno),
-                            Message : encodeURI('回傳代碼:'+t_sendid+'.'+t_msg),
-                            StatusCode : "1"                 
-                        });
-                    }    
-                }
-                
-                var json = JSON.stringify(t_array);
-                $.ajax({
-                    url: 'SendCommand.aspx',
-                    type: 'POST',
-                    data: json,
-                    dataType: 'json',
-                    timeout: 5000,
-                    success: function(data){
-                        for(var i=0;i<data.length;i++){
-                            if(data[i]['SendCommandResult']=="true")
-                                $('#chkSendcommandresult_'+data[i]["n"]).prop('checked',true);  
-                            $('#txtCommandid_'+data[i]["n"]).val(data[i]['CommandId']);
-                            $("#chkIssend_"+data[i]["n"]).prop('checked',false); 
-                            for(var j=0;j<abbs.length;j++){
-                                if(abbs[j].noa==data[i]["noa"] && abbs[j].noq==data[i]["noq"]){
-                                    abbs[j].issend = "false";
-                                    abbs[j].sendcommandresult = (data[i]['SendCommandResult']=="true"?"true":"false");
-                                    abbs[j].commandid = data[i]['CommandId'];
-                                    break;
-                                }
-                            } 
-                        }  
-                    },
-                    complete: function(){                    
-                    },
-                    error: function(jqXHR, exception) {
-                        var errmsg = '資料傳送異常。\n';
-                        if (jqXHR.status === 0) {
-                            alert(errmsg+'Not connect.\n Verify Network.');
-                        } else if (jqXHR.status == 404) {
-                            alert(errmsg+'Requested page not found. [404]');
-                        } else if (jqXHR.status == 500) {
-                            alert(errmsg+'Internal Server Error [500].');
-                        } else if (exception === 'parsererror') {
-                            alert(errmsg+'Requested JSON parse failed.');
-                        } else if (exception === 'timeout') {
-                            alert(errmsg+'Time out error.');
-                        } else if (exception === 'abort') {
-                            alert(errmsg+'Ajax request aborted.');
-                        } else {
-                            alert(errmsg+'Uncaught Error.\n' + jqXHR.responseText);
-                        }
-                    }
-                });
-                Unlock();
+                Unlock(1);
             }
             function btnOk() {
                 if ($('#txtDatea').val().length==0 || !q_cd($('#txtDatea').val())) {
@@ -755,63 +679,20 @@
                     $('#txtWorker').val(r_name);
                 }else if(q_cur ==2){
                     $('#txtWorker2').val(r_name);
-                }else{
-                    alert("error: btnok!");
                 }
                 sum();
-                Lock();
-                SendCommand(q_bbsCount-1);
-            }
-            function SaveData(){
-                var t_string = "";
-                for(var i = 0; i < q_bbsCount; i++) {
-                    if($.trim($('#txtCarno_'+i).val()).length>0)
-                        t_string += (t_string.length>0?',':'')+$.trim($('#txtCarno_'+i).val());
-                }
-                $('#txtCarno').val(t_string);
-                $('#txtMemo3').val('');
-                t_string = "";
-                for(var i = 0; i < q_bbsCount; i++) {
-                    if($.trim($('#txtMemo2_'+i).val()).length>0)
-                        t_string += (t_string.length>0?',':'')+$.trim($('#txtMemo2_'+i).val());
-                    if(i==0 || $.trim($('#txtMemo3').val()).length==0)
-                        $('#txtMemo3').val($.trim($('#txtAddr_'+i).val())); 
-                }
-                $('#txtMemo2').val(t_string);
                 var t_noa = trim($('#txtNoa').val());
                 var t_date = trim($('#txtDatea').val());
-                if (t_noa.length == 0 || t_noa == "AUTO" || q_cur==1)
-                    q_gtnoa(q_name, replaceAll(q_getPara('sys.key_transvcce') + (t_date.length == 0 ? q_date() : t_date), '/', ''));
+                if (t_noa.length == 0 || t_noa == "AUTO")
+                    q_gtnoa(q_name, replaceAll(q_getPara('sys.key_tranorde') + (t_date.length == 0 ? q_date() : t_date), '/', ''));
                 else
                     wrServer(t_noa);
-                tranorde.unlock();
             }
-            
-            function SendCommand(n){
-                //訊息一筆一筆發送,送完後再存檔
-                if(n<0){
-                    t_noa = $.trim($('#txtNoa').val());
-                    t_ordeno = $.trim($('#txtOrdeno').val());
-                    t_mount = $.trim($('#txtMount').val()).length ==0 ? '0':$.trim($('#txtMount').val());
-                    t_where = "noa='"+t_ordeno+"'";
-                    t_where="where=^^"+t_where+"^^";
-                    q_gt('view_tranorde_dc', t_where, 0, 0, 0, "bbb_"+t_noa+"_"+t_ordeno+"_"+t_mount, r_accy);
-                }else{ 
-                    var t_carno = $.trim($('#txtCarno_'+n).val());
-                    var t_senddate = q_date();
-                    if(t_carno.length>0){
-                        t_where="where=^^ carno='"+t_carno+"'^^";
-                        q_gt('transvcces_lasttime', t_where, 0, 0, 0, "transvcces_lasttime_"+t_senddate+"_"+n, r_accy);                     
-                    }else{
-                        SendCommand(n-1);           
-                    }
-                }
-            }
-
+           
             function _btnSeek() {
                 if (q_cur > 0 && q_cur < 4)
                     return;
-                q_box('transvcce_s.aspx', q_name + '_s', "550px", "600px", q_getMsg("popSeek"));
+                q_box('transvcce_at_s.aspx', q_name + '_s', "550px", "600px", q_getMsg("popSeek"));
             }
             function btnIns() {
                 tranorde.lock();
