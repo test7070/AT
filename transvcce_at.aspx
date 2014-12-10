@@ -14,13 +14,7 @@
         <script src="css/jquery/ui/jquery.ui.widget.js"></script>
         <script src="css/jquery/ui/jquery.ui.datepicker_tw.js"></script>
         <script type="text/javascript">
-            // transvcce.noa  tranorde.noa  編號不能有底線，否則gtPost須改寫
-            //登錄日期: 實際派車日期,  出車日期，時間只是純粹傳給司機看的而已
-            this.errorHandler = null;
 
-            function onPageError(error) {
-                alert("An error occurred:\r\n" + error.Message);
-            }
             q_tables = 's';
             var q_name = "transvcce";
             var q_readonly = ['txtNoa','txtMount','txtWorker','txtWorker2','txtOrdeno'];
@@ -42,6 +36,7 @@
             , ['txtDriverno_', '', 'driver', 'noa,namea', 'txtDriverno_,txtDriver_', 'driver_b.aspx']
             , ['txtAddrno_', '', 'addr', 'noa,addr', 'txtAddrno_,txtAddr_', 'addr_b.aspx']
             , ['txtCustno', 'lblCust', 'cust', 'noa,comp,nick', 'txtCustno,txtComp,txtNick', 'cust_b.aspx'] 
+            , ['textCustno', '', 'cust', 'noa,comp', 'textCustno', 'cust_b.aspx'] 
             );
             //---------------------------------------------------------------------
             function tranorde() {
@@ -67,22 +62,27 @@
                         }
                     }
                 },
+                
                 load : function(){
                     var string = '<table id="tranorde_table">';
                     string+='<tr id="tranorde_header">';
                     string+='<td id="tranorde_chk" align="center" style="width:20px; color:black;"></td>';
                     string+='<td id="tranorde_sel" align="center" style="width:20px; color:black;"></td>';
-                    string+='<td id="tranorde_noa" onclick="tranorde.sort(\'noa\',false)" title="訂單編號" align="center" style="width:120px; color:black;">訂單編號</td>';
-                    string+='<td id="tranorde_ctype" onclick="tranorde.sort(\'ctype\',false)" title="類型" align="center" style="width:50px; color:black;">類型</td>';
-                    string+='<td id="tranorde_strdate" onclick="tranorde.sort(\'strdate\',false)" title="開工日期" align="center" style="width:100px; color:black;">開工日</td>';
-                    string+='<td id="tranorde_strdate" onclick="tranorde.sort(\'dldate\',false)" title="完工日期" align="center" style="width:100px; color:black;">完工日</td>';
                     string+='<td id="tranorde_nick" onclick="tranorde.sort(\'custno\',false)" title="客戶" align="center" style="width:100px; color:black;">客戶</td>';
+                    string+='<td id="tranorde_noa" onclick="tranorde.sort(\'noa\',false)" title="訂單編號" align="center" style="width:120px; color:black;">訂單編號</td>';
+                    string+='<td id="tranorde_stype" onclick="tranorde.sort(\'stype\',false)" title="類型" align="center" style="width:50px; color:black;">類型</td>';
+                    string+='<td id="tranorde_straddr" title="起迄地點" align="center" style="width:50px; color:black;">起迄地點</td>';
+                    string+='<td id="tranorde_caseno" title="櫃號" align="center" style="width:50px; color:black;">櫃號</td>';
+                    
+                   /* string+='<td id="tranorde_strdate" onclick="tranorde.sort(\'strdate\',false)" title="開工日期" align="center" style="width:100px; color:black;">開工日</td>';
+                    string+='<td id="tranorde_strdate" onclick="tranorde.sort(\'dldate\',false)" title="完工日期" align="center" style="width:100px; color:black;">完工日</td>';
+                    
                     string+='<td id="tranorde_addr" onclick="tranorde.sort(\'addrno\',false)" title="起迄地點" align="center" style="width:200px; color:black;">起迄地點</td>';
                     string+='<td id="tranorde_product" onclick="tranorde.sort(\'productno\',false)" title="品名" align="center" style="width:100px; color:black;">品名</td>';
                     string+='<td id="tranorde_mount" onclick="tranorde.sort(\'mount\',true)" align="center" style="width:80px; color:black;">收數量</td>';
                     string+='<td id="tranorde_vccecount" onclick="tranorde.sort(\'vccecount\',true)" align="center" style="width:80px; color:black;">已派數量</td>';
                     string+='<td id="tranorde_empdock" onclick="tranorde.sort(\'empdock\',false)" title="領,S/O" align="center" style="width:120px; color:black;">出口櫃</td>';
-                    string+='<td id="tranorde_port2" onclick="tranorde.sort(\'port2\',false)" title="領櫃碼頭,自檢/追蹤" align="center" style="width:120px; color:black;">進口櫃</td>';
+                    string+='<td id="tranorde_port2" onclick="tranorde.sort(\'port2\',false)" title="領櫃碼頭,自檢/追蹤" align="center" style="width:120px; color:black;">進口櫃</td>';*/
                     string+='</tr>';
                     
                     var t_color = ['DarkBlue','DarkRed'];
@@ -91,9 +91,13 @@
                         string+='<td style="text-align: center;">';
                         string+='<input id="tranorde_chk'+i+'" class="tranorde_chk" type="checkbox"/></td>';
                         string+='<td style="text-align: center; font-weight: bolder; color:black;">'+(i+1)+'</td>';
+                        string+='<td id="tranorde_nick'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
                         string+='<td id="tranorde_noa'+i+'" onclick="tranorde.browNoa(this)" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
-                        string+='<td id="tranorde_ctype'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
-                        string+='<td id="tranorde_strdate'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
+                        string+='<td id="tranorde_stype'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
+                        string+='<td id="tranorde_straddr'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
+                        string+='<td id="tranorde_caseno'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
+                        
+                        /*string+='<td id="tranorde_strdate'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
                         string+='<td id="tranorde_dldate'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
                         string+='<td id="tranorde_nick'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
                         string+='<td id="tranorde_addr'+i+'" style="text-align: left;color:'+t_color[i%t_color.length]+'"></td>';
@@ -101,7 +105,7 @@
                         string+='<td id="tranorde_mount'+i+'" style="text-align: right;color:'+t_color[i%t_color.length]+'"></td>';
                         string+='<td id="tranorde_vccecount'+i+'" style="text-align: right;color:'+t_color[i%t_color.length]+'"></td>';
                         string+='<td id="tranorde_empdock'+i+'" style="text-align: left;color:'+t_color[i%t_color.length]+'"></td>';
-                        string+='<td id="tranorde_port2'+i+'" style="text-align: left;color:'+t_color[i%t_color.length]+'"></td>';
+                        string+='<td id="tranorde_port2'+i+'" style="text-align: left;color:'+t_color[i%t_color.length]+'"></td>';*/
                         string+='</tr>';
                     }
                     string+='</table>';
@@ -114,8 +118,8 @@
                     string+='<input id="textCurPage" onchange="tranorde.page(parseInt($(this).val()))" type="text" style="float:left;width:100px;text-align: right;"/>';
                     string+='<span style="float:left;display:block;width:10px;font-size: 25px;">/</span>';
                     string+='<input id="textTotPage"  type="text" readonly="readonly" style="float:left;width:100px;color:green;"/>';
-                    string+='<select id="combCtype" style="float:left;width:100px;"> </select>';
-                    string+='<select id="combDtype" style="float:left;width:100px;"> </select>';
+                    string+='<select id="combStype" style="float:left;width:100px;"> </select>';
+                    string+='<input type="textbox" id="textCustno" style="float:left;width:100px;"/> </select>';
                     $('#tranorde_control').append(string);
                 },
                 init : function(obj) {
@@ -127,8 +131,13 @@
                     });
                     this.data = new Array();
                     if (obj[0] != undefined) {
-                        for (var i in obj)
-                            if (obj[i]['noa'] != undefined && obj[i]['caddr'] != undefined){
+                        for (var i in obj){
+                        	obj[i]['caseno']=JSON.parse(obj[i]['caseno']);
+                        	obj[i]['straddrno']=JSON.parse(obj[i]['straddrno']);
+                        	obj[i]['straddr']=JSON.parse(obj[i]['straddr']);
+                            this.data.push(obj[i]);
+                        }
+                          /*  if (obj[i]['noa'] != undefined && obj[i]['caddr'] != undefined){
                                 var t_caddr = obj[i]['caddr'].split(',');
                                 var t_item,t_str,t_addr='';
                                 for(var j=0;j<t_caddr.length;j++){
@@ -148,7 +157,7 @@
                                 }
                                 obj[i]['addr']=t_addr;
                                 this.data.push(obj[i]);
-                            }
+                            }*/
                     }
                     this.totPage = Math.ceil(this.data.length / this.tbCount);
                     $('#textTotPage').val(this.totPage);
@@ -328,10 +337,9 @@
                 $('#btnIns').attr('value',$('#btnIns').attr('value')+"(F8)");
                 $('#btnOk').attr('value',$('#btnOk').attr('value')+"(F9)");
                 q_mask(bbmMask);
-                $('#txtDatea').datepicker();
-                $('#txtTrandate').datepicker();
-                q_cmbParse("combCtype", ('').concat(new Array( '全部','貨櫃','平板','散裝')));
-                q_cmbParse("combDtype", ('').concat(new Array( '全部','出口','進口')));
+             	q_cmbParse("combStype", ' @全部,'+q_getMsg('stype').replace(/\^/g,','));
+             	
+             	
                 q_cmbParse("combMemo", ('').concat(q_getMsg('combmemo').split('&')));
                 $('#combMemo').click(function(e){
                     if(q_cur==1 || q_cur==2){
@@ -416,6 +424,12 @@
                 });
                 //--------------------------------------------------
                 $('#btnTranorde_refresh').click(function(e) {
+                	t_custno = $('#textCustno').val();
+                	t_stype = $('#combStype').val();
+                	
+                	q_func('qtxt.query.transvcce', 'transvcce.txt,orde_vcce,' + encodeURI(r_name) + ';'+ encodeURI(t_custno) + ';' + encodeURI(t_stype)); 	
+                	
+                	/*
                     t_where = " (isnull(mount,0)>isnull(vccecount,0)) and enda!=1 ";
                     var t_ctype = $('#combCtype>option:selected').text();
                     var t_dtype = $('#combDtype>option:selected').text();
@@ -427,7 +441,7 @@
                         t_where += (t_where.length>0?' and ':'') + "len(isnull(port2,''))>0";   
                     t_where="where=^^"+t_where+"^^";
                     Lock();
-                    q_gt('view_tranorde_dc', t_where, 0, 0, 0,'aaa', r_accy);
+                    q_gt('view_tranorde_dc', t_where, 0, 0, 0,'aaa', r_accy);*/
                 });    
                 //自動載入訂單
                 $('#btnTranorde_refresh').click();   
@@ -442,6 +456,22 @@
                 }
                 b_pop = '';
             }
+            function q_funcPost(t_func, result) {
+                switch(t_func) {
+            		case 'qtxt.query.transvcce':
+                		var as = _q_appendData("tmp0", "", true, true);
+                        if (as[0] != undefined) {
+                        	tranorde.init(as);
+                        } else {
+                            alert('無訂單資料!');
+                        }
+                        Unlock(1);
+                		break;
+                    default:
+                        break;
+                }
+            }
+            
             function q_popPost(id) {
                 switch (id) {
                     case 'txtCarno_':
@@ -457,197 +487,11 @@
 
             function q_gtPost(t_name) {
                 switch (t_name) {
-                    case 'checkBbsCount':
-                        var GG = _q_appendData("view_transvcces", "", true);
-                        var t_count = 0;
-                        if(GG[0]!=undefined){
-                            t_count = GG.length;
-                        }
-                        if(q_bbsCount!=t_count)
-                            alert('資料異常:明細與資料庫個數不一致。'+t_count+','+q_bbsCount);
-                        break;
-                    case 'loadcaddr':
-                        var GG = _q_appendData("view_tranorde_dc", "", true);
-                        if (GG[0] != undefined){
-                            tranorde.curCaddr.push({addrno:'',addr:''});
-                            var t_caddr = GG[0].caddr.split(',');
-                            var a_caddr = new Array(),t_item,t_str,t_addrno='';
-                            for(var i=0;i<t_caddr.length;i++){
-                                t_item = t_caddr[i].split(' ');
-                                t_str='';
-                                for(var j=0;t_caddr[i].length>0 && j<t_item.length;j++){
-                                    t_str+=String.fromCharCode(parseInt(t_item[j]));
-                                }
-                                if(i%2==0)
-                                    t_addrno = t_str;
-                                else{
-                                    tranorde.curCaddr.push({addrno:t_addrno,addr:t_str});
-                                }
-                            }
-                            for(var i=0;i<tranorde.curCaddr.length;i++)
-                                t_str += '<option value="'+i+'">'+(tranorde.curCaddr[i].addrno+' '+tranorde.curCaddr[i].addr).replace('</','')+'</option>';
-                            for(var i=0;i<q_bbsCount;i++){
-                                $('#combCaddr_'+i).html(t_str).change(function(e){
-                                    var n= parseInt($(this).attr('id').replace('combCaddr_',''));
-                                    $('#txtAddrno_'+n).val(tranorde.curCaddr[parseInt($(this).val())].addrno);
-                                    $('#txtAddr_'+n).val(tranorde.curCaddr[parseInt($(this).val())].addr);
-                                });                         
-                            }
-                        }
-                        break;
-                    case 'aaa':
-                        var GG = _q_appendData("view_tranorde_dc", "", true);
-                        if (GG[0] != undefined)
-                            tranorde.init(GG);
-                        else{
-                            Unlock();
-                            alert('無資料。');
-                        }
-                        break;
-                    case 'LoadCaseno':
-                        var GG = _q_appendData("view_tranordes", "", true);
-                        if (GG[0] != undefined){
-                            q_gridAddRow(bbsHtm, 'tbbs', 'txtCaseno,txtMsg,txtMemo', GG.length, GG, 'caseno,memo,memo', '', '');
-                        }
-                        Unlock();
-                        break;
                     case q_name:
                         if (q_cur == 4)
                             q_Seek_gtPost();
                         break;
                     default:
-                        if(t_name.substring(0,15)=='getTranordeAccy'){
-                            var t_noa = t_name.split('_')[1];
-                            var GG = _q_appendData("view_tranorde", "", true);
-                            if(GG[0]!=undefined){
-                                q_box("tranorde.aspx?;;;noa='" + t_noa + "';"+GG[0].accy, 'tranorde', "95%", "95%", q_getMsg("popTranorde"));
-                            }else{
-                                alert('查無訂單。');
-                            }
-                        }else if(t_name.substring(0,19)=='transvcces_lasttime'){
-                            var t_senddate = t_name.split('_')[2];
-                            var n = parseInt(t_name.split('_')[3]);  
-                            var t_sendno = 0 ;
-                            var GG = _q_appendData("view_transvcces", "", true);
-                            if (GG[0] != undefined){
-                                t_sendno = parseInt( GG[0].sendno.length==0?"0":GG[0].sendno);
-                            }
-                            var t_isSend = $('#chkIssend_'+n).prop('checked');
-                            var t_carno = $.trim($('#txtCarno_'+n).val());
-                            var t_msg = $.trim($('#txtMemo').val());
-                            t_msg += (t_msg.length>0?',':'')+(($('#txtTrandate').val()+$('#txtTrantime').val()).length>0?'出車時間'+$('#txtTrandate').val()+'-'+$('#txtTrantime').val():'');
-                            t_msg += (t_msg.length>0?',':'')+ $.trim($('#txtAddr_'+n).val());
-                            t_msg += (t_msg.length>0?',':'')+ $.trim($('#txtMsg_'+n).val());    
-                            t_msg = t_msg.replace(/\u002c/g,'.');   
-                            var t_commandid = $('#txtCommandid_'+n).val();
-                            var t_Sendcommandresult = $('#chkSendcommandresult_'+n).prop('checked');
-                            if(t_isSend && t_carno.length>0 && t_msg.length>0){
-                                if($.trim($('#txtSendid_'+n).val()).length==0){
-                                    for(var i=0;i<q_bbsCount;i++){
-                                        if(t_carno==$.trim($('#txtCarno_'+i).val())){
-                                            x_sendno = q_float('txtSendno_'+i);
-                                            if(x_sendno>t_sendno){
-                                                t_sendno = x_sendno;
-                                            }
-                                        }
-                                    }
-                                    t_sendno = t_sendno+1;
-                                    t_sendid = t_sendno%100;
-                                    t_sendid = 'NB'+(t_sendid<10?'0':'')+t_sendid;
-                                }else{
-                                    t_sendno = q_float('txtSendno_'+n);
-                                    t_sendid = $('#txtSendid_'+n).val();
-                                }
-                                //長輝SERVER有時資料不會回傳,
-                                $('#txtSendno_'+n).val(t_sendno);
-                                $('#txtSendid_'+n).val(t_sendid);
-                                $('#txtSenddate_'+n).val(t_senddate);
-                            }
-                            SendCommand(n-1);           
-                        }else if(t_name.substring(0,3)=='bbb'){ 
-                            //計算已派數量,並更新頁面顯示資料
-                            var t_noa = t_name.split('_')[1];
-                            var t_ordeno = t_name.split('_')[2];
-                            var t_mount = parseFloat(t_name.split('_')[3]);
-                            var GG = _q_appendData("view_tranorde_dc", "", true);
-                            if (GG[0] != undefined){
-                                t_vccecount = (GG[0]['vccecount']==undefined?"0":GG[0]['vccecount']);
-                                t_vccecount = (t_vccecount.length==0?"0":t_vccecount);
-                                t_where=" noa='"+t_noa+"'";
-                                t_where="where=^^"+t_where+"^^";
-                                q_gt('transvcce', t_where, 0, 0, 0, "ccc_"+t_noa+"_"+t_ordeno+"_"+t_mount+"_"+t_vccecount, r_accy);             
-                            }else{
-                                //查無訂單,直接存檔
-                                SaveData();
-                            }                           
-                        }else if(t_name.substring(0,3)=='ccc'){
-                            //回寫已收數量
-                            var t_noa = t_name.split('_')[1];
-                            var t_ordeno = t_name.split('_')[2];
-                            var t_mount = parseFloat(t_name.split('_')[3]);
-                            var t_vccecount = parseFloat(t_name.split('_')[4]);
-                            var t_curVccecount = t_vccecount + t_mount;
-                            var GG = _q_appendData("transvcce", "", true);
-                            if (GG[0] != undefined){            
-                                t_curVccecount -= parseFloat(GG[0]['mount']==undefined?"0":GG[0]['mount']);
-                            }
-                            for(var i in tranorde.data){
-                                if(tranorde.data[i]['noa']==t_ordeno){
-                                    tranorde.data[i]['vccecount'] = ''+t_curVccecount;
-                                    break;
-                                }
-                            }
-                            tranorde.refresh();
-                            SaveData();
-                        }else if(t_name.substring(0,3)=='ddd'){
-                            //複製訂單資料
-                            var t_ordeno = t_name.split('_')[1];
-                            var sel = t_name.split('_')[2];
-                            var as = _q_appendData("view_tranorde_dc", "", true);
-                            if (as[0] != undefined){
-                                $('#txtMount_'+sel).val('1.0');
-                                t_msg = '';
-                                //出口
-                                t_msg += (as[0]['docketno1'].length>0?(t_msg.length>0?', ':'')+'案號'+as[0]['docketno1']:'');
-                                t_msg += (as[0]['empdock'].length>0?(t_msg.length>0?',':'')+as[0]['empdock']+'領':'');
-                                t_msg += (as[0]['dock'].length>0?(t_msg.length>0?',':'')+'交'+as[0]['dock']:'');
-                                t_msg += (as[0]['boat'].length>0?(t_msg.length>0?',':'')+'船公司'+as[0]['boat']:'');
-                                t_msg += (as[0]['boatname'].length>0?(t_msg.length>0?',':'')+'船次'+as[0]['boatname']:'');
-                                t_msg += (as[0]['do1'].length>0?(t_msg.length>0?',':'')+'領編'+as[0]['do1']:'');
-                                t_msg += (as[0]['so'].length>0?(t_msg.length>0?',':'')+'SO:'+as[0]['so']:'');
-                                t_msg += (as[0]['port'].length>0?(t_msg.length>0?',':'')+'港口'+as[0]['port']:'');
-                                t_msg += (as[0]['casepackaddr'].length>0?(t_msg.length>0?', ':'')+'裝櫃地點'+as[0]['casepackaddr']:'');
-                                t_msg += (as[0]['casetype'].length>0?(t_msg.length>0?',':'')+'櫃型'+as[0]['casetype']:'');
-                                //進口
-                                t_msg += (as[0]['port2'].length>0?(t_msg.length>0?',':'')+as[0]['port2']+'領':'');
-                                t_msg += (as[0]['empdock2'].length>0?(t_msg.length>0?',':'')+'交'+as[0]['empdock2']:'');
-                                t_msg += (as[0]['takeno'].length>0?(t_msg.length>0?',':'')+'領編'+as[0]['takeno']:'');
-                                t_msg += (as[0]['casepresent'].length>0?(t_msg.length>0?',':'')+'代表櫃號'+as[0]['casepresent']:'');
-                                t_msg += (as[0]['product2'].length>0?(t_msg.length>0?',':'')+'品名:'+as[0]['product2']:'');
-                                t_msg += (as[0]['containertype'].length>0?(t_msg.length>0?',':'')+'櫃別'+as[0]['containertype']:'');
-                                t_msg += (as[0]['docketno2'].length>0?(t_msg.length>0?',':'')+'案號'+as[0]['docketno2']:'');
-                                t_msg += (as[0]['trackno'].length>0?(t_msg.length>0?',':'')+'追蹤'+as[0]['trackno']:'');
-                                if($.trim($('#txtCaseno_'+sel).val()).length>0){
-                                    t_msg += (t_msg.length>0?',':'')+'指定櫃號'+$.trim($('#txtCaseno_'+sel).val());
-                                }else{
-                                    t_msg += (as[0]['caseassign'].length>0?(t_msg.length>0?',':'')+'指定櫃號'+as[0]['caseassign']:'');
-                                }
-                                t_msg += (as[0]['do2'].length>0?(t_msg.length>0?',':'')+'提單'+as[0]['do2']:'');
-                                t_msg += (as[0]['checkself'].length>0?(t_msg.length>0?',':'')+'自檢'+as[0]['checkself']:'');
-                                t_msg += (as[0]['checkinstru'].length>0?(t_msg.length>0?',':'')+'儀檢'+as[0]['checkinstru']:'');
-                                t_msg += (as[0]['casedo'].length>0?(t_msg.length>0?',':'')+'押運'+as[0]['casedo']:'');
-                                t_msg += (as[0]['caseopenaddr'].length>0?(t_msg.length>0?',':'')+'拆櫃地點'+as[0]['caseopenaddr']:'');
-                                t_msg += (as[0]['option01'].length>0?(t_msg.length>0?',':'')+as[0]['option01']+'過磅':'');
-                                t_msg += (as[0]['option02'].length>0?(t_msg.length>0?',':'')+as[0]['option02']+'加封':'');
-                                t_msg += (as[0]['casetype2'].length>0?(t_msg.length>0?',':'')+'櫃型'+as[0]['casetype2']:'');
-                                
-                                t_memo = $.trim($('#txtMemo_'+sel).val());
-                                $('#txtMsg_'+sel).val(t_memo+(t_memo.length>0?',':'')+t_msg);
-                                sum();
-                            }else{
-                                alert('查無訂單。');
-                            }
-                        }
                         break;
                 }
             }
@@ -979,9 +823,10 @@
     >
         <div style="overflow: auto;display:block;width:1400px;">
             <!--#include file="../inc/toolbar.inc"-->
-            <input type="button" id="btn1" style="width:100px;float:left;" value="司機回傳">
+            <!--<input type="button" id="btn1" style="width:100px;float:left;" value="司機回傳">-->
         </div>
-        
+        <div id="tranorde" style="float:left;width:1500px;"> </div> 
+        <div id="tranorde_control" style="width:950px;"> </div> 
         <div style="overflow: auto;display:block;width:1400px;">
             <div id="divImport" style="display:none;position:absolute;top:100px;left:700px;width:400px;height:150px;background:RGB(237,237,237);"> 
                 <table style="border:4px solid gray; width:100%; height: 100%;">
@@ -1034,8 +879,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="tranorde" style="float:left;width:1500px;"> </div> 
-                <div id="tranorde_control" style="width:950px;"> </div> 
+                
                 <div class='dbbm'>
                     <table class="tbbm"  id="tbbm">
                         <tr style="height: 1px;">
