@@ -237,11 +237,16 @@
                     for (var i = 0; i < this.tbCount; i++) {
                         if ((n + i) < this.data.length) {
                             $('#tranorde_chk' + i).removeAttr('disabled');
+                            $('#tranorde_nick' + i).html(this.data[n+i]['nick']);
                             $('#tranorde_noa' + i).html(this.data[n+i]['noa']);
-                            $('#tranorde_ctype' + i).html(this.data[n+i]['ctype']);
-                            $('#tranorde_strdate' + i).html(this.data[n+i]['strdate']);
+                            $('#tranorde_stype' + i).html(this.data[n+i]['stype']);
+                            t_straddr = '';
+                            for(var j=0;j<this.data[n+i].straddr.length;j++){
+                            	t_straddr += (t_straddr.length>0?'<br>':'')+this.data[n+i].straddr[j];
+                            }
+                            $('#tranorde_straddr' + i).html(t_straddr);
                             //結關日cldate,到期日madate,預計完工日dldate   
-                            t_date = this.data[n+i]['cldate'].length>0?this.data[n+i]['cldate']:this.data[n+i]['madate'];
+                            /*t_date = this.data[n+i]['cldate'].length>0?this.data[n+i]['cldate']:this.data[n+i]['madate'];
                             t_date =  t_date.length>0? t_date:this.data[n+i]['dldate'];
                             $('#tranorde_dldate' + i).html(t_date);
                             $('#tranorde_nick' + i).html(this.data[n+i]['nick']);
@@ -258,6 +263,7 @@
                                 $('#tranorde_vccecount' + i).html(this.data[n+i]['vccecount'].replace(/(\d*)\.(\d)(\d)*$/g,'$1.$2'));
                             $('#tranorde_empdock' + i).html('<a style="float:left;display:block;width:40px;">'+ this.data[n+i]['empdock']+'</a>'+'<a style="float:left;display:block;width:80px;">'+ this.data[n+i]['so']+'</a>');
                             $('#tranorde_port2' + i).html('<a style="float:left;display:block;width:40px;">'+ this.data[n+i]['port2']+'</a>'+'<a style="float:left;display:block;width:80px;">'+ this.data[n+i]['checkself']+ this.data[n+i]['trackno']+'</a>');
+                       		*/
                         } else {
                             $('#tranorde_chk' + i).attr('disabled', 'disabled');
                             $('#tranorde_noa' + i).html('');
