@@ -24,7 +24,7 @@
             var bbmNum = [['txtMount',10,0,1]];
             var bbsNum = [];
             var bbtNum = [];
-            var bbmMask = [['txtDatea','999/99/99'],['txtEtc','999/99/99'],['txtEta','999/99/99'],['txtEtd','999/99/99'],['txtRedate','999/99/99']];
+            var bbmMask = [['txtDatea','999/99/99'],['txtStrdate','999/99/99'],['txtDldate','999/99/99'],['txtEtc','999/99/99'],['txtEta','999/99/99'],['txtEtd','999/99/99'],['txtRedate','999/99/99']];
             var bbsMask = [];
             var bbtMask = [];
             q_sqlCount = 6;
@@ -122,6 +122,7 @@
                         		$('#txtPort2').val(as[0].val09);
                         		$('#txtEmpdock2').val(as[0].val10);
                         		$('#txtCasetype').val(as[0].val01+as[0].val02+as[0].val03);
+                        		$('#txtCasetype2').val(as[0].val04+as[0].val05+as[0].val06);
                         	}
                         	
                         }else{
@@ -200,6 +201,8 @@
                     $('#txtEtd').datepicker('destroy');
                     $('#txtEta').datepicker('destroy');
                     $('#txtRedate').datepicker('destroy');
+                    $('#txtStrdate').datepicker('destroy');
+                    $('#txtDldate').datepicker('destroy');
                     $('#btnImport').attr('disabled','disabled');
                 } else {	
                     $('#txtDatea').datepicker();
@@ -207,6 +210,8 @@
                     $('#txtEtd').datepicker();
                     $('#txtEta').datepicker();
                     $('#txtRedate').datepicker();
+                    $('#txtStrdate').datepicker();
+                    $('#txtDldate').datepicker();
                     $('#btnImport').removeAttr('disabled');
                 }
             }
@@ -537,6 +542,14 @@
 						<td><input type="text" id="txtPort2" class="txt c1"/></td>
 						<td><span> </span><a class="lbl">交櫃地</a></td>
 						<td><input type="text" id="txtEmpdock2" class="txt c1"/></td>
+					</tr>
+					<tr>
+						<td><span> </span><a class="lbl">板架</a></td>
+						<td><input type="text" id="txtCasetype2" class="txt c1"/></td>
+						<td><span> </span><a id="lblStrdate" class="lbl"> </a></td>
+						<td><input type="text" id="txtStrdate" class="txt c1"/></td>
+						<td><span> </span><a id="lblDldate" class="lbl"> </a></td>
+						<td><input type="text" id="txtDldate" class="txt c1"/></td>
 					</tr>
 					<tr style="background-color: pink;">
 						<td><span> </span><a class="lbl" style="color:black;">出口</a></td>
