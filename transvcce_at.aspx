@@ -39,8 +39,6 @@
             //---------------------------------------------------------------------
             function tranorde() {
             }
-
-
             tranorde.prototype = {
                 data : null,
                 tbCount : 10,
