@@ -316,6 +316,7 @@
                     var n = (this.curPage - 1) * this.tbCount;
                     for (var i = 0; i < this.tbCount; i++) {
                         if ($('#tranorde_chk' + i).prop('checked')) {
+                        	this.curIndex = i;
                             $('#txtOrdeno').val(this.data[n+i]['noa']);
                             $('#txtCustno').val(this.data[n+i]['custno']);
                             $('#txtComp').val(this.data[n+i]['comp']);
@@ -420,6 +421,7 @@
                         break;
                     case 'qtxt.query.transvcce_btnIns':
                     	var as = _q_appendData("tmp0", "", true, true);
+                    	tranorde.curCaddr = new Array();
                         if (as[0] != undefined) {
                             $('#txtCustno').val(as[0].custno);
                             $('#txtComp').val(as[0].comp);
@@ -429,7 +431,6 @@
                             var t_addr = JSON.parse(as[0].straddr);                     
                             var t_caseno = JSON.parse(as[0].caseno);
                             
-                            tranorde.curCaddr = new Array();
                             for(var i=0;i<t_addrno.length;i++){
                             	tranorde.curCaddr.push({addrno:t_addrno[i].straddrno,addr:t_addr[i].straddr});
                             }
@@ -439,14 +440,15 @@
                             for(var i=0;i<t_caseno.length;i++){
                             	$('#txtCaseno_'+i).val(t_caseno[i].caseno);
                             }
-                            
                         } else {
                             alert('訂單遺失!');
                         }
+                        bbsAssign();
                         Unlock(1);
                     	break;
                 	case 'qtxt.query.transvcce_btnModi':
                     	var as = _q_appendData("tmp0", "", true, true);
+                    	tranorde.curCaddr = new Array();
                         if (as[0] != undefined) {
                             $('#txtCustno').val(as[0].custno);
                             $('#txtComp').val(as[0].comp);
@@ -455,14 +457,13 @@
                             var t_addrno = JSON.parse(as[0].straddrno);
                             var t_addr = JSON.parse(as[0].straddr);                     
                             var t_caseno = JSON.parse(as[0].caseno);
-                            
-                            tranorde.curCaddr = new Array();
                             for(var i=0;i<t_addrno.length;i++){
                             	tranorde.curCaddr.push({addrno:t_addrno[i].straddrno,addr:t_addr[i].straddr});
                             }
                         } else {
                             alert('訂單遺失!');
                         }
+                        bbsAssign();
                         Unlock(1);
                     	break;
                 	case 'qtxt.query.transvcce_stPost':
@@ -519,6 +520,7 @@
             }
 
             function btnOk() {
+            	Lock(1, {opacity : 0});
                 if ($('#txtDatea').val().length == 0 || !q_cd($('#txtDatea').val())) {
                     alert(q_getMsg('lblDatea') + '錯誤。');
                     return;
@@ -557,6 +559,7 @@
             }
 
             function btnIns() {
+            	Lock(1, {opacity : 0});
                 tranorde.lock();
                 _btnIns();
                 tranorde.paste();
@@ -564,23 +567,28 @@
                 $('#txtNoa').val('AUTO');
                 $('#txtDatea').focus();
 
-                var t_ordeno = $.trim($('#txtOrdeno').val());
+                var t_ordeno = tranorde.data[tranorde.curIndex].noa;
                 if (t_ordeno.length > 0) {
                 	Lock(1, {opacity : 0});
                     q_func('qtxt.query.transvcce_btnIns', 'transvcce.txt,orde_vcce,false;;;' + encodeURI(t_ordeno));
+                }else{
+                	Unlock(1);
                 }
             }
 
             function btnModi() {
+            	Lock(1, {opacity : 0});
                 if (emp($('#txtNoa').val()))
                     return;
                 _btnModi();
                 tranorde.lock();
                 $('#txtDatea').focus();
-                var t_ordeno = $.trim($('#txtOrdeno').val());
+                var t_ordeno = abbm[q_recno].ordeno;
                 if (t_ordeno.length > 0) {
                 	Lock(1, {opacity : 0});
                     q_func('qtxt.query.transvcce_btnModi', 'transvcce.txt,orde_vcce,false;;;' + encodeURI(t_ordeno));
+                }else{
+                	Unlock(1);
                 }
             }
 
