@@ -520,7 +520,6 @@
             }
 
             function btnOk() {
-            	Lock(1, {opacity : 0});
                 if ($('#txtDatea').val().length == 0 || !q_cd($('#txtDatea').val())) {
                     alert(q_getMsg('lblDatea') + '錯誤。');
                     return;
@@ -608,6 +607,10 @@
                     t_str += '<option value="' + i + '">' + (tranorde.curCaddr[i].addrno + ' ' + tranorde.curCaddr[i].addr).replace('</', '') + '</option>';
                 for (var i = 0; i < q_bbsCount; i++) {
                     $('#combCaddr_' + i).html(t_str).change(function(e) {
+                        var n = parseInt($(this).attr('id').replace('combCaddr_', ''));
+                        $('#txtAddrno_' + n).val(tranorde.curCaddr[parseInt($(this).val())].addrno);
+                        $('#txtAddr_' + n).val(tranorde.curCaddr[parseInt($(this).val())].addr);
+                    }).click(function(e) {
                         var n = parseInt($(this).attr('id').replace('combCaddr_', ''));
                         $('#txtAddrno_' + n).val(tranorde.curCaddr[parseInt($(this).val())].addrno);
                         $('#txtAddr_' + n).val(tranorde.curCaddr[parseInt($(this).val())].addr);
