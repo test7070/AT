@@ -16,9 +16,9 @@
 		<script type="text/javascript">
 			var q_name = "trans";
 			var q_readonly = ['txtWeight3','txtMiles','txtTotal','txtTotal2','txtNoa','txtOrdeno','txtWorker','txtWorker2'];
-			var bbmNum = [['txtCustdiscount',10,0,1],['txtWeight3',10,3,1],['txtWeight2',10,3,1],['txtInmount',10,3,1],['txtPton',10,3,1],['txtPrice',10,3,1],['txtTotal',10,0,1]
+			var bbmNum = [['txtCustdiscount',10,0,1],['txtInmount',10,3,1],['txtPton',10,3,1],['txtPrice',10,3,1],['txtTotal',10,0,1]
 			,['txtOutmount',10,3,1],['txtPton2',10,3,1],['txtPrice2',10,3,1],['txtPrice3',10,3,1],['txtDiscount',10,3,1],['txtTotal2',10,0,1]
-			,['txtBmiles',10,0,1],['txtEmiles',10,0,1],['txtMount3',10,0,1],['txtOverw',10,0,1],['txtOverh',10,0,1]];
+			,['txtBmiles',10,0,1],['txtEmiles',10,0,1],['txtOverw',10,0,1],['txtOverh',10,0,1]];
 			var bbmMask = [['txtDatea','999/99/99'],['txtTrandate','999/99/99'],['txtMon','999/99'],['txtMon2','999/99'],['txtLtime','99:99'],['txtStime','99:99'],['txtDtime','99:99']];
 			q_sqlCount = 6;
 			brwCount = 6;
@@ -39,11 +39,36 @@
 			,['txtCardealno', 'lblCardeal', 'acomp', 'noa,acomp', 'txtCardealno,txtCardeal', 'acomp_b.aspx']
 			);
 			
+			z_calctypes = new Array()
+			z_carteam = new Array();
+			
+			function sum() {
+				if(q_cur!=1 && q_cur!=2)
+					return;
+				
+				t_mount = q_float('txtInmount')+q_float('txtPton');
+				t_mount2 = q_float('txtOutmount')+q_float('txtPton2');
+				
+			    if(q_float('txtCustdiscount')==0)
+			        $('#txtCustdiscount').val(100);
+		        var t_custdiscount = q_float('txtCustdiscount');
+				var t_mount = q_float('txtInmount').add(q_float('txtPton'));
+				var t_total = q_div(q_mul(t_mount.mul(q_float('txtPrice')),t_custdiscount),100).round(0);
+				$('#txtMount').val(FormatNumber(t_mount));
+				$('#txtTotal').val(FormatNumber(t_total));
+				var t_mount2 = q_float('txtOutmount').add(q_float('txtPton2'));
+				var t_total2 = t_mount2.mul(trans.isoutside?q_float('txtPrice3'):q_float('txtPrice2')).mul(q_float('txtDiscount')).round(0);
+				$('#txtMount2').val(FormatNumber(t_mount2));
+				$('#txtTotal2').val(FormatNumber(t_total2));
+				if(q_float('txtOverw')!=0 && q_float('txtOverh')!=0)
+				   $('#txtDiscount').val(round((1-q_float('txtOverw')/100)*q_float('txtOverh')/100,3));
+			}
+			
 			$(document).ready(function() {
 				bbmKey = ['noa'];
 				q_brwCount();
-				q_gt(q_name, q_content, q_sqlCount, 1, 0, '', r_accy);
-
+				
+				q_gt('carteam', '', 0, 0, 0, 'transInit_1');
 			});
 			function main() {
 				if (dataErr) {
@@ -57,8 +82,19 @@
 				$('#btnIns').val($('#btnIns').val() + "(F8)");
 				$('#btnOk').val($('#btnOk').val() + "(F9)");
 				q_mask(bbmMask);
-				q_cmbParse("cmbCasetype", "20'',40''");
-				trans.init();
+				
+				var t_carteam= '';
+				for(var i=0;i<z_carteam.length;i++){
+					t_carteam += (t_carteam.length>0?',':'') + z_carteam[i].noa + '@'+ z_carteam[i].team ;
+				}
+				q_cmbParse("cmbCarteamno",t_carteam);
+				
+				var t_calctypes = '';
+				for(var i=0;i<z_calctypes.length;i++){
+					t_calctypes += (t_calctypes.length>0?',':'') + z_calctypes[i].noa + z_calctypes[i].noq + '@'+ z_calctypes[i].typea ;
+				}
+				q_cmbParse("cmbCalctype",t_calctypes);
+				
 				$("#cmbCalctype").focus(function() {
 					var len = $("#cmbCalctype").children().length > 0 ? $("#cmbCalctype").children().length : 1;
 					$("#cmbCalctype").attr('size', len + "");
@@ -81,16 +117,9 @@
 				}).blur(function() {
 					$("#cmbCarteamno").attr('size', '1');
 				});
-				$("#cmbCasetype").focus(function() {
-					var len = $("#cmbCasetype").children().length > 0 ? $("#cmbCasetype").children().length : 1;
-					$("#cmbCasetype").attr('size', len + "");
-				}).blur(function() {
-					$("#cmbCasetype").attr('size', '1');
-				});
 				
 				$('#txtInmount').change(function(){
-					if(!trans.isTre)
-						$('#txtOutmount').val($('#txtInmount').val());
+					$('#txtOutmount').val($('#txtInmount').val());
 					sum();
 				});
 				$('#txtPton').change(function(){
@@ -145,38 +174,7 @@
 				q_xchgForm();
 			}
 
-			function sum() {
-				if(q_cur!=1 && q_cur!=2)
-					return;
-				
-				if(!trans.isTrd){
-				    if(q_float('txtCustdiscount')==0)
-				        $('#txtCustdiscount').val(100);
-			        var t_custdiscount = q_float('txtCustdiscount');
-					var t_mount = q_float('txtInmount').add(q_float('txtPton'));
-					var t_total = q_div(q_mul(t_mount.mul(q_float('txtPrice')),t_custdiscount),100).round(0);
-					$('#txtMount').val(FormatNumber(t_mount));
-					$('#txtTotal').val(FormatNumber(t_total));
-				}
-				if(!trans.isTre){
-					var t_mount2 = q_float('txtOutmount').add(q_float('txtPton2'));
-					var t_total2 = t_mount2.mul(trans.isoutside?q_float('txtPrice3'):q_float('txtPrice2')).mul(q_float('txtDiscount')).round(0);
-					$('#txtMount2').val(FormatNumber(t_mount2));
-					$('#txtTotal2').val(FormatNumber(t_total2));
-					if(q_float('txtOverw')!=0 && q_float('txtOverh')!=0)
-					   $('#txtDiscount').val(round((1-q_float('txtOverw')/100)*q_float('txtOverh')/100,3));
-				}
-				
-				var bmiles = q_float('txtBmiles');
-				var emiles = q_float('txtEmiles');
-				if (bmiles != 0 && emiles != 0)
-					$('#txtMiles').val(FormatNumber(emiles.sub(bmiles)));
-					
-				if(q_float('txtWeight2')==0)
-					$('#txtWeight3').val(0);
-				else	
-					$('#txtWeight3').val(FormatNumber(q_float('txtInmount').sub(q_float('txtWeight2')).round(3)));
-			}
+			
 
 			function q_boxClose(s2) {
 				var ret;
@@ -189,225 +187,34 @@
 
 			function q_gtPost(t_name) {
 				switch (t_name) {
-					case 'isTre':
-						var as = _q_appendData("view_tres", "", true);
-                        if (as[0] != undefined) {
-                        	alert('已立帳，付款立帳單號【'+as[0].noa+'】');
-                        	Unlock(1);
-                        	return;
-                        }
-                    	_btnDele();
-                    	Unlock(1);
-                        
-						break;
-					case 'isCarsal':
-						var as = _q_appendData("carsal", "", true);
-                        if (as[0] != undefined) {
-                        	if(as[0].lock=="true" || as[0].lock=="1"){
-                        		alert('【'+as[0].noa+'】司機薪資已鎖定。');
-	                        	Unlock(1);
-	                        	return;
-                        	}
-                        }
-                    	_btnDele();
-                		Unlock(1);
-						break;
-					case 'isTrd':
-						var as = _q_appendData("view_trds", "", true);
-                        if (as[0] != undefined) {
-                        	alert('已立帳，請款立帳單號【'+as[0].noa+'】');
-                        	Unlock(1);
-                        	return;
-                        }else{
-                        	var t_isoutside = false;
-                        	for(var i in trans.calctype){
-			            		if(trans.calctype[i].noa == $('#cmbCalctype').val()){
-			            			t_isoutside.isoutside = trans.calctype[i].isoutside;
-			            		}
-			        		}
-                        	q_gt('view_tres', "where=^^ tranno='"+$('#txtNoa').val()+"' ^^", 0, 0, 0, 'isTre',r_accy);	
-                        }
-						break;
-					case 'btnDele':
-                		var as = _q_appendData("trans", "", true);
-                        if (as[0] != undefined) {
-                        	/*if(as[0].ordeno.length>0){
-                        		alert('轉來的單據禁止刪除。');
-                        		Unlock(1);
-                        		return;
-                        	}*/
-                        	q_gt('view_trds', "where=^^ tranno='"+$('#txtNoa').val()+"' and trannoq='"+$('#txtNoq').val()+"' ^^", 0, 0, 0, 'isTrd',r_accy);	
-                        }else{
-                        	alert('資料異常。');
-                        }
-                		break;                	
-                	case 'btnModi':
-                		var as = _q_appendData("trans", "", true);
-                        if (as[0] != undefined) {
-                        	if(as[0].ordeno.length>0){
-                        		trans.isOrde = true;
-                        	}else{
-                        		trans.isOrde = false;
-                        	}
-                        }
-						_btnModi();
-						trans.checkData();
-						trans.refresh();
-						$('#txtDatea').focus();
-                		break; 
-                	case 'getPrice2':
-						var t_price = 0;
-						var t_price2 = 0;
-						var t_price3 = 0;
-						var as = _q_appendData("addrs", "", true);
-						if(as[0]!=undefined){
-							t_price = as[0].custprice;
-						 	t_price2 = as[0].driverprice;
-							t_price3 = as[0].driverprice2;
-						}
-						if(!trans.isTrd){
-							$('#txtPrice').val(t_price);
-						}
-						if(!trans.isTre){
-							$('#txtPrice2').val(t_price2);
-							$('#txtPrice3').val(t_price3);
-						}
-						sum();
-						break;
-					case 'getPrice':
-						var t_price = 0;
-						var t_price2 = 0;
-						var t_price3 = 0;
-						var as = _q_appendData("addrs", "", true);
-						if(as[0]!=undefined){
-							t_price = as[0].custprice;
-						 	t_price2 = as[0].driverprice;
-							t_price3 = as[0].driverprice2;
-						}
-						if(!trans.isTrd){
-							$('#txtPrice').val(t_price);
-						}
-						if(!trans.isTre){
-							$('#txtPrice2').val(t_price2);
-							$('#txtPrice3').val(t_price3);
-						}
-						sum();
-						break;
+                	
 					case 'transInit_1':
 						var as = _q_appendData("carteam", "", true);
-						var t_item = "";
-						for ( i = 0; i < as.length; i++) {
-							t_item = t_item + (t_item.length > 0 ? ',' : '') + as[i].noa + '@' + as[i].team;
+						z_carteam = new Array();
+						if(as[0]!=undefined){
+							for(var i=0;i<as.length;i++){
+								z_carteam.push({noa:as[i].noa,team:as[i].team});
+							}
 						}
-						if(t_item.length>0)
-						  q_cmbParse("cmbCarteamno", t_item);
-						if(abbm[q_recno]!=undefined)
-							$("#cmbCarteamno").val(abbm[q_recno].carteamno);
 						q_gt('calctype2', '', 0, 0, 0, 'transInit_2');
 						break;
 					case 'transInit_2':
 						var as = _q_appendData("calctypes", "", true);
-						var t_item = "";
-						for ( i = 0; i < as.length; i++) {
-							t_item = t_item + (t_item.length > 0 ? ',' : '') + as[i].noa + as[i].noq + '@' + as[i].typea;
-							trans.calctype.push({
-								noa : as[i].noa + as[i].noq,
-								typea : as[i].typea,
-								r1 : as[i].r1,
-								r2 : as[i].r2,
-								discount : as[i].discount,
-								discount2 : as[i].discount2,
-								isoutside : as[i].isoutside.length == 0 ? false : (as[i].isoutside == "false" || as[i].isoutside == "0" || as[i].isoutside == "undefined" ? false : true)
-							});
+						z_calctypes = new Array();
+						if(as[0]!=undefined){
+							for(var i=0;i<as.length;i++){
+								z_calctypes.push({noa:as[i].noa,noq:as[i].noq
+									,typea:as[i].typea,isoutside:as[i].isoutside
+									,discount:as[i].discount,discount2:as[i].discount2});
+							}
 						}
-						if(t_item.length>0)
-						  q_cmbParse("cmbCalctype", t_item);
-						if(abbm[q_recno]!=undefined)
-							$("#cmbCalctype").val(abbm[q_recno].calctype);
-						trans.isInit = true;
-						trans.refresh();
-						Unlock(1);
+						q_gt(q_name, q_content, q_sqlCount, 1, 0, '', r_accy);
 						break;
 					case q_name:
 						if (q_cur == 4)
 							q_Seek_gtPost();
 						break;
 					default:
-						if(t_name.substring(0,8)=='checkTrd'){
-							var t_tranno = t_name.split('_')[1];
-							var t_trannoq = t_name.split('_')[2];
-							var t_datea = t_name.split('_')[3];
-							var as = _q_appendData("view_trds", "", true);
-							if(as[0]!=undefined){
-								trans.isTrd = true;
-							}else{
-								if(!trans.isOrde){
-									$('#txtCustno').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtComp').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtStraddrno').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtStraddr').removeAttr('readonly').css('color','black').css('background','white');
-									$('#txtInmount').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtPton').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtPrice').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtCustdiscount').removeAttr('readonly').css('color','black').css('background','white');
-								}
-							}
-							q_gt('view_tres', "where=^^ tranno='"+t_tranno+"' ^^", 0, 0, 0, 'checkTre',r_accy);
-						}else if(t_name.substring(0,8)=='checkTre'){
-							var as = _q_appendData("view_tres", "", true);
-							if(as[0]!=undefined){
-								trans.isTre = true;
-							}else{
-								if(!trans.isOrde){
-									$('#txtCarno').removeAttr('readonly').css('color','black').css('background','white');
-									$('#txtDriverno').removeAttr('readonly').css('color','black').css('background','white');
-									$('#txtDriver').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtOutmount').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtPton2').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtPrice2').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtPrice3').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtDiscount').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtOverw').removeAttr('readonly').css('color','black').css('background','white');
-				        			$('#txtOverh').removeAttr('readonly').css('color','black').css('background','white');
-									$('#cmbCalctype').removeAttr('disabled');
-	        						$('#cmbCarteamno').removeAttr('disabled');
-        						}
-							}
-							if(!trans.isTrd && !trans.isTre){
-								if(!trans.isOrde){
-									$('#txtDatea').removeAttr('readonly').css('color','black').css('background','white');
-									$('#txtTrandate').removeAttr('readonly').css('color','black').css('background','white');
-								}
-							}
-							sum();
-							Unlock(1);
-						}else if(t_name.substring(0,11)=='checkCarsal'){
-							var as = _q_appendData("carsal", "", true);
-							if(as[0]!=undefined){
-								if(as[0].lock=="true" || as[0].lock=="1")
-									trans.isTre = true;
-							}
-							if(!trans.isTre){
-								$('#txtCarno').removeAttr('readonly').css('color','black').css('background','white');
-								$('#txtDriverno').removeAttr('readonly').css('color','black').css('background','white');
-								$('#txtDriver').removeAttr('readonly').css('color','black').css('background','white');
-			        			$('#txtOutmount').removeAttr('readonly').css('color','black').css('background','white');
-			        			$('#txtPton2').removeAttr('readonly').css('color','black').css('background','white');
-			        			$('#txtPrice2').removeAttr('readonly').css('color','black').css('background','white');
-			        			$('#txtPrice3').removeAttr('readonly').css('color','black').css('background','white');
-			        			$('#txtDiscount').removeAttr('readonly').css('color','black').css('background','white');
-			        			$('#txtOverw').removeAttr('readonly').css('color','black').css('background','white');
-			        			$('#txtOverh').removeAttr('readonly').css('color','black').css('background','white');
-								$('#cmbCalctype').removeAttr('disabled');
-        						$('#cmbCarteamno').removeAttr('disabled');
-							}
-							if(!trans.isTrd && !trans.isTre){
-								$('#txtDatea').removeAttr('readonly').css('color','black').css('background','white');
-								$('#txtTrandate').removeAttr('readonly').css('color','black').css('background','white');
-							}
-							sum();
-							Unlock(1);
-						}
 						break;
 				}
 			}
@@ -441,40 +248,23 @@
 			function _btnSeek() {
 				if (q_cur > 0 && q_cur < 4)
 					return;
-				q_box('trans_ds_s.aspx', q_name + '_s', "550px", "95%", q_getMsg("popSeek"));
+				q_box('trans_at_s.aspx', q_name + '_s', "550px", "95%", q_getMsg("popSeek"));
 			}
 
 			function btnIns() {
-				Lock(1,{opacity:0});
-				curData.copy();
 				_btnIns();
-				curData.paste();
 				$('#txtNoa').val('AUTO');
 				$('#txtNoq').val('001');
-				if($('#cmbCalctype').val().length==0){
-					$('#cmbCalctype').val(trans.calctype[0].noa);
-				}
-				trans.calctypeChange();
-				trans.isOrde = false;
-				trans.refresh();
-				trans.checkData();
 				$('#txtDatea').focus();
 			}
 			function btnModi() {
 				if (emp($('#txtNoa').val()))
 					return;
-				//避免資料不同步
-				if($.trim($('#txtOrdeno').val()).length>0){
-					trans.isOrde = true;
-				}else{
-					trans.isOrde = false;
-				}
-				Lock(1,{opacity:0});
-                t_where=" where=^^ noa='"+$('#txtNoa').val()+"'^^";
-            	q_gt('trans', t_where, 0, 0, 0, "btnModi", r_accy);
+				_btnModi();
+				$('#txtDatea').focus();
 			}
 			function btnPrint() {
-				q_box('z_trans_ds.aspx' + "?;;;;" + r_accy, '', "95%", "95%", q_getMsg("popPrint"));
+				q_box('z_transp_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'trans', "95%", "95%", m_print);
 			}
 			function q_stPost() {
                 if (!(q_cur == 1 || q_cur == 2))
@@ -494,32 +284,7 @@
             		Unlock(1);
             		return;
 				}
-				if($('#txtDatea').val().substring(0,3)!=r_accy){
-					alert('年度異常錯誤，請切換到【'+$('#txtDatea').val().substring(0,3)+'】年度再作業。');
-					Unlock(1);
-            		return;
-				}
-				var t_days = 0;
-                var t_date1 = $('#txtDatea').val();
-                var t_date2 = $('#txtTrandate').val();
-                t_date1 = new Date(dec(t_date1.substr(0, 3)) + 1911, dec(t_date1.substring(4, 6)) - 1, dec(t_date1.substring(7, 9)));
-                t_date2 = new Date(dec(t_date2.substr(0, 3)) + 1911, dec(t_date2.substring(4, 6)) - 1, dec(t_date2.substring(7, 9)));
-                t_days = Math.abs(t_date2 - t_date1) / (1000 * 60 * 60 * 24) + 1;
-				if(t_days>60){
-					alert(q_getMsg('lblDatea')+'、'+q_getMsg('lblTrandate')+'相隔天數不可多於60天。');
-					Unlock(1);
-            		return;
-				}
 				//---------------------------------------------------------------
-				for(var i in trans.calctype){
-        			if(trans.calctype[i].noa == $('#cmbCalctype').val()){
-        				if(trans.calctype[i].isoutside){
-        					$('#txtPrice2').val(0);
-        				}else{
-        					$('#txtPrice3').val(0);
-        				}
-        			}
-        		}
         		sum();
 				//---------------------------------------------------------------
 				if(q_cur ==1){
@@ -545,7 +310,6 @@
 
 			function refresh(recno) {
 				_refresh(recno);
-				trans.refresh();
 			}
 
 			function readonly(t_para, empty) {
@@ -597,74 +361,11 @@
 			}
 
 			function btnDele() {
-				//if($.trim($('#txtOrdeno').val()).length>0){
-				//	alert('轉來的單據禁止刪除。');
-				//}else{
-					Lock(1,{opacity:0});
-	                var t_where =" where=^^ noa='"+ $('#txtNoa').val()+"'^^";
-	                q_gt('trans', t_where, 0, 0, 0, 'btnDele',r_accy);
-               // }
+				_btnDele();
 			}
 
 			function btnCancel() {
 				_btnCancel();
-			}
-            function FormatNumber(n) {
-            	var xx = "";
-            	if(n<0){
-            		n = Math.abs(n);
-            		xx = "-";
-            	}     		
-                n += "";
-                var arr = n.split(".");
-                var re = /(\d{1,3})(?=(\d{3})+$)/g;
-                return xx+arr[0].replace(re, "$1,") + (arr.length == 2 ? "." + arr[1] : "");
-            }
-			Number.prototype.round = function(arg) {
-			    return Math.round(this.mul( Math.pow(10,arg))).div( Math.pow(10,arg));
-			}
-			Number.prototype.div = function(arg) {
-			    return accDiv(this, arg);
-			}
-            function accDiv(arg1, arg2) {
-			    var t1 = 0, t2 = 0, r1, r2;
-			    try { t1 = arg1.toString().split(".")[1].length } catch (e) { }
-			    try { t2 = arg2.toString().split(".")[1].length } catch (e) { }
-			    with (Math) {
-			        r1 = Number(arg1.toString().replace(".", ""))
-			        r2 = Number(arg2.toString().replace(".", ""))
-			        return (r1 / r2) * pow(10, t2 - t1);
-			    }
-			}
-			Number.prototype.mul = function(arg) {
-			    return accMul(arg, this);
-			}
-			function accMul(arg1, arg2) {
-			    var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
-			    try { m += s1.split(".")[1].length } catch (e) { }
-			    try { m += s2.split(".")[1].length } catch (e) { }
-			    return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
-			}
-			Number.prototype.add = function(arg) {
-		   		return accAdd(arg, this);
-			}
-			function accAdd(arg1, arg2) {
-			    var r1, r2, m;
-			    try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-			    try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
-			    m = Math.pow(10, Math.max(r1, r2))
-			    return (Math.round(arg1 * m) + Math.round(arg2 * m)) / m
-			}
-			Number.prototype.sub = function(arg) {
-			    return accSub(this,arg);
-			}
-			function accSub(arg1, arg2) {
-			    var r1, r2, m, n;
-			    try { r1 = arg1.toString().split(".")[1].length } catch (e) { r1 = 0 }
-			    try { r2 = arg2.toString().split(".")[1].length } catch (e) { r2 = 0 }
-			    m = Math.pow(10, Math.max(r1, r2));
-			    n = (r1 >= r2) ? r1 : r2;
-			    return parseFloat(((Math.round(arg1 * m) - Math.round(arg2 * m)) / m).toFixed(n));
 			}
 		</script>
 		<style type="text/css">
@@ -855,6 +556,8 @@
 							<input id="txtDriverno"  type="text" style="float:left;width:50%;"/>
 							<input id="txtDriver"  type="text" style="float:left;width:50%;"/>
 						</td>
+						<td><span> </span><a id="lblCardno" class="lbl">板架</a></td>
+						<td><input id="txtCardno"  type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblCust" class="lbl btn"> </a></td>
@@ -919,15 +622,11 @@
 						<td><span> </span><a id="lblPton2" class="lbl"> </a></td>
 						<td><input id="txtPton2"  type="text" class="txt c1 num"/></td>
 						<td><span> </span>
-							<a id="lblPrice2" class="lbl"> </a>
-							<a id="lblPrice3" class="lbl"> </a>
+							<a class="lbl">公司車單價</a>
 						</td>
-						<td>
-							<input id="txtPrice2"  type="text" class="txt c1 num"/>
-							<input id="txtPrice3"  type="text" class="txt c1 num"/>
-						</td>
-						<td></td>
-                        <td></td>
+						<td><input id="txtPrice2"  type="text" class="txt c1 num"/></td>
+						<td><a id="lblPrice3" class="lbl"> </a></td>
+                        <td><input id="txtPrice3"  type="text" class="txt c1 num"/></td>
 						<td class="tdZ"></td>
 					</tr>
 					<tr  style="background-color:pink;">
@@ -954,8 +653,6 @@
 						<td colspan="2"><input id="txtPo"  type="text" class="txt c1"/></td>
 						<td><span> </span><a id="lblCustorde" class="lbl"> </a></td>
 						<td colspan="2"><input id="txtCustorde" type="text" class="txt c1"/></td>
-						<td><span> </span><a class="lbl">顆數</a></td>
-                        <td><input id="txtMount3"  type="text" class="txt c1 num"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblCaseno" class="lbl"> </a></td>
@@ -964,7 +661,7 @@
 							<input id="txtCaseno2"  type="text" style="float:left;width:50%;"/>
 						</td>
 						<td><span> </span><a id="lblCasetype" class="lbl"> </a></td>
-						<td><select id="cmbCasetype" class="txt c1"> </select></td>
+						<td><input id="txtCasetype" type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblBmiles" class="lbl"> </a></td>
@@ -983,26 +680,6 @@
 						<td><input id="txtStime"  type="text" class="txt c1"/></td>
 						<td><span> </span><a id="lblDtime" class="lbl"> </a></td>
 						<td><input id="txtDtime"  type="text" class="txt c1"/></td>
-					</tr>
-					<tr>
-						<td><span> </span><a id="lblSales" class="lbl btn"> </a></td>
-						<td colspan="2">
-							<input id="txtSalesno"  type="text" style="float:left; width:50%;"/>
-							<input id="txtSales"  type="text" style="float:left; width:50%;"/>
-						</td>
-						<td> </td>
-						<td><span> </span><a id="lblWeight2" class="lbl"> </a></td>
-						<td><input id="txtWeight2" type="text"  class="txt num c1"/></td>
-						<td><span> </span><a id="lblWeight3" class="lbl"> </a></td>
-						<td><input id="txtWeight3" type="text"  class="txt num c1"/></td>
-					</tr>
-					<tr>
-						<td><span> </span><a id="lblTgg" class="lbl btn"> </a></td>
-						<td><input id="txtTggno" type="text" class="txt c1"/></td>
-						<td colspan="2"><input id="txtTgg" class="txt c1"/></td>
-						<td><span> </span><a id="lblCardeal" class="lbl btn"> </a></td>
-						<td><input id="txtCardealno" type="text" class="txt c1"/></td>
-						<td colspan="2"><input id="txtCardeal" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblNoa" class="lbl"> </a></td>
