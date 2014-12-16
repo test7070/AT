@@ -551,8 +551,11 @@
                     alert('無' + q_getMsg('lblOrdeno') + '。');
                     return;
                 }
+                var t_carno = new Array(),t_addr = new Array();
                 for(var i = 0;i<q_bbsCount;i++){
-                	
+                	if($('#txtCarno').val().length>0 && !t_carno.indexOf($('#txtCarno').val())){
+                		t_carno.push($('#txtCarno').val());
+                	}
                 	
                 }
                 if (q_cur == 1) {
