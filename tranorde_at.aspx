@@ -33,7 +33,7 @@
             brwNowPage = 0;
             brwKey = 'noa';
             q_desc = 1;
-            brwCount2 = 5;
+            brwCount2 =25;
 
             aPop = new Array(['txtProductno', 'btnProduct', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
             , ['txtStraddrno__', 'btnStraddr__', 'addr', 'noa,addr', 'txtStraddrno__,txtStraddr__', 'addr_b2.aspx']
@@ -310,7 +310,7 @@
             }
             .dview {
                 float: left;
-                width: 150px;
+                width: 250px;
                 border-width: 0px;
             }
             .tview {
@@ -464,10 +464,12 @@
 					<tr>
 						<td style="width:20px; color:black;"><a id='vewChk'> </a></td>
 						<td style="width:100px; color:black;"><a id='vewDatea'> </a></td>
+						<td style="width:100px; color:black;"><a id='vewCust'> </a></td>
 					</tr>
 					<tr>
 						<td><input id="chkBrow.*" type="checkbox" style=''/></td>
 						<td id='datea' style="text-align: center;">~datea</td>
+						<td id='nick' style="text-align: center;">~nick</td>
 					</tr>
 				</table>
 			</div>
