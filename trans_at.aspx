@@ -18,7 +18,7 @@
 			var q_readonly = ['txtWeight3','txtMiles','txtTotal','txtTotal2','txtNoa','txtOrdeno','txtWorker','txtWorker2'];
 			var bbmNum = [['txtCustdiscount',10,0,1],['txtInmount',10,3,1],['txtPton',10,3,1],['txtPrice',10,3,1],['txtTotal',10,0,1]
 			,['txtOutmount',10,3,1],['txtPton2',10,3,1],['txtPrice2',10,3,1],['txtPrice3',10,3,1],['txtDiscount',10,3,1],['txtTotal2',10,0,1]
-			,['txtBmiles',10,0,1],['txtEmiles',10,0,1],['txtOverw',10,0,1],['txtOverh',10,0,1]];
+			,['txtOverw',10,0,1],['txtOverh',10,0,1]];
 			var bbmMask = [['txtDatea','999/99/99'],['txtTrandate','999/99/99'],['txtMon','999/99'],['txtMon2','999/99'],['txtLtime','99:99'],['txtStime','99:99'],['txtDtime','99:99']];
 			q_sqlCount = 6;
 			brwCount = 6;
@@ -34,9 +34,7 @@
 			,['txtTggno', 'lblTgg', 'tgg', 'noa,comp', 'txtTggno,txtTgg', 'tgg_b.aspx']
 			,['txtDriverno', 'lblDriver', 'driver', 'noa,namea', 'txtDriverno,txtDriver', 'driver_b.aspx']
 			,['txtUccno', 'lblUcc', 'ucc', 'noa,product', 'txtUccno,txtProduct', 'ucc_b.aspx']
-			,['txtSalesno', 'lblSales', 'sss', 'noa,namea', 'txtSalesno,txtSales', 'sss_b.aspx']
-			,['txtStraddrno', 'lblStraddr', 'addr', 'noa,addr,productno,product,salesno,sales', 'txtStraddrno,txtStraddr,txtUccno,txtProduct,txtSalesno,txtSales,txtStraddr', 'addr_b.aspx'] 
-			,['txtCardealno', 'lblCardeal', 'acomp', 'noa,acomp', 'txtCardealno,txtCardeal', 'acomp_b.aspx']
+			,['txtStraddrno', 'lblStraddr', 'addr', 'noa,addr,productno,product', 'txtStraddrno,txtStraddr,txtUccno,txtProduct,txtStraddr', 'addr_b.aspx'] 
 			);
 			
 			z_calctypes = new Array()
@@ -45,23 +43,34 @@
 			function sum() {
 				if(q_cur!=1 && q_cur!=2)
 					return;
+				var t_isoutside = true;
+				for(var i=0;i<z_calctypes.length;i++){
+					if($('#cmbCalctype').val()==z_calctypes[i].noa+z_calctypes[i].noq){
+						t_isoutside = z_calctypes[i].isoutside=="true"?true:false;
+						break;
+					}
+				}
+				if(q_float('txtOverw')!=0 && q_float('txtOverh')!=0)
+				   $('#txtDiscount').val(round((1-q_float('txtOverw')/100)*q_float('txtOverh')/100,3));
 				
 				t_mount = q_float('txtInmount')+q_float('txtPton');
 				t_mount2 = q_float('txtOutmount')+q_float('txtPton2');
 				
 			    if(q_float('txtCustdiscount')==0)
 			        $('#txtCustdiscount').val(100);
+		        if(q_float('txtCustdiscount')==0)
+			        $('#txtCustdiscount').val(100);
 		        var t_custdiscount = q_float('txtCustdiscount');
-				var t_mount = q_float('txtInmount').add(q_float('txtPton'));
-				var t_total = q_div(q_mul(t_mount.mul(q_float('txtPrice')),t_custdiscount),100).round(0);
-				$('#txtMount').val(FormatNumber(t_mount));
-				$('#txtTotal').val(FormatNumber(t_total));
-				var t_mount2 = q_float('txtOutmount').add(q_float('txtPton2'));
-				var t_total2 = t_mount2.mul(trans.isoutside?q_float('txtPrice3'):q_float('txtPrice2')).mul(q_float('txtDiscount')).round(0);
-				$('#txtMount2').val(FormatNumber(t_mount2));
-				$('#txtTotal2').val(FormatNumber(t_total2));
-				if(q_float('txtOverw')!=0 && q_float('txtOverh')!=0)
-				   $('#txtDiscount').val(round((1-q_float('txtOverw')/100)*q_float('txtOverh')/100,3));
+				var t_mount = q_add(q_float('txtInmount'),q_float('txtPton'));
+				
+				var t_total = round(q_div(q_mul(q_mul(t_mount,q_float('txtPrice')),t_custdiscount),100),0);
+				$('#txtMount').val(t_mount);
+				$('#txtTotal').val(t_total);
+				var t_mount2 = q_add(q_float('txtOutmount'),q_float('txtPton2'));
+				var t_total2 = t_isoutside?q_float('txtPrice3'):q_float('txtPrice2');
+				t_total2 = round(q_mul(q_mul(t_mount2,t_total2),q_float('txtDiscount')),0);
+				$('#txtMount2').val(t_mount2);
+				$('#txtTotal2').val(t_total2);
 			}
 			
 			$(document).ready(function() {
@@ -96,26 +105,13 @@
 				q_cmbParse("cmbCalctype",t_calctypes);
 				
 				$("#cmbCalctype").focus(function() {
-					var len = $("#cmbCalctype").children().length > 0 ? $("#cmbCalctype").children().length : 1;
-					$("#cmbCalctype").attr('size', len + "");
-					$(this).data('curValue',$(this).val());
+					sum();
+				}).focusout(function() {
+					sum();
+				}).click(function() {
+					sum();
 				}).blur(function() {
-					$("#cmbCalctype").attr('size', '1');
-				}).change(function(e){
-					trans.refresh();
-					trans.calctypeChange();
-				}).click(function(e){
-					if($(this).data('curValue')!=$(this).val()){
-						trans.refresh();
-						trans.calctypeChange();
-					}
-					$(this).data('curValue',$(this).val());
-				});
-				$("#cmbCarteamno").focus(function() {
-					var len = $("#cmbCarteamno").children().length > 0 ? $("#cmbCarteamno").children().length : 1;
-					$("#cmbCarteamno").attr('size', len + "");
-				}).blur(function() {
-					$("#cmbCarteamno").attr('size', '1');
+					sum();
 				});
 				
 				$('#txtInmount').change(function(){
@@ -128,6 +124,11 @@
 				$('#txtPrice').change(function(){
 					sum();
 				});
+				$('#txtCustdiscount').change(function(){
+                    sum();
+                });
+                
+				
 				$('#txtOutmount').change(function(){
 					sum();
 				});
@@ -140,27 +141,15 @@
 				$('#txtPrice3').change(function(){
 					sum();
 				});
-				$('#txtDiscount').change(function(){
-					sum();
-				});
-				$('#txtBmiles').change(function(){
-					sum();
-				});
-				$('#txtEmiles').change(function(){
-					sum();
-				});
-				$('#txtWeight2').change(function(){
-					sum();
-				});
-				$('#txtCustdiscount').change(function(){
-                    sum();
-                });
-                $('#txtOverw').change(function(){
+				$('#txtOverw').change(function(){
                     sum();
                 });
                 $('#txtOverh').change(function(){
                     sum();
                 });
+				$('#txtDiscount').change(function(){
+					sum();
+				});
                 
 				$("#txtStraddrno").focus(function() {
 					var input = document.getElementById ("txtStraddrno");
@@ -169,12 +158,8 @@
 		                input.selectionEnd = $(input).val().length;
 		            }
 				});
-				$('#txtOverw').change(function(e){sum();});
-				$('#txtOverh').change(function(e){sum();});
 				q_xchgForm();
 			}
-
-			
 
 			function q_boxClose(s2) {
 				var ret;
@@ -210,6 +195,21 @@
 						}
 						q_gt(q_name, q_content, q_sqlCount, 1, 0, '', r_accy);
 						break;
+					case 'getPrice':
+						var t_price = 0;
+						var t_price2 = 0;
+						var t_price3 = 0;
+						var as = _q_appendData("addrs", "", true);
+						if(as[0]!=undefined){
+							t_price = as[0].custprice;
+						 	t_price2 = as[0].driverprice;
+							t_price3 = as[0].driverprice2;
+						}
+						$('#txtPrice').val(t_price);
+						$('#txtPrice2').val(t_price2);
+						$('#txtPrice3').val(t_price3);
+						sum();
+						break;
 					case q_name:
 						if (q_cur == 4)
 							q_Seek_gtPost();
@@ -225,22 +225,12 @@
 							$('#txtDriverno').focus();
 						}
 						break;
-					case 'txtCustno':
-						if(q_cur==1 || q_cur==2){
-							if(!trans.isTrd){
-								$('#txtCaseuseno').val($('#txtCustno').val());
-								$('#txtCaseuse').val($('#txtComp').val());
-								if ($("#txtCustno").val().length > 0) {
-									$("#txtStraddrno").val($("#txtCustno").val()+'-');
-									$("#txtStraddr").val("");
-								}
-							}
-						}
-						break;
 					case 'txtStraddrno':
-						if(!trans.isTrd){
-							trans.priceChange();
-						}
+						var t_addrno = $.trim($('#txtStraddrno').val());
+						var t_date = $.trim($('#txtTrandate').val());
+						q_gt('addrs', "where=^^ noa='"+t_addrno+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
+						break;
+					default:
 						break;
 				}
 			}
@@ -255,6 +245,8 @@
 				_btnIns();
 				$('#txtNoa').val('AUTO');
 				$('#txtNoq').val('001');
+				$('#txtDatea').val(q_date());
+				$('#txtTrandate').val(q_date());
 				$('#txtDatea').focus();
 			}
 			function btnModi() {
@@ -285,14 +277,23 @@
             		return;
 				}
 				//---------------------------------------------------------------
+				var t_isoutside = true;
+				for(var i=0;i<z_calctypes.length;i++){
+					if($('#cmbCalctype').val()==z_calctypes[i].noa+z_calctypes[i].noq){
+						t_isoutside = z_calctypes[i].isoutside=="true"?true:false;
+						break;
+					}
+				}
+				if(t_isoutside)
+					$('#txtPrice2').val(0);
+				else
+					$('#txtPrice3').val(0);
         		sum();
 				//---------------------------------------------------------------
 				if(q_cur ==1){
                 	$('#txtWorker').val(r_name);
-                }else if(q_cur ==2){
-                	$('#txtWorker2').val(r_name);
                 }else{
-                	alert("error: btnok!");
+                	$('#txtWorker2').val(r_name);
                 }
 				var t_noa = trim($('#txtNoa').val());
 				var t_date = trim($('#txtDatea').val());
@@ -662,24 +663,8 @@
 						</td>
 						<td><span> </span><a id="lblCasetype" class="lbl"> </a></td>
 						<td><input id="txtCasetype" type="text" class="txt c1"/></td>
-					</tr>
-					<tr>
-						<td><span> </span><a id="lblBmiles" class="lbl"> </a></td>
-						<td><input id="txtBmiles"  type="text" class="txt c1 num"/></td>
-						<td><span> </span><a id="lblEmiles" class="lbl"> </a></td>
-						<td><input id="txtEmiles"  type="text" class="txt c1 num"/></td>
 						<td><span> </span><a id="lblMiles" class="lbl"> </a></td>
 						<td><input id="txtMiles"  type="text" class="txt c1 num"/></td>
-						<td><span> </span><a id="lblGps" class="lbl"> </a></td>
-						<td><input id="txtGps"  type="text" class="txt c1 num"/></td>
-					</tr>
-					<tr>
-						<td><span> </span><a id="lblLtime" class="lbl"> </a></td>
-						<td><input id="txtLtime"  type="text" class="txt c1"/></td>
-						<td><span> </span><a id="lblStime" class="lbl"> </a></td>
-						<td><input id="txtStime"  type="text" class="txt c1"/></td>
-						<td><span> </span><a id="lblDtime" class="lbl"> </a></td>
-						<td><input id="txtDtime"  type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblNoa" class="lbl"> </a></td>
@@ -687,10 +672,8 @@
 							<input id="txtNoa"  type="text" class="txt c1"/>
 							<input id="txtNoq"  type="text" style="display:none;"/>
 						</td>
-						<td><span> </span><a id="lblOrdeno" class="lbl"> </a></td>
+						<td><span> </span><a class="lbl">轉來</a></td>
 						<td><input id="txtOrdeno"  type="text" class="txt c1"/></td>
-					</tr>
-					<tr>
 						<td><span> </span><a id="lblWorker" class="lbl"> </a></td>
 						<td><input id="txtWorker" type="text" class="txt c1"/></td>
 						<td><span> </span><a id="lblWorker2" class="lbl"> </a></td>

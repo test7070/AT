@@ -478,7 +478,11 @@
                             tranorde.refresh();
                         } else {
                         }
+                        genTrans();
                     	break;
+                	case 'qtxt.query.transvcce_genTrans':
+                		Unlock(1);
+                		break;
                     default:
                         break;
                 }
@@ -511,12 +515,22 @@
             function q_stPost() {
                 if (!(q_cur == 1 || q_cur == 2))
                     return false;
+                Lock(1, {opacity : 0});
                 var t_ordeno = $.trim($('#txtOrdeno').val());
                 if (t_ordeno.length > 0) {
-                	Lock(1, {opacity : 0});
+                	
                     q_func('qtxt.query.transvcce_stPost', 'transvcce.txt,orde_vcce,false;;;' + encodeURI(t_ordeno));
+                }else{
+                	genTrans();
                 }
-                Unlock(1);
+            }
+            function genTrans(){
+            	var t_key = q_getPara('sys.key_transvcce');
+                var t_noa = $.trim($('#txtNoa').val());
+                if (t_noa.length > 0) {
+                	Lock(1, {opacity : 0});
+                    q_func('qtxt.query.transvcce_genTrans', 'transvcce.txt,transvcce_trans,'+r_name+';' + encodeURI(t_key)+';' + encodeURI(t_noa));
+                }
             }
 
             function btnOk() {
@@ -536,6 +550,10 @@
                 if ($('#txtDatea').val().length == 0) {
                     alert('無' + q_getMsg('lblOrdeno') + '。');
                     return;
+                }
+                for(var i = 0;i<q_bbsCount;i++){
+                	
+                	
                 }
                 if (q_cur == 1) {
                     $('#txtWorker').val(r_name);
@@ -665,6 +683,13 @@
 
             function refresh(recno) {
                 _refresh(recno);
+                for (var i = 0; i < q_bbsCount; i++) {
+                    $('#chkSendcommandresult_' + i).attr('disabled', 'disabled');
+                    if (q_cur == 1 || q_cur == 2)
+                        $('#combCaddr_' + i).removeAttr('disabled');
+                    else
+                        $('#combCaddr_' + i).attr('disabled', 'disabled');
+                }
             }
 
             function readonly(t_para, empty) {
@@ -675,13 +700,6 @@
                 } else {	
                     $('#txtDatea').datepicker();
                     $('#txtTrandate').datepicker();
-                }
-                for (var i = 0; i < q_bbsCount; i++) {
-                    $('#chkSendcommandresult_' + i).attr('disabled', 'disabled');
-                    if (q_cur == 1 || q_cur == 2)
-                        $('#combCaddr_' + i).removeAttr('disabled');
-                    else
-                        $('#combCaddr_' + i).attr('disabled', 'disabled');
                 }
             }
 
