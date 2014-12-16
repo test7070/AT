@@ -553,11 +553,16 @@
                 }
                 var t_carno = new Array(),t_addr = new Array();
                 for(var i = 0;i<q_bbsCount;i++){
-                	if($('#txtCarno').val().length>0 && !t_carno.indexOf($('#txtCarno').val())){
-                		t_carno.push($('#txtCarno').val());
+                	if($('#txtCarno_'+i).val().length>0 && t_carno.indexOf($('#txtCarno_'+i).val())<0){
+                		t_carno.push($('#txtCarno_'+i).val());
                 	}
-                	
+                	if($('#txtAddr_'+i).val().length>0 && t_addr.indexOf($('#txtAddr_'+i).val())<0){
+                		t_addr.push($('#txtAddr_'+i).val());
+                	}
                 }
+                $('#txtCarno').val(t_carno.toString());
+                $('#txtMemo3').val(t_addr.toString());
+                
                 if (q_cur == 1) {
                     $('#txtWorker').val(r_name);
                 } else if (q_cur == 2) {
