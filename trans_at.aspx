@@ -58,8 +58,6 @@
 				
 			    if(q_float('txtCustdiscount')==0)
 			        $('#txtCustdiscount').val(100);
-		        if(q_float('txtCustdiscount')==0)
-			        $('#txtCustdiscount').val(100);
 		        var t_custdiscount = q_float('txtCustdiscount');
 				var t_mount = q_add(q_float('txtInmount'),q_float('txtPton'));
 				
