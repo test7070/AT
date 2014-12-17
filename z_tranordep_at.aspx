@@ -23,10 +23,30 @@
             function q_gfPost() {
 				$('#q_report').q_report({
 					fileName : 'z_tranordep_at',
-					options : [{
-						type : '6', //[1]
-						name : 'noa'
-					}]
+					options : [{/*1-[1],[2]*/
+                        type : '1',
+                        name : 'strdate'
+                    },{/*2-[3],[4]*/
+                        type : '1',
+                        name : 'dldate'
+                    }, {/*3-[5],[6]*/
+                        type : '2',
+                        name : 'cust',
+                        dbf : 'cust',
+                        index : 'noa,comp',
+                        src : 'cust_b.aspx'
+                    }, {/*4-[7]*/
+                        type : '6',
+                        name : 'contract'
+                    }, {/*5-[8]*/
+                        type : '8',
+                        name : 'stype',
+                        value : q_getMsg('stype').split('^')
+                    }, {/*6-[9]*/
+                        type : '5',
+                        name : 'enda',
+                        value : (' @全部,Y@結案,N@未結案').split(',')
+                    }]
 				});
 				q_popAssign();
 	            var t_para = new Array();
@@ -34,8 +54,12 @@
 	            	t_para = JSON.parse(q_getId()[3]);
 	            	$('#txtNoa').val(t_para.noa);
 	            }catch(e){
+	            	
 	            }    
-                
+	            $('#txtStrdate1').mask('999/99/99');
+                $('#txtStrdate1').datepicker();
+                $('#txtStrdate2').mask('999/99/99');
+                $('#txtStrdate2').datepicker();
             }
 
 			function q_boxClose(s2) {
