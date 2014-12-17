@@ -590,8 +590,8 @@
                 tranorde.paste();
 
                 $('#txtNoa').val('AUTO');
-                $('#txtDatea').focus();
-
+                $('#txtDatea').val(q_date());
+				$('#txtTrandate').focus();
                 var t_ordeno = tranorde.data[tranorde.curIndex].noa;
                 if (t_ordeno.length > 0) {
                 	Lock(1, {opacity : 0});
