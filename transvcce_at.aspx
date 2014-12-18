@@ -1068,7 +1068,10 @@
 						<input id="txtTel.*" type="text" style="width: 95%;"/>
 					</td>
 					<td><input id="txtMount.*" type="text" style="width: 95%;text-align: right;"/></td>
-					<td><input id="txtCaseno.*" type="text" style="width: 95%;"/></td>
+					<td>
+						<input id="txtCaseno.*" type="text" style="width: 95%;"/>
+						<input id="txtCaseno2.*" type="text" style="width: 95%;"/>
+					</td>
 					<td><input id="txtCarpno.*" type="text" style="width: 95%;"/></td>
 					<td>
 						<input id="txtAddrno.*" type="text" style="width: 70%;"/>
