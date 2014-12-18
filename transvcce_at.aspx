@@ -454,7 +454,7 @@
                             $('#txtComp').val(as[0].comp);
                             $('#txtNick').val(as[0].nick);
                             
-                            var t_addrno = JSON.parse(as[0].straddrno);
+                    var t_addrno = JSON.parse(as[0].straddrno);
                             var t_addr = JSON.parse(as[0].straddr);                     
                             var t_caseno = JSON.parse(as[0].caseno);
                             for(var i=0;i<t_addrno.length;i++){
@@ -491,7 +491,13 @@
             function q_popPost(id) {
                 switch (id) {
                     case 'txtCarno_':
-                        tranorde.paste2($('#txtOrdeno').val(), b_seq);
+                    	var t_ordeno = $('#txtOrdeno').val();
+                    	var t_driverno = $('#txtDriverno_'+b_seq).val();
+                    	if(t_driverno.length>0){
+                			q_gt('driver', "where=^^ noa='"+t_driverno+"'^^", 0, 0, 0, JSON.stringify({action:'getDriverTel',n:b_seq,ordeno:t_ordeno}));
+                    	}
+                        else
+                        	tranorde.paste2($('#txtOrdeno').val(), b_seq);       
                         break;
                     case 'txtDriverno_':
                         tranorde.paste2($('#txtOrdeno').val(), b_seq);
@@ -503,11 +509,28 @@
 
             function q_gtPost(t_name) {
                 switch (t_name) {
+                	case 'getDriverTel':
+                		break;
                     case q_name:
                         if (q_cur == 4)
                             q_Seek_gtPost();
                         break;
                     default:
+                    	try{
+                    		t_para = JSON.parse(t_name);
+                    		if(t_para.action=='getDriverTel'){
+                    			var ordeno = t_para.ordeno;
+                    			var n = t_para.n;
+								var as = _q_appendData("driver", "", true);
+								if(as[0]!=undefined){
+									$('#txtTel_'+n).val(as[0].tel);
+								}else{
+									$('#txtTel_'+n).val('');
+								}  
+								tranorde.paste2(ordeno, n);                  			
+                    		}
+                    	}catch(e){
+                    	}
                         break;
                 }
             }
@@ -1045,6 +1068,7 @@
 					<td align="center" style="width:90px;"><a>車牌</a></td>
 					<td align="center" style="width:150px;"><a>司機/電話</a></td>
 					<td align="center" style="width:80px;"><a>數量</a></td>
+					<td align="center" style="width:60px;"><a>指定</a></td>
 					<td align="center" style="width:150px;"><a>櫃號</a></td>
 					<td align="center" style="width:80px;"><a>板架</a></td>
 					<td align="center" style="width:150px;"><a>起迄地點</a></td>
@@ -1068,6 +1092,7 @@
 						<input id="txtTel.*" type="text" style="width: 95%;"/>
 					</td>
 					<td><input id="txtMount.*" type="text" style="width: 95%;text-align: right;"/></td>
+					<td align="center" ><input id="chkAssign.*" type="checkbox" /></td>
 					<td>
 						<input id="txtCaseno.*" type="text" style="width: 95%;"/>
 						<input id="txtCaseno2.*" type="text" style="width: 95%;"/>
