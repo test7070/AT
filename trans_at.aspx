@@ -94,13 +94,15 @@
 				for(var i=0;i<z_carteam.length;i++){
 					t_carteam += (t_carteam.length>0?',':'') + z_carteam[i].noa + '@'+ z_carteam[i].team ;
 				}
-				q_cmbParse("cmbCarteamno",t_carteam);
+				if(t_carteam.length>0)
+					q_cmbParse("cmbCarteamno",t_carteam);
 				
 				var t_calctypes = '';
 				for(var i=0;i<z_calctypes.length;i++){
 					t_calctypes += (t_calctypes.length>0?',':'') + z_calctypes[i].noa + z_calctypes[i].noq + '@'+ z_calctypes[i].typea ;
 				}
-				q_cmbParse("cmbCalctype",t_calctypes);
+				if(t_calctypes.length>0)
+					q_cmbParse("cmbCalctype",t_calctypes);
 				
 				$("#cmbCalctype").focus(function() {
 					sum();
