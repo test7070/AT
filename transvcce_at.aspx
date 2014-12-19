@@ -357,7 +357,7 @@
                 $('#btnOk').attr('value', $('#btnOk').attr('value') + "(F9)");
                 q_mask(bbmMask);
                 q_cmbParse("combStype", ' @全部,' + q_getMsg('stype').replace(/\^/g, ','));
-                q_cmbParse("cmbSaction",' ,領,送,收,交,移','s');
+                q_cmbParse("cmbSaction",' ,領,送,收,交,移,整趟','s');
               	
               	$('#textCustno').bind('contextmenu', function(e) {
 					/*滑鼠右鍵*/

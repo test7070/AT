@@ -89,6 +89,7 @@
 				$('#btnIns').val($('#btnIns').val() + "(F8)");
 				$('#btnOk').val($('#btnOk').val() + "(F9)");
 				q_mask(bbmMask);
+				q_cmbParse("cmbCstype",' ,領,送,收,交,移,整趟');
 				
 				var t_carteam= '';
 				for(var i=0;i<z_carteam.length;i++){
@@ -112,6 +113,28 @@
 					sum();
 				}).blur(function() {
 					sum();
+				});
+				
+				$("#cmbCstype").focus(function() {
+					var t_addrno = $.trim($('#txtStraddrno').val());
+					var t_date = $.trim($('#txtTrandate').val());
+					var t_saction = $.trim($('#cmbCstype').val());
+					q_gt('addrs', "where=^^ noa='"+t_addrno+"' and custunit='"+t_saction+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
+				}).focusout(function() {
+					var t_addrno = $.trim($('#txtStraddrno').val());
+					var t_date = $.trim($('#txtTrandate').val());
+					var t_saction = $.trim($('#cmbCstype').val());
+					q_gt('addrs', "where=^^ noa='"+t_addrno+"' and custunit='"+t_saction+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
+				}).click(function() {
+					var t_addrno = $.trim($('#txtStraddrno').val());
+					var t_date = $.trim($('#txtTrandate').val());
+					var t_saction = $.trim($('#cmbCstype').val());
+					q_gt('addrs', "where=^^ noa='"+t_addrno+"' and custunit='"+t_saction+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
+				}).blur(function() {
+					var t_addrno = $.trim($('#txtStraddrno').val());
+					var t_date = $.trim($('#txtTrandate').val());
+					var t_saction = $.trim($('#cmbCstype').val());
+					q_gt('addrs', "where=^^ noa='"+t_addrno+"' and custunit='"+t_saction+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
 				});
 				
 				$('#txtInmount').change(function(){
@@ -228,7 +251,8 @@
 					case 'txtStraddrno':
 						var t_addrno = $.trim($('#txtStraddrno').val());
 						var t_date = $.trim($('#txtTrandate').val());
-						q_gt('addrs', "where=^^ noa='"+t_addrno+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
+						var t_saction = $.trim($('#cmbCstype').val());
+						q_gt('addrs', "where=^^ noa='"+t_addrno+"' and custunit='"+t_saction+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
 						break;
 					default:
 						break;
@@ -541,24 +565,31 @@
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblDatea" class="lbl"> </a></td>
-						<td><input id="txtDatea"  type="text" class="txt c1"/></td>
+						<td>
+							<input id="txtDatea"  type="text" class="txt c1"/>
+							<input id="txtMon"  type="text" style="display:none;"/>
+							<input id="txtMon2"  type="text" style="display:none;"/>
+						</td>
 						<td><span> </span><a id="lblTrandate" class="lbl"> </a></td>
 						<td><input id="txtTrandate"  type="text" class="txt c1"/></td>
-						<td style="display:none;"><span> </span><a id="lblMon" class="lbl"> </a></td>
-						<td style="display:none;"><input id="txtMon"  type="text" class="txt c1"/></td>
-						<td style="display:none;"><span> </span><a id="lblMon2" class="lbl"> </a></td>
-						<td style="display:none;"><input id="txtMon2"  type="text" class="txt c1"/></td>
+						<td><span> </span><a id="lblCalctype" class="lbl"> </a></td>
+						<td><select id="cmbCalctype" class="txt c1"> </select></td>
+						<td><span> </span><a id="lblCarteam" class="lbl"> </a></td>
+						<td>
+							<select id="cmbCarteamno" class="txt c1"> </select>
+							<input id="txtCarteam" type="text" style="display:none;"/>
+						</td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblCarno" class="lbl btn"> </a></td>
 						<td><input id="txtCarno"  type="text" class="txt c1"/></td>
+						<td><span> </span><a id="lblCardno" class="lbl">板架</a></td>
+						<td><input id="txtCardno"  type="text" class="txt c1"/></td>
 						<td><span> </span><a id="lblDriver" class="lbl btn"> </a></td>
 						<td colspan="2">
 							<input id="txtDriverno"  type="text" style="float:left;width:50%;"/>
 							<input id="txtDriver"  type="text" style="float:left;width:50%;"/>
 						</td>
-						<td><span> </span><a id="lblCardno" class="lbl">板架</a></td>
-						<td><input id="txtCardno"  type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblCust" class="lbl btn"> </a></td>
@@ -567,13 +598,8 @@
 							<input id="txtComp"  type="text" style="float:left;width:70%;"/>
 							<input id="txtNick" type="text" style="display:none;"/>
 						</td>
-						<td><span> </span><a id="lblCalctype" class="lbl"> </a></td>
-						<td><select id="cmbCalctype" class="txt c1"> </select></td>
-						<td><span> </span><a id="lblCarteam" class="lbl"> </a></td>
-						<td>
-							<select id="cmbCarteamno" class="txt c1"> </select>
-							<input id="txtCarteam" type="text" style="display:none;"/>
-						</td>
+						<td><span> </span><a class="lbl">作業</a></td>
+						<td><select id="cmbCstype" class="txt c1"></select></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblStraddr" class="lbl btn"> </a></td>

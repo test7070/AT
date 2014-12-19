@@ -50,16 +50,14 @@
 				q_getFormat();
 				q_mask(bbmMask);
 				bbsMask = [['txtDatea', r_picd]];
+				q_cmbParse("cmbCustunit",' ,領,送,收,交,移,整趟','s');
+				
 				$('#txtNoa').change(function(e) {
 					$(this).val($.trim($(this).val()).toUpperCase());
 					if ($(this).val().length > 0) {
 						t_where = "where=^^ noa='" + $(this).val() + "'^^";
 						q_gt('addr', t_where, 0, 0, 0, "checkAddrno_change", r_accy);
 					}
-				});
-				$('#btnPrint').bind('contextmenu', function(e) {
-					e.preventDefault();
-					q_box("z_addr2.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";;" + r_accy, 'z_addr2', "95%", "95%", q_getMsg("popPrint"));
 				});
 			}
 			function q_funcPost(t_func, result) {
@@ -150,11 +148,7 @@
 				$('#txtAddr').focus();
 			}
 			function btnPrint() {
-				if (r_rank > 8)
-					q_box("z_addr.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";;" + r_accy, 'z_addr', "95%", "95%", q_getMsg("popPrint"));
-				else
-					q_gt('authority', "where=^^ a.noa='z_addr' and a.sssno='" + r_userno + "'^^", 0, 0, 0, "z_addr", r_accy);
-				
+				q_box("z_addr_at.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";;" + r_accy, 'z_addr', "95%", "95%", q_getMsg("popPrint"));
 			}
 			function wrServer(key_value) {
 				var i;
@@ -407,6 +401,7 @@
                     <input class="btn"  id="btnPlus" type="button" value='+' style="font-weight: bold;"  />
   	                </td>
                     <td align="center" style="width:80px;"><a id='lblDatea_s'> </a></td>
+                    <td align="center" style="width:60px;">作業</td>
                     <td align="center" style="width:80px;"><a id='lblCustprice_s'> </a></td>
                     <td align="center" style="width:80px;"><a id='lblDriverprice_s'> </a></td>
                     <td align="center" style="width:80px;"><a id='lblDriverprice2_s'> </a></td>
@@ -417,9 +412,8 @@
                     <input class="btn"  id="btnMinus.*" type="button" value='-' style=" font-weight: bold;" />
                     <input id="txtNoq.*" type="text" style="display: none;" />
                     </td>
-                    <td >
-                    <input type="text" id="txtDatea.*" style="width:95%;" />
-                    </td>
+                    <td ><input type="text" id="txtDatea.*" style="width:95%;" /></td>
+                    <td ><select id="cmbCustunit.*" style="width:95%;"></select></td>
                     <td >
                     <input type="text" id="txtCustprice.*" style="width:95%;text-align:right;" />
                     </td>
