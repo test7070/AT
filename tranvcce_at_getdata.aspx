@@ -5,6 +5,7 @@
         {
             public int nstr;
             public int nend;
+            public string stype;
             public string bdate;
             public string edate;
         }
@@ -13,6 +14,7 @@
             public long recno;
             public int seq;
             public bool isdel;
+            public string stype,ucr,por,pod,product;
             public string ordeaccy,ordeno,ordenoq;
             public string datea;
             public string custno,cust;
@@ -50,7 +52,7 @@
 	                ,carno2,cardno2,msg2
 	                ,carno3,cardno3,msg3
 	                ,carno4,cardno4,msg4
-	                ,memo
+	                ,memo,stype,ucr,por,pod,product
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -58,6 +60,7 @@
 	                where ISNULL(isdel,0)=0
                 )a
                 where a.recno between @nstr and @nend
+                and (len(@stype)=0 or isnull(a.stype,'')=@stype)
                 and (len(@bdate)=0 or isnull(a.datea,'')>=@bdate)
                 and (len(@edate)=0 or isnull(a.datea,'')<=@edate)
                 order by a.recno";
@@ -65,6 +68,7 @@
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                 cmd.Parameters.AddWithValue("@nstr", itemIn.nstr);
                 cmd.Parameters.AddWithValue("@nend", itemIn.nend);
+                cmd.Parameters.AddWithValue("@stype", itemIn.stype);
                 cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
                 cmd.Parameters.AddWithValue("@edate", itemIn.edate);
                 adapter.SelectCommand = cmd;
@@ -104,6 +108,11 @@
                 tmp.cardno4 = System.DBNull.Value.Equals(r.ItemArray[24]) ? "" : (System.String)r.ItemArray[24];
                 tmp.msg4 = System.DBNull.Value.Equals(r.ItemArray[25]) ? "" : (System.String)r.ItemArray[25];
                 tmp.memo = System.DBNull.Value.Equals(r.ItemArray[26]) ? "" : (System.String)r.ItemArray[26];
+                tmp.stype = System.DBNull.Value.Equals(r.ItemArray[27]) ? "" : (System.String)r.ItemArray[27];
+                tmp.ucr = System.DBNull.Value.Equals(r.ItemArray[28]) ? "" : (System.String)r.ItemArray[28];
+                tmp.por = System.DBNull.Value.Equals(r.ItemArray[29]) ? "" : (System.String)r.ItemArray[29];
+                tmp.pod = System.DBNull.Value.Equals(r.ItemArray[30]) ? "" : (System.String)r.ItemArray[30];
+                tmp.product = System.DBNull.Value.Equals(r.ItemArray[31]) ? "" : (System.String)r.ItemArray[31];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));

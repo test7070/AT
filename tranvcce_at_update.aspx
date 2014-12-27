@@ -5,6 +5,7 @@
             public long recno;
             public int seq;
             public bool isdel;
+            public string stype,ucr,por,pod,product;
             public string ordeaccy,ordeno,ordenoq;
             public string datea;
             public string custno,cust;

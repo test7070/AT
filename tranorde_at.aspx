@@ -68,9 +68,11 @@
                 	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'quat_orde_at', "95%", "95%", q_getMsg('popTranquat'));
                 });
             }
-            
             function q_funcPost(t_func, result) {
-                switch(t_func) {            	
+                switch(t_func) { 
+                	case 'qtxt.query.tranorde_tranvcce':
+                		Unlock(1);
+                		break;           	
                     default:
                         break;
                 }
@@ -100,8 +102,15 @@
             }
 
             function q_stPost() {
-                if (!(q_cur == 1 || q_cur == 2))
-                    return false;
+                if (q_cur == 1 || q_cur == 2){
+                	Lock(1,{opacity:0});
+                	var t_noa = $('#txtNoa').val();
+            		q_func('qtxt.query.tranorde_tranvcce', 'tranorde_at.txt,tranorde_tranvcce,' + encodeURI(t_noa));
+                }else{
+                	Lock(1,{opacity:0});
+                	var t_noa = $('body').data('deleteno');
+                	q_func('qtxt.query.tranorde_tranvcce', 'tranorde_at.txt,tranorde_tranvcce,' + encodeURI(t_noa));
+                }
             }
 
             function q_boxClose(s2) {
@@ -296,7 +305,7 @@
             }
 
             function btnDele() {
-            	
+            	$('body').data('deleteno',$('#txtNoa').val());
                 _btnDele();
             }
 
@@ -474,7 +483,7 @@
 					<tr>
 						<td><input id="chkBrow.*" type="checkbox" style=''/></td>
 						<td id='datea' style="text-align: center;">~datea</td>
-						<td id='nick' style="text-align: center;">~nick</td>
+						<td id='comp,4' style="text-align: center;">~comp,4</td>
 					</tr>
 				</table>
 			</div>

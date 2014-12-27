@@ -14,6 +14,7 @@
 		<script src="css/jquery/ui/jquery.ui.widget.js"></script>
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"></script>
 		<script type="text/javascript">
+			var q_name = 'tranvcce';
 			var _pageCount = 20; //一頁幾筆資料
             var _curData = new Array();
 			
@@ -35,9 +36,20 @@
             };
             
             $(document).ready(function() {
-				init(_pageCount);
-				$('#btnRefresh').click(); 
+            	_q_boxClose();
+                q_getId();
+                q_gf('', 'tranvcce');
+				
+				$('#btnAuthority').click(function () {
+                    btnAuthority(q_name);
+                });
             });
+            function q_gfPost() {
+                q_langShow();
+                init(_pageCount);
+				$('#btnRefresh').click(); 
+            }
+
 			function init(tCount){
 				for(var i=0;i<tCount;i++){
 					$('.tData').append($('.tSchema').find('tr').eq(0).clone().data('key',i).data('data',''));	
@@ -53,6 +65,7 @@
 								return;
 							}
 							if($(this).hasClass('edit')){
+								$('#btnRefresh').removeClass('edit');
 								$(this).removeClass('edit');
 								$(this).parent().prevAll().removeClass('edit');
 								$(this).parent().nextAll().removeClass('edit');
@@ -67,6 +80,7 @@
 								}
 								updateData(n);
 							}else{
+								$('#btnRefresh').addClass('edit');
 								//跳下一格
 					            var doc = document;
 					            var element = $('#txtDatea_'+n)[0];
@@ -154,17 +168,15 @@
 				
 				//-------REFRESH
 				$('#btnRefresh').click(function(e){
-					var curPage = 1;
-					try{
-						curPage = parseInt($('#txtCurpage').val());
-					}catch(e){}
-					curPage = isNaN(curPage)?1:curPage;
-					$('#txtCurpage').val(curPage);
-					var nstr = (curPage-1) * _pageCount + 1;
-					var nend = curPage * _pageCount;
+					if($(this).hasClass('edit')){
+						alert('修改中，資料無法刷新');
+						return;
+					}
+					var stype = $.trim($('#cmbStype').val());
 					var bdate = $.trim($('#txtBdate').text());
 					var edate = $.trim($('#txtEdate').text());
-					loadCount(nstr,nend,bdate,edate);
+					Lock(1,{opacity:0});
+					loadCount(stype,bdate,edate);
 				});
 				$('#txtCurpage').change(function(e){
 					$('#btnRefresh').click();
@@ -304,16 +316,15 @@
 					$('#btnSel_'+i).removeAttr('disabled');
 				}
 			}
-			function loadCount(nstr,nend,bdate,edate){
+			function loadCount(stype,bdate,edate){
 				$.ajax({
-					nstr:nstr,
-					nend:nend,
+					stype:stype,
 					bdate:bdate,
 					edate:edate,
 					totCount : 0,
                     url: 'tranvcce_at_getcount.aspx',
                     type: 'POST',
-                    data: JSON.stringify({bdate:bdate,edate:edate}),
+                    data: JSON.stringify({stype:stype,bdate:bdate,edate:edate}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -325,9 +336,14 @@
                     },
                     complete: function(){
                     	var totPage = _pageCount>0?Math.floor((this.totCount-1)/_pageCount)+1:0;
-                    	$('#txtCurpage').val(totPage==0?0:1);
                     	$('#txtTotpage').val(totPage);
-                    	loadData(this.nstr,this.nend,this.bdate,this.edate);                  
+                    	curPage = parseInt($('#txtCurpage').val());
+						curPage = isNaN(curPage)?1:curPage;
+						curPage = curPage<=0 || curPage>totPage ?1:curPage;
+						$('#txtCurpage').val(curPage);
+						var nstr = (curPage-1) * _pageCount + 1;
+						var nend = curPage * _pageCount;
+                    	loadData(nstr,nend,this.stype,this.bdate,this.edate);                  
                     },
                     error: function(jqXHR, exception) {
                         var errmsg = this.url+'資料讀取異常。\n';
@@ -349,12 +365,11 @@
                     }
                 });	
 			}
-			function loadData(nstr,nend,bdate,edate){
-				Lock(1,{opacity:0});
+			function loadData(nstr,nend,stype,bdate,edate){
 				$.ajax({
                     url: 'tranvcce_at_getdata.aspx',
                     type: 'POST',
-                    data: JSON.stringify({nstr:nstr,nend:nend,bdate:bdate,edate:edate}),
+                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,bdate:bdate,edate:edate}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -474,7 +489,15 @@
 		</style>
 	</head>
 	<body>
-		<div style="min-width:1000px;width: 1500px;height:40px;float:none;">
+		<div style="min-width:1500px;width: 1500px;height:40px;float:none;">
+			<div id='q_menu'></div>
+			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
+			<select id="cmbStype" style="float:left;width:80px;text-align: center;">
+				<option value="">全部</option>
+				<option value="進口">進口</option>
+				<option value="出口">出口</option>
+			</select>
+			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
 			<span style="display:block;width:50px;float:left;text-align: center;">日期：</span>
 			<a id="txtBdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
 			<span style="display:block;width:30px;float:left;text-align: center;">~</span>
@@ -487,17 +510,24 @@
 			<input type="text" id="txtCurpage" style="float:left;width:50px;text-align: center;"/>
 			<span style="display:block;width:30px;float:left;text-align: center;">/</span>
 			<input type="text" id="txtTotpage" style="float:left;width:50px;text-align: center;color:green;" readonly="readonly"/>
+			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
+			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:1990px;width: 1990px;overflow-y:scroll;">
+		<div style="min-width:2380px;width: 2380px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><a>單別</a></td>	
 					<td align="center" style="width:120px; max-width:120px; color:black;"><a>訂單號碼</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>日期</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>貨主</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>起迄編號</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>起迄地點</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a title="Place of Receipt">領櫃地</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a title="Place of Delivery">交櫃地</a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a>追蹤</a></td>		
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>船公司</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>品名</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號一</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號二</a></td>
@@ -513,16 +543,21 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:1990px;width: 1990px;overflow-y:scroll;">
+		<div style="display:none;min-width:2380px;width: 2380px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><a id="txtStype" class="readonly">單別</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtOrdeno" class="readonly">訂單號碼</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtDatea" >日期</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCust" class="readonly">貨主</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtStraddrno">起迄編號</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtStraddr">起迄地點</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtPor" class="readonly">領櫃地</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtPod" class="readonly">交櫃地</a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly">追蹤</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtVocc" class="readonly">船公司</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtProduct" class="readonly">品名</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCasetype">規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1">櫃號一</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno2">櫃號二</a></td>
@@ -538,7 +573,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:1990px;width: 1990px;height:800px;overflow-y:scroll;">
+		<div style="min-width:2380px;width: 2380px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>
