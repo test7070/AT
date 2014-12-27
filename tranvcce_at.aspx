@@ -36,7 +36,7 @@
             
             $(document).ready(function() {
 				init(_pageCount);
-				loadCount();
+				$('#btnRefresh').click(); 
             });
 			function init(tCount){
 				for(var i=0;i<tCount;i++){
@@ -45,9 +45,13 @@
 						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="button"]').eq(0);
 						obj.attr('id',obj.attr('id')+'_'+i).attr('value',i+1);
 						obj.click(function(e){	
-							var n = $(this).attr('id').replace(/^.*_(\d+)$/,'$1');
+							var n = parseInt($(this).attr('id').replace(/^.*_(\d+)$/,'$1'));
 							if($(this).parent().parent().data('data').length == 0)
 								return;
+							if(_curData[n].isdel){
+								alert('資料已被刪除，請重新整理頁面。');
+								return;
+							}
 							if($(this).hasClass('edit')){
 								$(this).removeClass('edit');
 								$(this).parent().prevAll().removeClass('edit');
@@ -153,15 +157,14 @@
 					var curPage = 1;
 					try{
 						curPage = parseInt($('#txtCurpage').val());
-					}catch(e){
-						
-					}
+					}catch(e){}
+					curPage = isNaN(curPage)?1:curPage;
 					$('#txtCurpage').val(curPage);
 					var nstr = (curPage-1) * _pageCount + 1;
 					var nend = curPage * _pageCount;
-					var bdate = $('#txtBdate').text();
-					var edate = $('#txtEdate').text();
-					loadData(nstr,nend,bdate,edate);
+					var bdate = $.trim($('#txtBdate').text());
+					var edate = $.trim($('#txtEdate').text());
+					loadCount(nstr,nend,bdate,edate);
 				});
 				$('#txtCurpage').change(function(e){
 					$('#btnRefresh').click();
@@ -187,7 +190,7 @@
 					try{
 						curPage = parseInt($('#txtCurpage').val());
 					}catch(e){}
-					curPage = isNaN(curPage)?0:curPage;
+					curPage = isNaN(curPage)?1:curPage;
 					var totPage = 0;
 					try{
 						totPage = parseInt($('#txtTotpage').val());
@@ -301,11 +304,16 @@
 					$('#btnSel_'+i).removeAttr('disabled');
 				}
 			}
-			function loadCount(){
+			function loadCount(nstr,nend,bdate,edate){
 				$.ajax({
+					nstr:nstr,
+					nend:nend,
+					bdate:bdate,
+					edate:edate,
 					totCount : 0,
                     url: 'tranvcce_at_getcount.aspx',
                     type: 'POST',
+                    data: JSON.stringify({bdate:bdate,edate:edate}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -319,10 +327,10 @@
                     	var totPage = _pageCount>0?Math.floor((this.totCount-1)/_pageCount)+1:0;
                     	$('#txtCurpage').val(totPage==0?0:1);
                     	$('#txtTotpage').val(totPage);
-                    	$('#btnRefresh').click();                  
+                    	loadData(this.nstr,this.nend,this.bdate,this.edate);                  
                     },
                     error: function(jqXHR, exception) {
-                        var errmsg = '資料讀取異常。\n';
+                        var errmsg = this.url+'資料讀取異常。\n';
                         if (jqXHR.status === 0) {
                             alert(errmsg+'Not connect.\n Verify Network.');
                         } else if (jqXHR.status == 404) {
@@ -357,7 +365,7 @@
                     	Unlock(1);                
                     },
                     error: function(jqXHR, exception) {
-                        var errmsg = '資料讀取異常。\n';
+                        var errmsg = this.url+'資料讀取異常。\n';
                         if (jqXHR.status === 0) {
                             alert(errmsg+'Not connect.\n Verify Network.');
                         } else if (jqXHR.status == 404) {
@@ -407,7 +415,7 @@
                     	Unlock(1);                
                     },
                     error: function(jqXHR, exception) {
-                        var errmsg = '資料寫入異常 SEQ:'+this.seq+'。\n';
+                        var errmsg = this.url+'資料寫入異常 SEQ:'+this.seq+'。\n';
                         if (jqXHR.status === 0) {
                             alert(errmsg+'Not connect.\n Verify Network.');
                         } else if (jqXHR.status == 404) {
@@ -467,6 +475,11 @@
 	</head>
 	<body>
 		<div style="min-width:1000px;width: 1500px;height:40px;float:none;">
+			<span style="display:block;width:50px;float:left;text-align: center;">日期：</span>
+			<a id="txtBdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
+			<span style="display:block;width:30px;float:left;text-align: center;">~</span>
+			<a id="txtEdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
+			<span style="display:block;width:30px;float:left;text-align: center;">&nbsp;</span>
 			<input type="button" id="btnRefresh" value="資料刷新" style="float:left;width:100px;"/>
 			<input type="button" id="btnPrev" value="上一頁" style="float:left;width:100px;"/>
 			<input type="button" id="btnNext" value="下一頁" style="float:left;width:100px;"/>
@@ -474,11 +487,6 @@
 			<input type="text" id="txtCurpage" style="float:left;width:50px;text-align: center;"/>
 			<span style="display:block;width:30px;float:left;text-align: center;">/</span>
 			<input type="text" id="txtTotpage" style="float:left;width:50px;text-align: center;color:green;" readonly="readonly"/>
-			<span style="display:block;width:30px;float:left;text-align: center;">&nbsp;</span>
-			<span style="display:block;width:50px;float:left;text-align: center;">日期：</span>
-			<a id="txtBdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
-			<span style="display:block;width:30px;float:left;text-align: center;">~</span>
-			<a id="txtEdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
 		</div>
 		<div style="min-width:1990px;width: 1990px;overflow-y:scroll;">
 			<table class="tHeader">

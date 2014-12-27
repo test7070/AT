@@ -4,6 +4,7 @@
         {
             public long recno;
             public int seq;
+            public bool isdel;
             public string ordeaccy,ordeno,ordenoq;
             public string datea;
             public string custno,cust;
@@ -45,7 +46,7 @@
 	                    ,carno2=@carno2,cardno2=@cardno2,msg2=@msg2
 	                    ,carno3=@carno3,cardno3=@cardno3,msg3=@msg3
                         ,carno4=@carno4,cardno4=@cardno4,msg4=@msg4
-	                    ,memo=@memo,edittime=getDate() where seq=@seq";
+	                    ,memo=@memo,edittime=getDate() where seq=@seq and isnull(isdel,0)=0";
 
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);

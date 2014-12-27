@@ -36,7 +36,7 @@
             brwCount2 =25;
 
             aPop = new Array(['txtProductno', 'btnProduct', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
-            , ['txtStraddrno__', 'btnStraddr__', 'addr', 'noa,addr', 'txtStraddrno__,txtStraddr__', 'addr_b2.aspx']
+            , ['txtAddrno_', 'btnAddr_', 'addr', 'noa,addr', 'txtAddrno_,txtAddr_', 'addr_b2.aspx']
             , ['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,tel,fax', 'txtCustno,txtComp,txtNick,txtTel,txtFax', 'cust_b.aspx']);
 			
 			var z_mech = new Array();
@@ -182,7 +182,7 @@
             }
 
             function bbsSave(as) {
-                if (!as['caseno']) {
+                if (!as['addrno'] && !as['addr']) {
                     as[bbsKey[1]] = '';
                     return;
                 }
@@ -229,7 +229,12 @@
                 for (var i = 0; i < q_bbsCount; i++) {
                     $('#lblNo_' + i).text(i + 1);
                     if (!$('#btnMinus_' + i).hasClass('isAssign')) {
-                    	
+                    	$('#txtAddrno_' + i).bind('contextmenu', function(e) {
+                            /*滑鼠右鍵*/
+                            e.preventDefault();
+                            var n = $(this).attr('id').replace('txtAddrno_', '');
+                            $('#btnAddr_'+n).click();
+                        });
                     }
                 }
                 _bbsAssign();
@@ -394,7 +399,7 @@
                 font-size: medium;
             }
             .dbbs {
-                width:400px;
+                width:750px;
             }
             .dbbs .tbbs {
                 margin: 0;
@@ -661,8 +666,9 @@
 						<input id="btnPlus" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
 					</td>
 					<td style="width:20px;"> </td>
-					
-					<td style="width:200px;"><a id='lbl_uno'>櫃號</a></td>
+					<td style="width:300px;"><a id='lblAddr'>起迄地點</a></td>
+					<td style="width:200px;"><a id='lblContainerno1'>櫃號一</a></td>
+					<td style="width:200px;"><a id='lblContainerno2'>櫃號一</a></td>
 				</tr>
 				<tr  style='background:#cad3ff;'>
 					<td align="center">
@@ -670,13 +676,18 @@
 						<input id="txtNoq.*" type="text" style="display: none;"/>
 					</td>
 					<td><a id="lblNo.*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
-					
-					<td><input class="txt" id="txtCaseno.*" type="text" style="width:95%;" title=""/></td>
+					<td>
+						<input class="txt" id="txtAddrno.*" type="text" style="width:45%;float:left;" title=""/>
+						<input class="txt" id="txtAddr.*" type="text" style="width:45%;float:left;" title=""/>
+						<input id="btnAddr.*" type="button" style="display:none;"/>
+					</td>
+					<td><input class="txt" id="txtContainerno1.*" type="text" style="width:95%;" title=""/></td>
+					<td><input class="txt" id="txtContainerno2.*" type="text" style="width:95%;" title=""/></td>
 				</tr>
 			</table>
 		</div>
 		<input id="q_sys" type="hidden" />
-		<div id="dbbt">
+		<div id="dbbt" style="display:none;">
 			<table id="tbbt">
 				<tbody>
 					<tr class="head" style="color:white; background:#003366;">

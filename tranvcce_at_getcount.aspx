@@ -1,5 +1,10 @@
 <%@ Page Language="C#" Debug="true"%>
     <script language="c#" runat="server">     
+        public class ParaIn
+        {
+            public string bdate;
+            public string edate;
+        }
         public class ParaOut
         {
             public long count;
@@ -11,7 +16,10 @@
             //參數
             System.Text.Encoding encoding = System.Text.Encoding.UTF8;
             Response.ContentEncoding = encoding;
+            int formSize = Request.TotalBytes;
+            byte[] formData = Request.BinaryRead(formSize);
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            var itemIn = serializer.Deserialize<ParaIn>(encoding.GetString(formData));
 
             //連接字串      
             string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=DC";
@@ -21,9 +29,13 @@
             {
                 System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
                 connSource.Open();
-                string queryString = @"select count(1) n from tranvcce where ISNULL(isdel,0)=0";
+                string queryString = @"select count(1) n from tranvcce where ISNULL(isdel,0)=0 
+                	and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
+                	and (len(@edate)=0 or isnull(datea,'')<=@edate)";
                 
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
+                cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
+                cmd.Parameters.AddWithValue("@edate", itemIn.edate);
                 adapter.SelectCommand = cmd;
                 adapter.Fill(tranvcce);
                 connSource.Close();

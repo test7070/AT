@@ -12,6 +12,7 @@
         {
             public long recno;
             public int seq;
+            public bool isdel;
             public string ordeaccy,ordeno,ordenoq;
             public string datea;
             public string custno,cust;
@@ -75,6 +76,7 @@
             foreach (System.Data.DataRow r in tranvcce.Rows)
             {
                 tmp = new ParaOut();
+                tmp.isdel = false;
                 tmp.recno = (System.Int64)r.ItemArray[0];
                 tmp.seq = (System.Int32)r.ItemArray[1];
                 tmp.ordeaccy = System.DBNull.Value.Equals(r.ItemArray[2]) ? "" : (System.String)r.ItemArray[2];
