@@ -18,6 +18,7 @@
 	        public string carno3,cardno3,msg3;
 	        public string carno4,cardno4,msg4;
             public string memo;
+            public int issend1, issend2, issend3, issend4;
         }
      
         public void Page_Load()

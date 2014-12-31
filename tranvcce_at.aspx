@@ -66,6 +66,11 @@
 							}
 							if($(this).hasClass('edit')){
 								$('#btnRefresh').removeClass('edit');
+								$('#chkIssend1_'+n).attr('disabled','disabled').prop('checked',false);
+								$('#chkIssend2_'+n).attr('disabled','disabled').prop('checked',false);
+								$('#chkIssend3_'+n).attr('disabled','disabled').prop('checked',false);
+								$('#chkIssend4_'+n).attr('disabled','disabled').prop('checked',false);
+								
 								$(this).removeClass('edit');
 								$(this).parent().prevAll().removeClass('edit');
 								$(this).parent().nextAll().removeClass('edit');
@@ -81,6 +86,10 @@
 								updateData(n);
 							}else{
 								$('#btnRefresh').addClass('edit');
+								$('#chkIssend1_'+n).removeAttr('disabled');
+								$('#chkIssend2_'+n).removeAttr('disabled');
+								$('#chkIssend3_'+n).removeAttr('disabled');
+								$('#chkIssend4_'+n).removeAttr('disabled');
 								//跳下一格
 					            var doc = document;
 					            var element = $('#txtDatea_'+n)[0];
@@ -117,6 +126,8 @@
 			                    	$(this).selectText();
 			                });
 						}
+						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="checkbox"]').eq(0);
+						obj.addClass(obj.attr('id')).attr('id',obj.attr('id')+'_'+i);
 					}
 				}
 				$('.txtDatea').keydown(function(e){
@@ -164,7 +175,11 @@
 				goNextItem('txtCarno3','txtCardno3');
 				goNextItem('txtCardno3','txtCarno4');
 				goNextItem('txtCarno4','txtCardno4');
-				goNextItem('txtCardno4','txtMemo');
+				goNextItem('txtCardno4','txtMsg1');
+				goNextItem('txtMsg1','txtMsg2');
+				goNextItem('txtMsg2','txtMsg3');
+				goNextItem('txtMsg3','txtMsg4');
+				goNextItem('txtMsg4','txtMemo');
 				
 				//-------REFRESH
 				$('#btnRefresh').click(function(e){
@@ -301,7 +316,6 @@
 					for(var j=0;j<objs.length;j++){
 						t_id = objs.eq(j).find('a').eq(0).attr('id');
 						t_field = t_id!=undefined?t_id.replace(/txt(.*)(_\d+)/g,"$1").toLowerCase():'';
-						$('#txtMemo_'+i).text(t_field);						
 						if(t_field.length>0){
 							if(i < _curData.length){
 								objs.eq(j).find('a').eq(0).text(_curData[i][t_field]);
@@ -311,6 +325,10 @@
 						}
 					}
 				}
+				$('.chkIssend1').prop('checked',false).attr('disabled','disabled');
+				$('.chkIssend2').prop('checked',false).attr('disabled','disabled');
+				$('.chkIssend3').prop('checked',false).attr('disabled','disabled');
+				$('.chkIssend4').prop('checked',false).attr('disabled','disabled');
 				$('.btnSel').attr('disabled','disabled');
 				for(var i=0;i<_curData.length;i++){
 					$('#btnSel_'+i).removeAttr('disabled');
@@ -513,7 +531,7 @@
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:2380px;width: 2380px;overflow-y:scroll;">
+		<div style="min-width:2860px;width: 2860px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -539,11 +557,15 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車牌)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(板台)</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a>派車訊息(領)</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a>派車訊息(送)</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a>派車訊息(收)</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a>派車訊息(交)</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>備註</a></td>
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:2380px;width: 2380px;overflow-y:scroll;">
+		<div style="display:none;min-width:2860px;width: 2860px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -569,11 +591,15 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno3"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno4"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno4"></a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><input type="checkbox" id="chkIssend1" /><a id="txtMsg1"></a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><input type="checkbox" id="chkIssend2" /><a id="txtMsg2"></a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><input type="checkbox" id="chkIssend3" /><a id="txtMsg3"></a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><input type="checkbox" id="chkIssend4" /><a id="txtMsg4"></a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtMemo">備註</a></td>
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:2380px;width: 2380px;height:800px;overflow-y:scroll;">
+		<div style="min-width:2860px;width: 2860px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>

@@ -27,6 +27,7 @@
 	        public string carno3,cardno3,msg3;
 	        public string carno4,cardno4,msg4;
             public string memo;
+            public int issend1, issend2, issend3, issend4;
         }
         public void Page_Load()
         {   
@@ -53,6 +54,7 @@
 	                ,carno3,cardno3,msg3
 	                ,carno4,cardno4,msg4
 	                ,memo,stype,ucr,por,pod,product
+                    ,0,0,0,0
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -113,6 +115,10 @@
                 tmp.por = System.DBNull.Value.Equals(r.ItemArray[29]) ? "" : (System.String)r.ItemArray[29];
                 tmp.pod = System.DBNull.Value.Equals(r.ItemArray[30]) ? "" : (System.String)r.ItemArray[30];
                 tmp.product = System.DBNull.Value.Equals(r.ItemArray[31]) ? "" : (System.String)r.ItemArray[31];
+                tmp.issend1 = System.DBNull.Value.Equals(r.ItemArray[32]) ? 0 : (System.Int32)r.ItemArray[32];
+                tmp.issend2 = System.DBNull.Value.Equals(r.ItemArray[33]) ? 0 : (System.Int32)r.ItemArray[33];
+                tmp.issend3 = System.DBNull.Value.Equals(r.ItemArray[34]) ? 0 : (System.Int32)r.ItemArray[34];
+                tmp.issend4 = System.DBNull.Value.Equals(r.ItemArray[35]) ? 0 : (System.Int32)r.ItemArray[35];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));
