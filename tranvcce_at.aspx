@@ -43,11 +43,12 @@
 				$('#btnAuthority').click(function () {
                     btnAuthority(q_name);
                 });
+                
             });
             function q_gfPost() {
                 q_langShow();
                 init(_pageCount);
-				$('#btnRefresh').click(); 
+				$('#btnRefresh').click();
             }
 
 			function init(tCount){
@@ -66,18 +67,17 @@
 							}
 							if($(this).hasClass('edit')){
 								$('#btnRefresh').removeClass('edit');
-								$('#chkIssend1_'+n).attr('disabled','disabled').prop('checked',false);
-								$('#chkIssend2_'+n).attr('disabled','disabled').prop('checked',false);
-								$('#chkIssend3_'+n).attr('disabled','disabled').prop('checked',false);
-								$('#chkIssend4_'+n).attr('disabled','disabled').prop('checked',false);
 								
 								$(this).removeClass('edit');
 								$(this).parent().prevAll().removeClass('edit');
 								$(this).parent().nextAll().removeClass('edit');
 								$('.btnSel').removeClass('edit');
 								$(this).css('color','');
-								$(this).parent().parent().find('a').each(function(e){
-									$(this).removeClass('edit').attr("contenteditable","false").css('color','black');
+								$(this).parent().parent().find('a,input[type="checkbox"]').each(function(e){
+									if($(this).attr('id').substring(0,3)=='txt'){
+										$(this).text($(this).text());
+									}
+									$(this).removeClass('edit').attr("contenteditable","false").css('color','black').attr('disabled','disabled');
 								});
 								$('.btnSel').attr('disabled','disabled');
 								for(var i=0;i<_curData.length;i++){
@@ -108,8 +108,10 @@
 								$('.btnSel').attr('disabled','disabled');
 								$(this).removeAttr('disabled');
 								$(this).css('color','red');
-								$(this).parent().parent().find('a').each(function(e){
-									if(!$(this).hasClass('readonly')){
+								$(this).parent().parent().find('a,input[type="checkbox"]').each(function(e){
+									if($(this).attr('id').substring(0,3)=='chk'){
+										$(this).removeAttr('disabled');
+									}else if(!$(this).hasClass('readonly')){
 										$(this).addClass('edit').attr("contenteditable","true");
 									}else{
 										$(this).css('color','darkgreen');
@@ -118,16 +120,21 @@
 							}
 						});
 						
-						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('a').eq(0);
-						obj.addClass(obj.attr('id')).attr('id',obj.attr('id')+'_'+i);
-						if(!obj.hasClass('readonly')){
-							obj.focus(function(e) {
-								if($(this).hasClass('edit'))
-			                    	$(this).selectText();
-			                });
+						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('a,input[type="checkbox"]');
+						for(var k=0;k<obj.length;k++){
+							t_id = obj.eq(k).attr('id');
+							obj.eq(k).addClass(t_id).attr('id',t_id+'_'+i);
+							if(t_id.substring(0,3)=='txt'){
+								if(!obj.hasClass('readonly')){
+									obj.focus(function(e) {
+										if($(this).hasClass('edit'))
+					                    	$(this).selectText();
+					                });
+								}
+							}else if(t_id.substring(0,3)=='chk'){
+								
+							}
 						}
-						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="checkbox"]').eq(0);
-						obj.addClass(obj.attr('id')).attr('id',obj.attr('id')+'_'+i);
 					}
 				}
 				$('.txtDatea').keydown(function(e){
@@ -314,21 +321,23 @@
 					obj.eq(i).data('data',_curData.length>i?JSON.stringify(_curData[i]):"");
 					objs = obj.eq(i).find('td');
 					for(var j=0;j<objs.length;j++){
-						t_id = objs.eq(j).find('a').eq(0).attr('id');
-						t_field = t_id!=undefined?t_id.replace(/txt(.*)(_\d+)/g,"$1").toLowerCase():'';
-						if(t_field.length>0){
-							if(i < _curData.length){
-								objs.eq(j).find('a').eq(0).text(_curData[i][t_field]);
-							}else{
-								objs.eq(j).find('a').eq(0).text('');
+						objt = objs.eq(j).find('a,input[type="checkbox"]');
+						for(var k=0;k<objt.length;k++){
+							t_id = objt.eq(k).attr('id');
+							if(t_id.substring(0,3)=='txt'){
+								t_field = t_id!=undefined?t_id.replace(/txt(.*)(_\d+)/g,"$1").toLowerCase():'';
+								if(t_field.length>0)
+									objt.eq(k).text(i < _curData.length?_curData[i][t_field]:'');
+							}else if(t_id.substring(0,3)=='chk'){
+								objt.eq(k).attr('disabled','disabled');
+								t_field = t_id!=undefined?t_id.replace(/chk(.*)(_\d+)/g,"$1").toLowerCase():'';
+								if(t_field.length>0){
+									objt.eq(k).prop('checked',i < _curData.length?_curData[i][t_field]:false);
+								}
 							}
 						}
 					}
 				}
-				$('.chkIssend1').prop('checked',false).attr('disabled','disabled');
-				$('.chkIssend2').prop('checked',false).attr('disabled','disabled');
-				$('.chkIssend3').prop('checked',false).attr('disabled','disabled');
-				$('.chkIssend4').prop('checked',false).attr('disabled','disabled');
 				$('.btnSel').attr('disabled','disabled');
 				for(var i=0;i<_curData.length;i++){
 					$('#btnSel_'+i).removeAttr('disabled');
@@ -424,15 +433,20 @@
 				}
 				Lock(1,{opacity:0});
 				//更新 _curData的資料
-				var obj = $('.tData').find('tr').eq(n).find('a');
+				var obj = $('.tData').find('tr').eq(n).find('a,input[type="checkbox"]');
 				for(var i=0;i<obj.length;i++){
 					t_id = obj.eq(i).attr('id');
-					if(t_id!=undefined){
-						t_field = t_id.replace(/^txt(.+)_\d+/,"$1").toLowerCase();
+					if(t_id.substring(0,3)=='txt'){
+						t_field = t_id!=undefined?t_id.replace(/txt(.*)(_\d+)/g,"$1").toLowerCase():'';
 						_curData[n][t_field] = obj.eq(i).text();
+					}else if(t_id.substring(0,3)=='chk'){
+						t_field = t_id!=undefined?t_id.replace(/chk(.*)(_\d+)/g,"$1").toLowerCase():'';
+						_curData[n][t_field] = obj.eq(i).prop('checked');
 					}
 				}
+				console.log(JSON.stringify(_curData[n]));
 				$.ajax({
+					n:n,
 					seq: _curData[n].seq,
                     url: 'tranvcce_at_update.aspx',
                     type: 'POST',
@@ -445,6 +459,14 @@
                         }
                     },
                     complete: function(){ 
+                    	_curData[this.n]['issend1'] = false;
+						_curData[this.n]['issend2'] = false;
+						_curData[this.n]['issend3'] = false;
+						_curData[this.n]['issend4'] = false;
+						$('#chkIssend1_'+this.n).attr('disabled','disabled').prop('checked',false);
+						$('#chkIssend2_'+this.n).attr('disabled','disabled').prop('checked',false);
+						$('#chkIssend3_'+this.n).attr('disabled','disabled').prop('checked',false);
+						$('#chkIssend4_'+this.n).attr('disabled','disabled').prop('checked',false);
                     	Unlock(1);                
                     },
                     error: function(jqXHR, exception) {
@@ -531,7 +553,7 @@
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:2860px;width: 2860px;overflow-y:scroll;">
+		<div style="min-width:2980px;width: 2980px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -549,6 +571,7 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號一</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號二</a></td>
+					<td align="center" style="width:40px; max-width:40px;color:black;"><a>指定</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車牌)</a></td>
@@ -557,15 +580,19 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車牌)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(板台)</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a>派車訊息(領)</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a>派車訊息(送)</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a>派車訊息(收)</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a>派車訊息(交)</a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><a>領</a></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a>備註(領)</a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><a>送</a></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a>備註(送)</a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><a>收</a></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a>備註(收)</a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><a>交</a></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a>備註(交)</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>備註</a></td>
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:2860px;width: 2860px;overflow-y:scroll;">
+		<div style="display:none;min-width:2980px;width: 2980px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -583,6 +610,7 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCasetype">規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1">櫃號一</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno2">櫃號二</a></td>
+					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno1"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno2"></a></td>
@@ -591,15 +619,19 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno3"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno4"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno4"></a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><input type="checkbox" id="chkIssend1" /><a id="txtMsg1"></a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><input type="checkbox" id="chkIssend2" /><a id="txtMsg2"></a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><input type="checkbox" id="chkIssend3" /><a id="txtMsg3"></a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><input type="checkbox" id="chkIssend4" /><a id="txtMsg4"></a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend1" /></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg1"></a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend2" /></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg2"></a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend3" /></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg3"></a></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend4" /></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg4"></a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtMemo">備註</a></td>
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:2860px;width: 2860px;height:800px;overflow-y:scroll;">
+		<div style="min-width:2980px;width: 2980px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>

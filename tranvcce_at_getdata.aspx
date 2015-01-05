@@ -27,7 +27,8 @@
 	        public string carno3,cardno3,msg3;
 	        public string carno4,cardno4,msg4;
             public string memo;
-            public int issend1, issend2, issend3, issend4;
+            public bool issend1, issend2, issend3, issend4;
+            public bool isassign;
         }
         public void Page_Load()
         {   
@@ -38,7 +39,14 @@
             byte[] formData = Request.BinaryRead(formSize);
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             var itemIn = serializer.Deserialize<ParaIn>(encoding.GetString(formData));
-
+            /*ParaIn itemIn = new ParaIn();
+            itemIn.nstr = 0;
+            itemIn.nend = 10;
+            itemIn.stype = "";
+            itemIn.bdate = "";
+            itemIn.edate = "";*/
+            
+            
             //連接字串      
             string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=DC";
             //抓資料
@@ -54,7 +62,7 @@
 	                ,carno3,cardno3,msg3
 	                ,carno4,cardno4,msg4
 	                ,memo,stype,ucr,por,pod,product
-                    ,0,0,0,0
+                    ,cast(0 as bit),cast(0 as bit),cast(0 as bit),cast(0 as bit),isassign
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -115,10 +123,11 @@
                 tmp.por = System.DBNull.Value.Equals(r.ItemArray[29]) ? "" : (System.String)r.ItemArray[29];
                 tmp.pod = System.DBNull.Value.Equals(r.ItemArray[30]) ? "" : (System.String)r.ItemArray[30];
                 tmp.product = System.DBNull.Value.Equals(r.ItemArray[31]) ? "" : (System.String)r.ItemArray[31];
-                tmp.issend1 = System.DBNull.Value.Equals(r.ItemArray[32]) ? 0 : (System.Int32)r.ItemArray[32];
-                tmp.issend2 = System.DBNull.Value.Equals(r.ItemArray[33]) ? 0 : (System.Int32)r.ItemArray[33];
-                tmp.issend3 = System.DBNull.Value.Equals(r.ItemArray[34]) ? 0 : (System.Int32)r.ItemArray[34];
-                tmp.issend4 = System.DBNull.Value.Equals(r.ItemArray[35]) ? 0 : (System.Int32)r.ItemArray[35];
+                tmp.issend1 = System.DBNull.Value.Equals(r.ItemArray[32]) ? false : (System.Boolean)r.ItemArray[32];
+                tmp.issend2 = System.DBNull.Value.Equals(r.ItemArray[33]) ? false : (System.Boolean)r.ItemArray[33];
+                tmp.issend3 = System.DBNull.Value.Equals(r.ItemArray[34]) ? false : (System.Boolean)r.ItemArray[34];
+                tmp.issend4 = System.DBNull.Value.Equals(r.ItemArray[35]) ? false : (System.Boolean)r.ItemArray[35];
+                tmp.isassign = System.DBNull.Value.Equals(r.ItemArray[36]) ? false : (System.Boolean)r.ItemArray[36];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));

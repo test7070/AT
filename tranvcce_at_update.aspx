@@ -18,9 +18,17 @@
 	        public string carno3,cardno3,msg3;
 	        public string carno4,cardno4,msg4;
             public string memo;
-            public int issend1, issend2, issend3, issend4;
+            public bool issend1, issend2, issend3, issend4;
+            public bool isassign;
         }
-     
+        public class SendCommand
+        { 
+            public string SendCommandResult;
+            public string CommandId;
+        }
+        //連接字串      
+        string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=DC";
+        
         public void Page_Load()
         {
             try
@@ -33,14 +41,16 @@
                 System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 var itemIn = serializer.Deserialize<ParaIn>(encoding.GetString(formData));
 
-                //連接字串      
-                string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=DC";
+                
                 //資料寫入
+                
                 System.Data.DataTable tranvcce = new System.Data.DataTable();
                 using (System.Data.SqlClient.SqlConnection connSource = new System.Data.SqlClient.SqlConnection(DCConnectionString))
                 {
                     System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
                     connSource.Open();
+                    
+                    //更新資料
                     string queryString = @"update tranvcce set
                         datea=@datea,straddrno=@straddrno,straddr=@straddr,vocc=@vocc,casetype=@casetype
 	                    ,containerno1=@containerno1,containerno2=@containerno2
@@ -48,7 +58,7 @@
 	                    ,carno2=@carno2,cardno2=@cardno2,msg2=@msg2
 	                    ,carno3=@carno3,cardno3=@cardno3,msg3=@msg3
                         ,carno4=@carno4,cardno4=@cardno4,msg4=@msg4
-	                    ,memo=@memo,edittime=getDate() where seq=@seq and isnull(isdel,0)=0";
+	                    ,memo=@memo,edittime=getDate(),isassign=@isassign where seq=@seq and isnull(isdel,0)=0";
 
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
@@ -72,7 +82,39 @@
                     cmd.Parameters.AddWithValue("@cardno4", itemIn.cardno4);
                     cmd.Parameters.AddWithValue("@msg4", itemIn.msg4);
                     cmd.Parameters.AddWithValue("@memo", itemIn.memo);
+                    cmd.Parameters.AddWithValue("@isassign", itemIn.isassign?1:0);
                     cmd.ExecuteNonQuery();
+                    //--------------------------送資料給長輝--------------------------------------
+                    bool isdelay = false;
+                    if (itemIn.issend1 && itemIn.carno1.Length>0)
+                    {
+                        sendCommand(connSource, itemIn, itemIn.carno1, itemIn.msg1, "card1");
+                        isdelay = true;
+                    }
+
+                    if (itemIn.issend2 && itemIn.carno2.Length > 0)
+                    {
+                        if(isdelay)
+                            System.Threading.Thread.Sleep(1000);
+                        sendCommand(connSource, itemIn, itemIn.carno2, itemIn.msg2, "card2");
+                        isdelay = true;
+                    }
+
+                    if (itemIn.issend3 && itemIn.carno3.Length > 0)
+                    {
+                        if (isdelay)
+                            System.Threading.Thread.Sleep(1000);
+                        sendCommand(connSource, itemIn, itemIn.carno3, itemIn.msg3, "card3");
+                        isdelay = true;
+                    }
+                    if (itemIn.issend4 && itemIn.carno4.Length > 0)
+                    {
+                        if (isdelay)
+                            System.Threading.Thread.Sleep(1000);
+                        sendCommand(connSource, itemIn, itemIn.carno4, itemIn.msg4, "card4");
+                        isdelay = true;
+                    }
+                    
                     connSource.Close();
                 }
                 Response.Write("");
@@ -80,5 +122,136 @@
             catch (Exception e) {
                 Response.Write(e.Message);
             }
-        }    
+        }
+        public void sendCommand(System.Data.SqlClient.SqlConnection connSource,ParaIn item, string carno, string memo,string field)
+        {
+            
+            //取得發訊息的序號 : sendno
+            System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
+            System.Data.DataTable maxSendno = new System.Data.DataTable();
+            
+            string queryString = "declare @t_sendno int=0 " +
+                    "select @t_sendno = sendno from tranvcces where seq=@t_seq and carid=@t_carno and field=@t_field " +
+                    "if(ISNULL(@t_sendno,0)=0) begin " +
+                    "select @t_sendno = MAX(sendno) from tranvcces where carid = @t_carno " +
+                    "set @t_sendno=isnull(@t_sendno,0)+1 " +
+                    "end " +
+                    "select @t_sendno";
+
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
+            cmd.Parameters.AddWithValue("@t_seq", item.seq);
+            cmd.Parameters.AddWithValue("@t_carno", carno);
+            cmd.Parameters.AddWithValue("@t_field", field);
+            adapter.SelectCommand = cmd;
+            adapter.Fill(maxSendno);
+            int sendno = (System.Int32)maxSendno.Rows[0].ItemArray[0];
+            string nbxx = "00" + sendno.ToString();
+            nbxx = nbxx.Substring(nbxx.Length - 2, 2);
+            nbxx = "AT" + nbxx;
+            string message = nbxx;  
+            //取得訂單資料
+            System.Data.DataTable orde = new System.Data.DataTable();
+            queryString = "select stype,comp,vocc,casetype,0 mount,so,do1,vessel,voyage,port,port2,etc"+
+                " freetime,do2,option01,trackno"+
+                " from view_tranorde where accy=@accy and noa=@noa ";
+            cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
+            cmd.Parameters.AddWithValue("@noa", item.ordeno);
+            cmd.Parameters.AddWithValue("@accy", item.ordeaccy);
+            adapter.SelectCommand = cmd;
+            adapter.Fill(orde);
+
+            string stype = "";
+            if(orde.Rows.Count>0){
+                //出口
+                if (item.stype == "出口")
+                {
+                    message += " 貨主：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
+                    message += " 船公司：" + item.vocc;
+                    message += " 櫃型：" + item.casetype;
+                    message += " 櫃數：";//4
+                    message += " SO：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[5]) ? "" : (System.String)orde.Rows[0].ItemArray[5]);
+                    message += " 領櫃代號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[6]) ? "" : (System.String)orde.Rows[0].ItemArray[6]);
+                    message += " 船名：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[7]) ? "" : (System.String)orde.Rows[0].ItemArray[7]);
+                    message += " 航次：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[8]) ? "" : (System.String)orde.Rows[0].ItemArray[8]);
+                    message += " 卸貨港：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[9]) ? "" : (System.String)orde.Rows[0].ItemArray[9]);
+                    message += " 領櫃場：" + item.por;
+                    message += " 結關日：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[11]) ? "" : (System.String)orde.Rows[0].ItemArray[11]);
+                }
+                else { 
+                    message += " 貨主："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
+                    message += " 貨櫃號碼："+item.containerno1+(item.containerno2.Length>0?".":item.containerno2);
+                    message += " 船公司：" + item.vocc;
+                    message += " 櫃型：" + item.casetype;
+                    message += " 櫃數：";//4
+                    message += " FREETIME："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[12]) ? "" : (System.String)orde.Rows[0].ItemArray[12]);
+                    message += " 領櫃場："+ item.por;
+                    message += " 狀態："+(item.isassign?"指定":"任一");
+                    message += " 提單號碼："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[13]) ? "" : (System.String)orde.Rows[0].ItemArray[13]);
+                    message += " 領櫃號碼："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[14]) ? "" : (System.String)orde.Rows[0].ItemArray[14]);
+                    message += " 追蹤號碼："+ item.ucr;                  
+                }
+            }
+            message+=" 注意事項："+memo;
+            //發送訊息
+            SendCommand tmp = new SendCommand();
+            string targetUrl = "http://115.85.145.34/Service/Service.asmx?op=SendCommand";
+            string parame = "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                        " <soap:Body>" +
+                        " <SendCommand xmlns=\"http://tempuri.org/\">" +
+                        " <GroupName>CHITC771</GroupName>" +
+                        " <CarId>" + carno + "</CarId>" +
+                        " <Message>" + message + "</Message>" +
+                        " <CommandId>1</CommandId>" +
+                        " </SendCommand>" +
+                    " </soap:Body>" +
+                    " </soap:Envelope>";
+            byte[] postData = Encoding.UTF8.GetBytes(parame);
+            System.Net.HttpWebRequest request = System.Net.HttpWebRequest.Create(targetUrl) as System.Net.HttpWebRequest;
+            request.Method = "POST";
+            request.ContentType = "text/xml; charset=\"utf-8\"";
+            request.Timeout = 5000;
+            //request.ContentLength = postData.Length;
+            // 寫入 Post Body Message 資料流
+            using (System.IO.Stream st = request.GetRequestStream())
+            {
+                st.Write(postData, 0, postData.Length);
+                st.Close();
+            }
+            string result = "";
+            // 取得回應資料
+            using (System.Net.HttpWebResponse response = request.GetResponse() as System.Net.HttpWebResponse)
+            {
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+                {
+                    result = sr.ReadToEnd();
+                }
+                response.Close();
+            }
+            
+            XDocument doc = XDocument.Parse(result);
+            foreach (XElement ew in doc.Elements())
+                foreach (XElement ex in ew.Elements())
+                    foreach (XElement ey in ex.Elements())
+                        foreach (XElement ez in ey.Elements())
+                        {
+                            if (ez.Name.ToString().IndexOf("SendCommandResult") >= 0)
+                                tmp.SendCommandResult = ez.Value;
+                            if (ez.Name.ToString().IndexOf("CommandId") >= 0)
+                                tmp.CommandId = ez.Value;
+                        }
+            
+            //--記錄送了什麼
+            queryString = @"insert into tranvcces(seq,field,carid,[message],commandid,sendcommandresult,sendtime,sendno,nbxx)
+                        values(@seq,@field,@carid,@message,@commandid,@sendcommandresult,GETDATE(),@sendno,@nbxx)";
+            cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
+            cmd.Parameters.AddWithValue("@field", field);
+            cmd.Parameters.AddWithValue("@seq", item.seq);
+            cmd.Parameters.AddWithValue("@carid", carno);
+            cmd.Parameters.AddWithValue("@message", message);
+            cmd.Parameters.AddWithValue("@commandid", tmp.CommandId);
+            cmd.Parameters.AddWithValue("@sendcommandresult", tmp.SendCommandResult);
+            cmd.Parameters.AddWithValue("@sendno", sendno);
+            cmd.Parameters.AddWithValue("@nbxx", nbxx);
+            cmd.ExecuteNonQuery();              
+        }
     </script>
