@@ -20,6 +20,7 @@
             public string memo;
             public bool issend1, issend2, issend3, issend4;
             public bool isassign;
+            public float mount;
         }
         public class SendCommand
         { 
@@ -58,7 +59,8 @@
 	                    ,carno2=@carno2,cardno2=@cardno2,msg2=@msg2
 	                    ,carno3=@carno3,cardno3=@cardno3,msg3=@msg3
                         ,carno4=@carno4,cardno4=@cardno4,msg4=@msg4
-	                    ,memo=@memo,edittime=getDate(),isassign=@isassign where seq=@seq and isnull(isdel,0)=0";
+	                    ,memo=@memo,edittime=getDate(),isassign=@isassign
+	                    ,mount=@mount where seq=@seq and isnull(isdel,0)=0";
 
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
@@ -83,6 +85,7 @@
                     cmd.Parameters.AddWithValue("@msg4", itemIn.msg4);
                     cmd.Parameters.AddWithValue("@memo", itemIn.memo);
                     cmd.Parameters.AddWithValue("@isassign", itemIn.isassign?1:0);
+                    cmd.Parameters.AddWithValue("@mount", itemIn.mount);
                     cmd.ExecuteNonQuery();
                     //--------------------------送資料給長輝--------------------------------------
                     bool isdelay = false;
@@ -147,7 +150,7 @@
             int sendno = (System.Int32)maxSendno.Rows[0].ItemArray[0];
             string nbxx = "00" + sendno.ToString();
             nbxx = nbxx.Substring(nbxx.Length - 2, 2);
-            nbxx = "AT" + nbxx;
+            nbxx = "NB" + nbxx;
             string message = nbxx;  
             //取得訂單資料
             System.Data.DataTable orde = new System.Data.DataTable();
@@ -168,7 +171,7 @@
                     message += " 貨主：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
                     message += " 船公司：" + item.vocc;
                     message += " 櫃型：" + item.casetype;
-                    message += " 櫃數：";//4
+                    message += " 櫃數：" + item.mount.ToString();
                     message += " SO：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[5]) ? "" : (System.String)orde.Rows[0].ItemArray[5]);
                     message += " 領櫃代號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[6]) ? "" : (System.String)orde.Rows[0].ItemArray[6]);
                     message += " 船名：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[7]) ? "" : (System.String)orde.Rows[0].ItemArray[7]);
@@ -182,7 +185,7 @@
                     message += " 貨櫃號碼："+item.containerno1+(item.containerno2.Length>0?".":item.containerno2);
                     message += " 船公司：" + item.vocc;
                     message += " 櫃型：" + item.casetype;
-                    message += " 櫃數：";//4
+                    message += " 櫃數：" + item.mount.ToString();
                     message += " FREETIME："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[12]) ? "" : (System.String)orde.Rows[0].ItemArray[12]);
                     message += " 領櫃場："+ item.por;
                     message += " 狀態："+(item.isassign?"指定":"任一");

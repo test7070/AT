@@ -174,7 +174,8 @@
 				goNextItem('txtStraddr','txtCasetype');
 				goNextItem('txtCasetype','txtContainerno1');
 				goNextItem('txtContainerno1','txtContainerno2');
-				goNextItem('txtContainerno2','txtCarno1');
+				goNextItem('txtContainerno2','txtMount');
+				goNextItem('txtMount','txtCarno1');
 				goNextItem('txtCarno1','txtCardno1');
 				goNextItem('txtCardno1','txtCarno2');
 				goNextItem('txtCarno2','txtCardno2');
@@ -553,7 +554,7 @@
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:2980px;width: 2980px;overflow-y:scroll;">
+		<div style="min-width:3040px;width: 3040px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -571,6 +572,7 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號一</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號二</a></td>
+					<td align="center" style="width:60px; max-width:60px;color:black;"><a>櫃數</a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><a>指定</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(板台)</a></td>
@@ -592,7 +594,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:2980px;width: 2980px;overflow-y:scroll;">
+		<div style="display:none;min-width:3040px;width: 3040px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -610,6 +612,7 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCasetype">規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1">櫃號一</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno2">櫃號二</a></td>
+					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount">櫃數</a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno1"></a></td>
@@ -631,7 +634,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:2980px;width: 2980px;height:800px;overflow-y:scroll;">
+		<div style="min-width:3040px;width: 3040px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>
