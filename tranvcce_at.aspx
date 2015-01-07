@@ -13,11 +13,20 @@
 		<script src="css/jquery/ui/jquery.ui.core.js"></script>
 		<script src="css/jquery/ui/jquery.ui.widget.js"></script>
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"></script>
+		<script src="http://59.125.143.170/html2canvas.js"></script>
 		<script type="text/javascript">
 			var q_name = 'tranvcce';
 			var _pageCount = 20; //一頁幾筆資料
             var _curData = new Array();
 			
+			function Screenshot(){
+				html2canvas(document.body, {
+					onrendered: function(canvas) {
+						document.body.appendChild(canvas);
+					}
+				});
+            }
+            
 			jQuery.fn.selectText = function(){
 	            var doc = document;
 	            var element = this[0];
@@ -43,7 +52,6 @@
 				$('#btnAuthority').click(function () {
                     btnAuthority(q_name);
                 });
-                
             });
             function q_gfPost() {
                 q_langShow();
