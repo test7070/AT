@@ -85,6 +85,7 @@
 									if($(this).attr('id').substring(0,3)=='txt'){
 										$(this).text($(this).text());
 									}
+									$(this).css('background-color','');
 									$(this).removeClass('edit').attr("contenteditable","false").css('color','black').attr('disabled','disabled');
 								});
 								$('.btnSel').attr('disabled','disabled');
@@ -108,6 +109,7 @@
 					                selection.removeAllRanges();
 					                selection.addRange(range);
 					            }
+					            $(this).blur();
 					            $('#txtDatea_'+n).focus();
 					            //----------------------------------------------
 								$(this).addClass('edit');
@@ -119,10 +121,17 @@
 								$(this).parent().parent().find('a,input[type="checkbox"]').each(function(e){
 									if($(this).attr('id').substring(0,3)=='chk'){
 										$(this).removeAttr('disabled');
-									}else if(!$(this).hasClass('readonly')){
-										$(this).addClass('edit').attr("contenteditable","true");
 									}else{
-										$(this).css('color','darkgreen');
+										if(!$(this).hasClass('readonly')){
+											$(this).addClass('edit').attr("contenteditable","true");
+											if($(this).hasClass('field2')){
+												$(this).css('background-color','#F5D0A9');
+											}else{
+												$(this).css('background-color','#D8D8D8');
+											}
+										}else{
+											$(this).css('color','darkgreen');
+										}
 									}
 								});
 							}
@@ -145,7 +154,9 @@
 						}
 					}
 				}
-				$('.txtDatea').keydown(function(e){
+				$('.txtDatea').focus(function() {
+					$(this).text($(this).text());
+				}).keydown(function(e){
 					$(this).data('pervData',this.text);
 				}).keyup(function(e) {
 					var n = $(this).attr('id').replace(/^.*_(\d+)$/,'$1');
@@ -196,7 +207,7 @@
 				goNextItem('txtMsg2','txtMsg3');
 				goNextItem('txtMsg3','txtMsg4');
 				goNextItem('txtMsg4','txtMemo');
-				
+				goNextItem('txtMemo','txtDatea');
 				//-------REFRESH
 				$('#btnRefresh').click(function(e){
 					if($(this).hasClass('edit')){
@@ -312,16 +323,28 @@
 			function goNextItem(str,end){
 				$('.'+str).keydown(function(e){
 					$(this).data('pervData',this.text);
+					if(e.which==13){
+						e.preventDefault();
+						//跳下一格
+						var n = $(this).attr('id').replace(/^.*_(\d+)$/,'$1');
+			            if(e.which==13){
+							if(end.length>0){
+								var y = window.scrollY;
+								$('#'+end+'_'+n).focus();
+								window.scrollTo($('#'+end+'_'+n).offset().left - 200, y);
+							}
+			            }
+					}
 				}).keyup(function(e) {
 					var prevVal = $(this).data('pervData');
 					var curVal = $(this).text();
 					//跳下一格
-					var n = $(this).attr('id').replace(/^.*_(\d+)$/,'$1');
+					/*var n = $(this).attr('id').replace(/^.*_(\d+)$/,'$1');
 		            if(e.which==13){
 		            	$(this).text(prevVal);
 		            	if(end.length>0)
 		            		$('#'+end+'_'+n).focus();
-		            }
+		            }*/
 				});
 			}
 			function refresh(){
@@ -562,34 +585,24 @@
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:3040px;width: 3040px;overflow-y:scroll;">
+		<div style="min-width:2350px;width: 2350px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
-					<td align="center" style="width:50px; max-width:50px;color:black;"><a>單別</a></td>	
-					<td align="center" style="width:120px; max-width:120px; color:black;"><a>訂單號碼</a></td>
+					<td align="center" style="width:120px; max-width:120px; color:black;"><a>單別</a><br><a>訂單號碼</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>日期</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>貨主</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>起迄編號</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a>起迄地點</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a title="Place of Receipt">領櫃地</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a title="Place of Delivery">交櫃地</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a>追蹤</a></td>		
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a>船公司</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>品名</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a>規格</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號一</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號二</a></td>
+					<td align="center" style="width:190px; max-width:190px;color:black;"><a>起迄地點</a></td>
+					<td align="center" style="width:130px; max-width:130px;color:black;"><a title="Place of Receipt">領櫃地</a><br><a title="Place of Delivery">交櫃地</a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a>追蹤</a><br><a>船公司</a></td>		
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a>品名</a><br><a>規格</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號</a></td>
 					<td align="center" style="width:60px; max-width:60px;color:black;"><a>櫃數</a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><a>指定</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(板台)</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車牌)</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(板台)</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車牌)</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(板台)</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車牌)</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><a>領</a></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a>備註(領)</a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><a>送</a></td>
@@ -602,47 +615,37 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:3040px;width: 3040px;overflow-y:scroll;">
+		<div style="display:none;min-width:2350px;width: 2350px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
-					<td align="center" style="width:50px; max-width:50px;color:black;"><a id="txtStype" class="readonly">單別</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtOrdeno" class="readonly">訂單號碼</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtDatea" >日期</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtStype" class="readonly">單別</a><BR><a id="txtOrdeno" class="readonly">訂單號碼</a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtDatea" style="display:block;width:100%;height:20px;">日期</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCust" class="readonly">貨主</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtStraddrno">起迄編號</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtStraddr">起迄地點</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtPor" class="readonly">領櫃地</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtPod" class="readonly">交櫃地</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly">追蹤</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtVocc" class="readonly">船公司</a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtProduct" class="readonly">品名</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCasetype">規格</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1">櫃號一</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno2">櫃號二</a></td>
-					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount">櫃數</a></td>
+					<td align="center" style="width:190px; max-width:190px;color:black;"><a id="txtStraddrno" style="display:block;width:100%;height:20px;">起迄編號</a><a id="txtStraddr" style="display:block;width:100%;height:20px;"class="field2">起迄地點</a></td>
+					<td align="center" style="width:130px; max-width:130px;color:black;"><a id="txtPor" class="readonly" style="display:block;width:100%;height:20px;">領櫃地</a><a id="txtPod" class="readonly"style="display:block;width:100%;height:20px;"class="field2">交櫃地</a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly" style="display:block;width:100%;height:20px;">追蹤</a><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;">船公司</a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtProduct" class="readonly"style="display:block;width:100%;height:20px;">品名</a><a id="txtCasetype"style="display:block;width:100%;height:20px;"class="field2">規格</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1"style="display:block;width:100%;height:20px;">櫃號一</a><a id="txtContainerno2"style="display:block;width:100%;height:20px;" class="field2">櫃號二</a></td>
+					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount"style="display:block;width:100%;">櫃數</a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"></a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno1"></a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno2"></a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno2"></a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno3"></a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno3"></a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno4"></a></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;background-color:#F5D0A9;"><a id="txtCardno4"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"style="display:block;width:100%;height:20px;"></a><a id="txtCardno1"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno2"style="display:block;width:100%;height:20px;"></a><a id="txtCardno2"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno3"style="display:block;width:100%;height:20px;"></a><a id="txtCardno3"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno4"style="display:block;width:100%;height:20px;"></a><a id="txtCardno4"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend1" /></td>
-					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg1"></a></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg1"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend2" /></td>
-					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg2"></a></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg2"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend3" /></td>
-					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg3"></a></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg3"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend4" /></td>
-					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg4"></a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtMemo">備註</a></td>
+					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg4"style="display:block;width:100%;height:20px;"></a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtMemo"style="display:block;width:100%;height:20px;">備註</a></td>
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:3040px;width: 3040px;height:800px;overflow-y:scroll;">
+		<div style="min-width:2350px;width: 2350px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>
