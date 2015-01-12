@@ -61,7 +61,7 @@
 
 			function init(tCount){
 				$('#btnPrint').click(function(e){
-					q_box('z_transvccep_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'transvcce', "95%", "95%", m_print);
+					q_box('z_tranvcce_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'transvcce', "95%", "95%", m_print);
 				});
 				
 				for(var i=0;i<tCount;i++){
