@@ -60,6 +60,10 @@
             }
 
 			function init(tCount){
+				$('#btnPrint').click(function(e){
+					q_box('z_transvccep_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'transvcce', "95%", "95%", m_print);
+				});
+				
 				for(var i=0;i<tCount;i++){
 					$('.tData').append($('.tSchema').find('tr').eq(0).clone().data('key',i).data('data',''));	
 					for(var j=0;j<$('.tData').find('tr').eq(i).find('td').length;j++){
@@ -583,6 +587,7 @@
 			<span style="display:block;width:30px;float:left;text-align: center;">/</span>
 			<input type="text" id="txtTotpage" style="float:left;width:50px;text-align: center;color:green;" readonly="readonly"/>
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
+			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
 		<div style="min-width:2350px;width: 2350px;overflow-y:scroll;">
