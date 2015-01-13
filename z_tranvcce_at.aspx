@@ -15,15 +15,15 @@
 		<script src="css/jquery/ui/jquery.ui.widget.js"> </script>
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"> </script>
 		<script type="text/javascript">
-            aPop = new Array(['txtCarno', 'lblCarno', 'car2', 'a.noa,driverno,driver', 'txtCarno', 'car2_b.aspx']);
-            var t_carteam = null;
-            var t_calctypes = null;
+            aPop = new Array(['txtCarno', 'lblCarno', 'car2', 'a.noa,driverno,driver', 'txtCarno', 'car2_b.aspx']
+            , ['txtXaddr', 'lblXaddr', 'addr', 'noa,addr', 'txtXaddr', 'addr_b.aspx']);
             $(document).ready(function() {
             	q_getId();
-                q_gf('', 'z_tranvcce_at');       
+                LoadFinish();
             });
 
             function q_gfPost() {
+            	q_cmbParse("cmbStype", q_getMsg('stype').replace(/\^/g,','));
             	q_gt('carteam', '', 0, 0, 0, "load_1");
             }
 			function q_boxClose(s2) {
@@ -31,22 +31,7 @@
 			}
 			function q_gtPost(t_name) {
                 switch (t_name) {
-                    case 'load_1':
-                        t_carteam = '';
-                        var as = _q_appendData("carteam", "", true);
-                        for ( i = 0; i < as.length; i++) {
-                            t_carteam += (t_carteam.length > 0 ? ',' : '') + as[i].noa + '@' + as[i].team;
-                        }
-                        q_gt('calctype2', '', 0, 0, 0, "load_2");
-                        break;
-                    case 'load_2':
-                        t_calctypes = '';
-                        var as = _q_appendData("calctypes", "", true);
-                        for ( i = 0; i < as.length; i++) {
-                            t_calctypes += (t_calctypes.length > 0 ? ',' : '') + as[i].noa + as[i].noq + '@' + as[i].typea;
-                        }
-                        LoadFinish();
-                        break;
+                    d
                     default:
                         break;
                 }
@@ -58,6 +43,27 @@
 					options : [{/*1-[1],[2]*/
                         type : '1',
                         name : 'datea'
+                    }, {/*2-[3],[4]*/
+                        type : '2',
+                        name : 'cust',
+                        dbf : 'cust',
+                        index : 'noa,comp',
+                        src : 'cust_b.aspx'
+                    }, {/*3 [5]*/
+                        type : '6',
+                        name : 'carno'
+                    }, {/*4 [6]*/
+                        type : '6',
+                        name : 'cardno'
+                    }, {/*5-[7],[8]-起迄地點*/
+                        type : '2',
+                        name : 'addr',
+                        dbf : 'addr',
+                        index : 'noa,addr',
+                        src : 'addr_b.aspx'
+                    }, {/*6 [9]*/
+                        type : '6',
+                        name : 'caseno'
                     }]
 				});
 				q_popAssign();
@@ -72,10 +78,6 @@
                 $('#txtDatea1').datepicker();
                 $('#txtDatea2').mask('999/99/99');
                 $('#txtDatea2').datepicker();
-                $('#txtTrandate1').mask('999/99/99');
-                $('#txtTrandate1').datepicker();
-                $('#txtTrandate2').mask('999/99/99');
-                $('#txtTrandate2').datepicker();
             }
 		</script>
 	</head>
