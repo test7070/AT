@@ -81,9 +81,9 @@
 				//每月櫃量
 				q_cmbParse("cmbVal08"," ,10櫃,20櫃,30櫃,50櫃以上" ,'s');
 				//領櫃碼頭
-				q_cmbParse("cmbVal09"," ,蓬萊(1-10),鹽埕(11-12),苓雅(13-26),第一(27-58),第二(59-67),第三(68-73),第四(115-122),第五(74-81),洲際(108-112)" ,'s');
+				//q_cmbParse("cmbVal09"," ,蓬萊(1-10),鹽埕(11-12),苓雅(13-26),第一(27-58),第二(59-67),第三(68-73),第四(115-122),第五(74-81),洲際(108-112)" ,'s');
 				//交櫃碼頭 
-				q_cmbParse("cmbVal10"," ,蓬萊(1-10),鹽埕(11-12),苓雅(13-26),第一(27-58),第二(59-67),第三(68-73),第四(115-122),第五(74-81),洲際(108-112)" ,'s');
+				//q_cmbParse("cmbVal10"," ,蓬萊(1-10),鹽埕(11-12),苓雅(13-26),第一(27-58),第二(59-67),第三(68-73),第四(115-122),第五(74-81),洲際(108-112)" ,'s');
             }
 
             function q_boxClose(s2) {
@@ -566,8 +566,8 @@
 					<td><select id = "cmbVal06.*" style="width:95%;"> </select></td>
 					<td><select id = "cmbVal07.*" style="width:95%;"> </select></td>
 					<td><select id = "cmbVal08.*" style="width:95%;"> </select></td>
-					<td><select id = "cmbVal09.*" style="width:95%;"> </select></td>
-					<td><select id = "cmbVal10.*" style="width:95%;"> </select></td>
+					<td><input id="txtVal09.*" type="text" style="width: 95%;"/></td>
+					<td><input id="txtVal10.*" type="text" style="width: 95%;"/></td>
 					
 					<td><input id="txtPrice.*" type="text" style="width: 95%;text-align:right;"/></td>
 					<td><input id="txtMemo.*" type="text" style="width: 95%;"/></td>

@@ -638,7 +638,7 @@
 						<td><input type="text" id="txtFreetime" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">放行日</a></td>
 						<td><input type="text" id="txtRedate" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">空/重櫃</a></td>
+						<td><span> </span><a id="" class="lbl">空/重櫃期限</a></td>
 						<td><input type="text" id="txtEf" class="txt c1"/></td>
 						<td></td>
 						<td></td>
