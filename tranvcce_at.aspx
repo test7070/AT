@@ -197,7 +197,9 @@
 				goNextItem('txtStraddr','txtCasetype');
 				goNextItem('txtCasetype','txtContainerno1');
 				goNextItem('txtContainerno1','txtContainerno2');
-				goNextItem('txtContainerno2','txtMount');
+				goNextItem('txtContainerno2','txtSeal1');
+				goNextItem('txtSeal1','txtSeal2');
+				goNextItem('txtSeal2','txtMount');
 				goNextItem('txtMount','txtCarno1');
 				goNextItem('txtCarno1','txtCardno1');
 				goNextItem('txtCardno1','txtCarno2');
@@ -590,7 +592,7 @@
 			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:2350px;width: 2350px;overflow-y:scroll;">
+		<div style="min-width:2470px;width: 2470px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -602,7 +604,8 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>追蹤</a><br><a>船公司</a></td>		
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>品名</a><br><a>規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號</a></td>
-					<td align="center" style="width:60px; max-width:60px;color:black;"><a>櫃數</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a>封條</a></td>
+					<td align="center" style="width:60px; max-width:60px;color:black;"><a>訂單櫃數</a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><a>指定</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車牌)</a><br><a>　(板台)</a></td>
@@ -620,7 +623,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:2350px;width: 2350px;overflow-y:scroll;">
+		<div style="display:none;min-width:2470px;width: 2470px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -632,6 +635,7 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly" style="display:block;width:100%;height:20px;">追蹤</a><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;">船公司</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtProduct" class="readonly"style="display:block;width:100%;height:20px;">品名</a><a id="txtCasetype"style="display:block;width:100%;height:20px;"class="field2">規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1"style="display:block;width:100%;height:20px;">櫃號一</a><a id="txtContainerno2"style="display:block;width:100%;height:20px;" class="field2">櫃號二</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtSeal1"style="display:block;width:100%;height:20px;">封條一</a><a id="txtSeal2"style="display:block;width:100%;height:20px;" class="field2">封條二</a></td>
 					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount"style="display:block;width:100%;">櫃數</a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"style="display:block;width:100%;height:20px;"></a><a id="txtCardno1"style="display:block;width:100%;height:20px;"class="field2"></a></td>
@@ -650,7 +654,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:2350px;width: 2350px;height:800px;overflow-y:scroll;">
+		<div style="min-width:2470px;width: 2470px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>

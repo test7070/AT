@@ -30,6 +30,7 @@
             public bool issend1, issend2, issend3, issend4;
             public bool isassign;
             public float mount;
+            public string seal1,seal2;
         }
         public void Page_Load()
         {   
@@ -64,7 +65,7 @@
 	                ,carno4,cardno4,msg4
 	                ,memo,stype,ucr,por,pod,product
                     ,cast(0 as bit),cast(0 as bit),cast(0 as bit),cast(0 as bit)
-                    ,isassign,mount
+                    ,isassign,mount,seal1,seal2
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -131,6 +132,8 @@
                 tmp.issend4 = System.DBNull.Value.Equals(r.ItemArray[35]) ? false : (System.Boolean)r.ItemArray[35];
                 tmp.isassign = System.DBNull.Value.Equals(r.ItemArray[36]) ? false : (System.Boolean)r.ItemArray[36];
                 tmp.mount = System.DBNull.Value.Equals(r.ItemArray[37]) ? 0 : (float)(System.Double)r.ItemArray[37];
+                tmp.seal1 = System.DBNull.Value.Equals(r.ItemArray[38]) ? "" : (System.String)r.ItemArray[38];
+                tmp.seal2 = System.DBNull.Value.Equals(r.ItemArray[39]) ? "" : (System.String)r.ItemArray[39];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));
