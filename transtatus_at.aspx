@@ -20,7 +20,7 @@
             $(document).ready(function() {
             	_q_boxClose();
                 q_getId();
-                q_gf('', 'tranvcce');
+                q_gf('', 'transtatus');
 				
 				$('#btnAuthority').click(function () {
                     btnAuthority(q_name);

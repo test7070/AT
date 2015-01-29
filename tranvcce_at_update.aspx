@@ -53,7 +53,23 @@
                     connSource.Open();
                     
                     //更新資料
-                    string queryString = @"update tranvcce set
+                    string queryString = @"insert into transtatus(carno,qtime,memo)
+                        select @carno1,getdate(),'領：'+@straddr+' '+@msg1
+                        from tranvcce
+                        where seq=@seq and carno1!=@carno1 and len(@carno1)>0";
+                    queryString += @" insert into transtatus(carno,qtime,memo)
+                        select @carno2,getdate(),'送：'+@straddr+' '+@msg2
+                        from tranvcce
+                        where seq=@seq and carno2!=@carno2 and len(@carno2)>0";
+                    queryString += @" insert into transtatus(carno,qtime,memo)
+                        select @carno3,getdate(),'收：'+@straddr+' '+@msg3
+                        from tranvcce
+                        where seq=@seq and carno3!=@carno3 and len(@carno3)>0";
+                    queryString += @" insert into transtatus(carno,qtime,memo)
+                        select @carno4,getdate(),'交：'+@straddr+' '+@msg4
+                        from tranvcce
+                        where seq=@seq and carno4!=@carno4 and len(@carno4)>0";
+                    queryString += @" update tranvcce set
                         datea=@datea,straddrno=@straddrno,straddr=@straddr,vocc=@vocc,casetype=@casetype
 	                    ,containerno1=@containerno1,containerno2=@containerno2
 	                    ,carno1=@carno1,cardno1=@cardno1,msg1=@msg1

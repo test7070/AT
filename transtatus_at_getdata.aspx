@@ -20,7 +20,8 @@
                 string queryString = @"select a.carno,CONVERT(nvarchar, b.qtime, 120),b.memo
                     from car2 a
                     outer apply(select top 1 * from transtatus where carno=a.carno order by carno,qtime desc) b
-                    where cartype='2' --公司車";
+                    where cartype='2'
+                    order by a.carspecno";
                 
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                 adapter.SelectCommand = cmd;
