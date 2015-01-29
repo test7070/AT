@@ -69,6 +69,22 @@
                         select @carno4,getdate(),'交：'+@straddr+' '+@msg4
                         from tranvcce
                         where seq=@seq and carno4!=@carno4 and len(@carno4)>0";
+                    queryString += @" insert into transtatus(carno,qtime,memo)
+                        select @cardno1,getdate(),'領：'+@carno1+' '+@msg1
+                        from tranvcce
+                        where seq=@seq and ((cardno1!=@cardno1 and len(@cardno1)>0) or (carno1!=@carno1 and len(@carno1)>0))";
+                    queryString += @" insert into transtatus(carno,qtime,memo)
+                        select @cardno2,getdate(),'送：'+@carno2+' '+@msg2
+                        from tranvcce
+                        where seq=@seq and ((cardno2!=@cardno2 and len(@cardno2)>0) or (carno2!=@carno2 and len(@carno2)>0))"; 
+                    queryString += @" insert into transtatus(carno,qtime,memo)
+                        select @cardno3,getdate(),'收：'+@carno3+' '+@msg3
+                        from tranvcce
+                        where seq=@seq and ((cardno3!=@cardno3 and len(@cardno3)>0) or (carno3!=@carno3 and len(@carno3)>0))";    
+                    queryString += @" insert into transtatus(carno,qtime,memo)
+                        select @cardno4,getdate(),'交：'+@carno4+' '+@msg4
+                        from tranvcce
+                        where seq=@seq and ((cardno4!=@cardno4 and len(@cardno4)>0) or (carno4!=@carno4 and len(@carno4)>0))";    
                     queryString += @" update tranvcce set
                         datea=@datea,straddrno=@straddrno,straddr=@straddr,vocc=@vocc,casetype=@casetype
 	                    ,containerno1=@containerno1,containerno2=@containerno2
