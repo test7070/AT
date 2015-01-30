@@ -48,9 +48,8 @@
             itemIn.bdate = "";
             itemIn.edate = "";*/
             
-            
             //連接字串      
-            string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=DC";
+            string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database="+HttpUtility.UrlDecode(Request.Headers["database"]);
             //抓資料
             System.Data.DataTable tranvcce = new System.Data.DataTable();
             using (System.Data.SqlClient.SqlConnection connSource = new System.Data.SqlClient.SqlConnection(DCConnectionString ))

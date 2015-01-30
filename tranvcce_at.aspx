@@ -388,6 +388,7 @@
 					edate:edate,
 					totCount : 0,
                     url: 'tranvcce_at_getcount.aspx',
+                    headers: { 'database': q_db },
                     type: 'POST',
                     data: JSON.stringify({stype:stype,bdate:bdate,edate:edate}),
                     dataType: 'text',
@@ -433,6 +434,7 @@
 			function loadData(nstr,nend,stype,bdate,edate){
 				$.ajax({
                     url: 'tranvcce_at_getdata.aspx',
+                    headers: { 'database': q_db },
                     type: 'POST',
                     data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,bdate:bdate,edate:edate}),
                     dataType: 'text',
@@ -487,6 +489,7 @@
 					n:n,
 					seq: _curData[n].seq,
                     url: 'tranvcce_at_update.aspx',
+                    headers: { 'database': q_db },
                     type: 'POST',
                     data: JSON.stringify(_curData[n]),
                     dataType: 'text',
@@ -627,16 +630,16 @@
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtStype" class="readonly">單別</a><BR><a id="txtOrdeno" class="readonly">訂單號碼</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtDatea" style="display:block;width:100%;height:20px;">日期</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCust" class="readonly">貨主</a></td>
-					<td align="center" style="width:190px; max-width:190px;color:black;"><a id="txtStraddrno" style="display:block;width:100%;height:20px;">起迄編號</a><a id="txtStraddr" style="display:block;width:100%;height:20px;"class="field2">起迄地點</a></td>
-					<td align="center" style="width:130px; max-width:130px;color:black;"><a id="txtPor" class="readonly" style="display:block;width:100%;height:20px;">領櫃地</a><a id="txtPod" class="readonly"style="display:block;width:100%;height:20px;"class="field2">交櫃地</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly" style="display:block;width:100%;height:20px;">追蹤</a><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;">船公司</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtProduct" class="readonly"style="display:block;width:100%;height:20px;">品名</a><a id="txtCasetype"style="display:block;width:100%;height:20px;"class="field2">規格</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1"style="display:block;width:100%;height:20px;">櫃號一</a><a id="txtContainerno2"style="display:block;width:100%;height:20px;" class="field2">櫃號二</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtSeal1"style="display:block;width:100%;height:20px;">封條一</a><a id="txtSeal2"style="display:block;width:100%;height:20px;" class="field2">封條二</a></td>
-					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount"style="display:block;width:100%;">櫃數</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtStype" class="readonly"></a><BR><a id="txtOrdeno" class="readonly"></a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtDatea" style="display:block;width:100%;height:20px;"></a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCust" class="readonly"></a></td>
+					<td align="center" style="width:190px; max-width:190px;color:black;"><a id="txtStraddrno" style="display:block;width:100%;height:20px;"></a><a id="txtStraddr" style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:130px; max-width:130px;color:black;"><a id="txtPor" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtPod" class="readonly"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtProduct" class="readonly"style="display:block;width:100%;height:20px;"></a><a id="txtCasetype"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1"style="display:block;width:100%;height:20px;"></a><a id="txtContainerno2"style="display:block;width:100%;height:20px;" class="field2"></a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtSeal1"style="display:block;width:100%;height:20px;"></a><a id="txtSeal2"style="display:block;width:100%;height:20px;" class="field2"></a></td>
+					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"style="display:block;width:100%;height:20px;"></a><a id="txtCardno1"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno2"style="display:block;width:100%;height:20px;"></a><a id="txtCardno2"style="display:block;width:100%;height:20px;"class="field2"></a></td>
@@ -650,7 +653,7 @@
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg3"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend4" /></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg4"style="display:block;width:100%;height:20px;"></a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtMemo"style="display:block;width:100%;height:20px;">備註</a></td>
+					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtMemo"style="display:block;width:100%;height:20px;"></a></td>
 				</tr>
 			</table>
 		</div>

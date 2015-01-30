@@ -38,6 +38,7 @@
 				$('#btnRefresh').click(function(e){
 					$.ajax({
 	                    url: 'transtatus_at_getdata.aspx',
+	                    headers: { 'database': q_db },
 	                    type: 'POST',
 	                    data: '',
 	                    dataType: 'text',
