@@ -16,7 +16,7 @@
 		<script src="http://59.125.143.170/html2canvas.js"></script>
 		<script type="text/javascript">
 			var q_name = 'tranvcce';
-			var _pageCount = 20; //一頁幾筆資料
+			var _pageCount = 16; //一頁幾筆資料
             var _curData = new Array();
 			
 			function Screenshot(){

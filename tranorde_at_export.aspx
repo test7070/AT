@@ -37,7 +37,7 @@
 
             aPop = new Array(['txtProductno', 'btnProduct', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
             , ['txtAddrno_', 'btnAddr_', 'addr', 'noa,addr', 'txtAddrno_,txtAddr_', 'addr_b2.aspx']
-            , ['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,tel,fax', 'txtCustno,txtComp,txtNick,txtTel,txtFax', 'cust_b.aspx']);
+            , ['txtCustno', 'lblCust', 'cust', 'noa,comp,nick', 'txtCustno,txtComp,txtNick', 'cust_b.aspx']);
 			
 			var z_mech = new Array();
             $(document).ready(function() {
@@ -66,6 +66,32 @@
                 	t_where ="isnull(a.enda,0)=0 and ISNULL(b.enda,0)=0 and a.custno='"+t_custno+"'";
                 	
                 	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'quat_orde_at', "95%", "95%", q_getMsg('popTranquat'));
+                });
+                $('#txtMount').blur(function(e){
+                	//出口明細個數補足到櫃數
+	            	var t_count = q_float('txtMount');
+	            	while(t_count>q_bbsCount){
+	            		$('#btnPlus').click();
+	            	}
+	            	var n = 0;
+	            	for(var i=0;i<q_bbsCount;i++){
+	            		//全形空白
+	            		if($('#txtAddr_'+i).val()=='　')
+	            			$('#txtAddr_'+i).val('');
+	            		if(!($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0))
+	            			n++;
+	            	}
+	            	console.log(n+'_'+t_count);
+	            	if(n<t_count){
+	            		for(var i=0;i<q_bbsCount;i++){
+	            			if(n==t_count)
+	            				break;
+		            		if($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0){
+		            			$('#txtAddr_'+i).val('　');//全形空白
+		            			n++;
+		            		}
+		            	}
+	            	}
                 });
             }
             function q_funcPost(t_func, result) {
@@ -169,8 +195,7 @@
 
             function btnOk() {
                 Lock(1, {opacity : 0});
-				
-				
+            	
                 if (q_cur == 1) {
                     $('#txtWorker').val(r_name);
                 } else
