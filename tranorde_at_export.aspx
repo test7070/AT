@@ -81,7 +81,7 @@
 	            		if(!($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0))
 	            			n++;
 	            	}
-	            	console.log(n+'_'+t_count);
+	            	//console.log(n+'_'+t_count);
 	            	if(n<t_count){
 	            		for(var i=0;i<q_bbsCount;i++){
 	            			if(n==t_count)
