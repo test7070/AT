@@ -24,7 +24,7 @@
             var bbmNum = [['txtMount',10,0,1]];
             var bbsNum = [];
             var bbtNum = [];
-            var bbmMask = [['txtDatea','999/99/99'],['txtStrdate','999/99/99'],['txtDldate','999/99/99'],['txtEtc','999/99/99'],['txtEta','999/99/99'],['txtEtd','999/99/99'],['txtRedate','999/99/99']];
+            var bbmMask = [['txtDatea','999/99/99'],['txtStrdate','999/99/99'],['txtDldate','999/99/99'],['txtEtc','999/99/99'],['txtEta','999/99/99'],['txtEtd','999/99/99'],['txtRedate','999/99/99'],['txtEf','999/99/99']];
             var bbsMask = [];
             var bbtMask = [];
             q_sqlCount = 6;
@@ -213,6 +213,7 @@
                     $('#txtRedate').datepicker('destroy');
                     $('#txtStrdate').datepicker('destroy');
                     $('#txtDldate').datepicker('destroy');
+                    $('#txtEf').datepicker('destroy');
                     $('#btnImport').attr('disabled','disabled');
                 } else {	
                     $('#txtDatea').datepicker();
@@ -222,6 +223,7 @@
                     $('#txtRedate').datepicker();
                     $('#txtStrdate').datepicker();
                     $('#txtDldate').datepicker();
+                    $('#txtEf').datepicker();
                     $('#btnImport').removeAttr('disabled');
                 }
             }
@@ -553,14 +555,14 @@
 					</tr>
 					<tr >
 						<td><span> </span><a id="" class="lbl">領櫃編號</a></td>
-						<td><input type="text" id="txtOption1" class="txt c1"/></td>
+						<td><input type="text" id="txtTakeno" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">提單號碼</a></td>
 						<td><input type="text" id="txtDo2" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="" class="lbl">放行日</a></td>
 						<td><input type="text" id="txtRedate" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">空/重櫃期限</a></td>
+						<td><span> </span><a id="" class="lbl">重櫃期限</a></td>
 						<td><input type="text" id="txtEf" class="txt c1"/></td>
 						<td><span> </span><a class="lbl">交櫃地</a></td>
 						<td><input type="text" id="txtEmpdock2" class="txt c1"/></td>

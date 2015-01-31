@@ -76,7 +76,7 @@
 	            	var n = 0;
 	            	for(var i=0;i<q_bbsCount;i++){
 	            		//全形空白
-	            		if($('#txtAddr_'+i).val()=='　')
+	            		if($('#txtAddr_'+i).val()=='_')
 	            			$('#txtAddr_'+i).val('');
 	            		if(!($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0))
 	            			n++;
@@ -87,7 +87,7 @@
 	            			if(n==t_count)
 	            				break;
 		            		if($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0){
-		            			$('#txtAddr_'+i).val('　');//全形空白
+		            			$('#txtAddr_'+i).val('_');//全形空白
 		            			n++;
 		            		}
 		            	}

@@ -377,8 +377,10 @@
 					}
 				}
 				$('.btnSel').attr('disabled','disabled');
+				//$('.btnSel').next().text('');
 				for(var i=0;i<_curData.length;i++){
 					$('#btnSel_'+i).removeAttr('disabled');
+					//$('#btnSel_'+i).next().text(_curData[i].edittime.length>0?'*':'');
 				}
 			}
 			function loadCount(stype,bdate,edate){

@@ -70,11 +70,12 @@
 	                ,*
 	                from tranvcce
 	                where ISNULL(isdel,0)=0
+	                and (len(@stype)=0 or isnull(stype,'')=@stype)
+	                and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
+	                and (len(@edate)=0 or isnull(datea,'')<=@edate)
                 )a
                 where a.recno between @nstr and @nend
-                and (len(@stype)=0 or isnull(a.stype,'')=@stype)
-                and (len(@bdate)=0 or isnull(a.datea,'')>=@bdate)
-                and (len(@edate)=0 or isnull(a.datea,'')<=@edate)
+                
                 order by a.recno";
                 
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);

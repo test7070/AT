@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Debug="true"%>
+ <%@ Page Language="C#" Debug="true"%>
     <script language="c#" runat="server">     
         public class ParaIn
         {
@@ -29,7 +29,9 @@
             public string CommandId;
         }
         //連接字串      
-        string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=" + HttpUtility.UrlDecode(Request.Headers["database"]);
+        //string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=" + HttpUtility.UrlDecode(Request.Headers["database"]);
+        //string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=" + Request.Headers["database"];
+        string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=DC";
         
         public void Page_Load()
         {
@@ -42,8 +44,8 @@
                 byte[] formData = Request.BinaryRead(formSize);
                 System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 var itemIn = serializer.Deserialize<ParaIn>(encoding.GetString(formData));
-
-                
+                //string aa= "{\"recno\":4,\"seq\":3,\"isdel\":false,\"stype\":\"出口\",\"ucr\":\"\",\"por\":\"\",\"pod\":\"\",\"product\":\"\",\"ordeaccy\":\"104\",\"ordeno\":\"BB1040129001\",\"ordenoq\":\"002\",\"datea\":\"\",\"custno\":\"A001\",\"cust\":\"誼友交通事業股份有限公司\",\"straddrno\":\"C003-001\",\"straddr\":\"W-橋頭\",\"vocc\":\"\",\"casetype\":\"\",\"containerno1\":\"c\",\"containerno2\":\"\",\"carno1\":\"\",\"cardno1\":\"\",\"msg1\":\"\",\"carno2\":\"\",\"cardno2\":\"\",\"msg2\":\"\",\"carno3\":\"\",\"cardno3\":\"\",\"msg3\":\"\",\"carno4\":\"\",\"cardno4\":\"\",\"msg4\":\"\",\"memo\":\"\",\"issend1\":false,\"issend2\":false,\"issend3\":false,\"issend4\":false,\"isassign\":false,\"mount\":\"0\",\"seal1\":\"\",\"seal2\":\"\",\"edittime\":\"\"}";   
+                //var itemIn = serializer.Deserialize<ParaIn>(aa);
                 //資料寫入
                 
                 System.Data.DataTable tranvcce = new System.Data.DataTable();
@@ -95,7 +97,6 @@
 	                    ,memo=@memo,edittime=getDate(),isassign=@isassign
 	                    ,mount=@mount,seal1=@seal1,seal2=@seal2
 	                     where seq=@seq and isnull(isdel,0)=0";
-
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
                     cmd.Parameters.AddWithValue("@datea", itemIn.datea);
@@ -130,7 +131,6 @@
                         sendCommand(connSource, itemIn, itemIn.carno1, itemIn.msg1, "card1");
                         isdelay = true;
                     }
-
                     if (itemIn.issend2 && itemIn.carno2.Length > 0)
                     {
                         if(isdelay)
@@ -138,7 +138,6 @@
                         sendCommand(connSource, itemIn, itemIn.carno2, itemIn.msg2, "card2");
                         isdelay = true;
                     }
-
                     if (itemIn.issend3 && itemIn.carno3.Length > 0)
                     {
                         if (isdelay)
@@ -176,7 +175,6 @@
                     "set @t_sendno=isnull(@t_sendno,0)+1 " +
                     "end " +
                     "select @t_sendno";
-
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
             cmd.Parameters.AddWithValue("@t_seq", item.seq);
             cmd.Parameters.AddWithValue("@t_carno", carno);
@@ -198,7 +196,6 @@
             cmd.Parameters.AddWithValue("@accy", item.ordeaccy);
             adapter.SelectCommand = cmd;
             adapter.Fill(orde);
-
             string stype = "";
             if(orde.Rows.Count>0){
                 //出口
