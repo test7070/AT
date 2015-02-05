@@ -30,6 +30,15 @@
                 q_langShow();
                 init();
 				$('#btnRefresh').click();
+				$('#btnCar').click(function(e){
+					$('#car').toggle();
+				});
+				$('#btnCard').click(function(e){
+					$('#card').toggle();
+				});
+				$('#btnYard').click(function(e){
+					$('#yard').toggle();
+				});
             }
 
 			function init(){
@@ -38,7 +47,7 @@
 				$('#btnRefresh').click(function(e){
 					$.ajax({
 	                    url: 'transtatus_at_getdata.aspx',
-	                    headers: { 'database': q_db },
+	                    headers: { 'database': q_db},
 	                    type: 'POST',
 	                    data: '',
 	                    dataType: 'text',
@@ -50,7 +59,9 @@
 	                    	}
 	                    },
 	                    complete: function(){
-	                    	refresh();                  
+	                    	refresh('car'); 
+	                    	refresh('card'); 
+	                    	refresh('yard');                  
 	                    },
 	                    error: function(jqXHR, exception) {
 	                        var errmsg = this.url+'資料讀取異常。\n';
@@ -80,31 +91,31 @@
 			        timeout();
 			    }, 30000);
 			}
-			function refresh(){
+			function refresh(key){
 				
-				while($('.tData').find('tr').length<_curData.length){
-					var n = $('.tData').find('tr').length;
-					$('.tData').append($('.tSchema').find('tr').eq(0).clone().data('key', n).data('data',''));
+				while($('#'+key).find('.tData').find('tr').length<_curData[key].length){
+					var n = $('#'+key).find('.tData').find('tr').length;
+					$('#'+key).find('.tData').append($('#'+key).find('.tSchema').find('tr').eq(0).clone().data('key', n).data('data',''));
 					
-					for(var i=0;i<$('.tData').find('tr').last().find('td').length;i++){
-						var obj = $('.tData').find('tr').last().find('td').eq(i).find('input[type="button"]').eq(0);
-						obj.attr('id',obj.attr('id')+'_'+n).attr('value',n+1);
+					for(var i=0;i<$('#'+key).find('.tData').find('tr').last().find('td').length;i++){
+						var obj = $('#'+key).find('.tData').find('tr').last().find('td').eq(i).find('input[type="button"]').eq(0);
+						obj.attr('id',obj.attr('id')+'_'+key+'_'+n).attr('value',n+1);
 						
-						var obj = $('.tData').find('tr').last().find('td').eq(i).find('a');
+						var obj = $('#'+key).find('.tData').find('tr').last().find('td').eq(i).find('a');
 						for(var k=0;k<obj.length;k++){
 							t_id = obj.eq(k).attr('id');
-							obj.eq(k).addClass(t_id).attr('id',t_id+'_'+n);
+							obj.eq(k).addClass(t_id+'_'+key).attr('id',t_id+'_'+key+'_'+n);
 						}
 					}
 				}
-				for(var i=0;i<$('.tData').find('tr').length;i++){
-					if(i<_curData.length){
-						$('.tData').find('tr').eq(i).css('display','');
-						$('#txtCarno_'+i).text(_curData[i].carno);
-						$('#txtQtime_'+i).text(_curData[i].qtime);
-						$('#txtMemo_'+i).text(_curData[i].memo);
+				for(var i=0;i<$('#'+key).find('.tData').find('tr').length;i++){
+					if(i<_curData[key].length){
+						$('#'+key).find('.tData').find('tr').eq(i).css('display','');
+						$('#txtNoa_'+key+'_'+i).text(_curData[key][i].noa);
+						$('#txtQtime_'+key+'_'+i).text(_curData[key][i].qtime);
+						$('#txtMemo_'+key+'_'+i).text(_curData[key][i].memo);
 					}else{
-						$('.tData').find('tr').eq(i).css('display','none');		
+						$('#'+key).find('.tData').find('tr').eq(i).css('display','none');		
 					}
 				}
 			}
@@ -153,30 +164,88 @@
 			<input type='button' id='btnRefresh' name='btnRefresh' style='font-size:16px;float:left;' value='資料更新'/>
 			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
+			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
+			<input type='button' id='btnCar' style='font-size:16px;float:left;' value='車輛'/>
+			<input type='button' id='btnCard' style='font-size:16px;float:left;' value='板台'/>
+			<input type='button' id='btnYard' style='font-size:16px;float:left;' value='車場'/>
 		</div>
-		<div style="min-width:700px;width: 700px;overflow-y:scroll;">
-			<table class="tHeader">
-				<tr>
-					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a>車牌</a></td>
-					<td align="center" style="width:150px; max-width:150px;color:black;"><a>時間</a></td>
-					<td align="center" style="width:400px; max-width:400px;color:black;"><a>備註</a></td>
-				</tr>
-			</table>
+		<div id="car" style="float:left;">
+			<div style="min-width:700px;width: 700px;overflow-y:scroll;">
+				<table class="tHeader">
+					<tr>
+						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a>車牌</a></td>
+						<td align="center" style="width:150px; max-width:150px;color:black;"><a>時間</a></td>
+						<td align="center" style="width:400px; max-width:400px;color:black;"><a>備註</a></td>
+					</tr>
+				</table>
+			</div>
+			<div style="display:none;min-width:700px;width: 700px;overflow-y:scroll;">
+				<table class="tSchema">
+					<tr>
+						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
+						<td align="center" style="width:150px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
+						<td align="center" style="width:400px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
+					</tr>
+				</table>
+			</div>
+			<div style="min-width:700px;width: 700px;height:800px;overflow-y:scroll;">
+				<table class="tData">
+				</table>
+			</div>
 		</div>
-		<div style="display:none;min-width:700px;width: 700px;overflow-y:scroll;">
-			<table class="tSchema">
-				<tr>
-					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCarno"> </a></td>
-					<td align="center" style="width:150px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
-					<td align="center" style="width:400px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
-				</tr>
-			</table>
+		<div id="card" style="float:left;">
+			<div style="min-width:700px;width: 700px;overflow-y:scroll;">
+				<table class="tHeader">
+					<tr>
+						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a>板台</a></td>
+						<td align="center" style="width:150px; max-width:150px;color:black;"><a>時間</a></td>
+						<td align="center" style="width:400px; max-width:400px;color:black;"><a>備註</a></td>
+					</tr>
+				</table>
+			</div>
+			<div style="display:none;min-width:700px;width: 700px;overflow-y:scroll;">
+				<table class="tSchema">
+					<tr>
+						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
+						<td align="center" style="width:150px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
+						<td align="center" style="width:400px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
+					</tr>
+				</table>
+			</div>
+			<div style="min-width:700px;width: 700px;height:800px;overflow-y:scroll;">
+				<table class="tData">
+				</table>
+			</div>
 		</div>
-		<div style="min-width:700px;width: 700px;height:800px;overflow-y:scroll;">
-			<table class="tData">
-			</table>
+		<div id="yard" style="float:left;">
+			<div style="min-width:700px;width: 700px;overflow-y:scroll;">
+				<table class="tHeader">
+					<tr>
+						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a>車場</a></td>
+						<td align="center" style="width:150px; max-width:150px;color:black;"><a>時間</a></td>
+						<td align="center" style="width:400px; max-width:400px;color:black;"><a>備註</a></td>
+					</tr>
+				</table>
+			</div>
+			<div style="display:none;min-width:700px;width: 700px;overflow-y:scroll;">
+				<table class="tSchema">
+					<tr>
+						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
+						<td align="center" style="width:150px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
+						<td align="center" style="width:400px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
+					</tr>
+				</table>
+			</div>
+			<div style="min-width:700px;width: 700px;height:800px;overflow-y:scroll;">
+				<table class="tData">
+				</table>
+			</div>
 		</div>
 	</body>
 </html>
