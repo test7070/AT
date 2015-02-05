@@ -22,6 +22,7 @@
             public bool isassign;
             public float mount;
             public string seal1,seal2;
+            public string yard1,yard2,yard3,yard4;
         }
         public class SendCommand
         { 
@@ -53,38 +54,77 @@
                     connSource.Open();
                     
                     //更新資料
-                    string queryString = @"insert into transtatus(carno,qtime,memo)
-                        select @carno1,getdate(),'領：'+@straddr+' '+@msg1
+                    //car
+                    string queryString = @"insert into transtatus(typea,noa,qtime,memo)
+                        select 'car',@carno1,getdate(),'領：'+@straddr+' '+@msg1
                         from tranvcce
                         where seq=@seq and carno1!=@carno1 and len(@carno1)>0";
-                    queryString += @" insert into transtatus(carno,qtime,memo)
-                        select @carno2,getdate(),'送：'+@straddr+' '+@msg2
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'car',@carno2,getdate(),'送：'+@straddr+' '+@msg2
                         from tranvcce
                         where seq=@seq and carno2!=@carno2 and len(@carno2)>0";
-                    queryString += @" insert into transtatus(carno,qtime,memo)
-                        select @carno3,getdate(),'收：'+@straddr+' '+@msg3
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'car',@carno3,getdate(),'收：'+@straddr+' '+@msg3
                         from tranvcce
                         where seq=@seq and carno3!=@carno3 and len(@carno3)>0";
-                    queryString += @" insert into transtatus(carno,qtime,memo)
-                        select @carno4,getdate(),'交：'+@straddr+' '+@msg4
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'car',@carno4,getdate(),'交：'+@straddr+' '+@msg4
                         from tranvcce
                         where seq=@seq and carno4!=@carno4 and len(@carno4)>0";
-                    queryString += @" insert into transtatus(carno,qtime,memo)
-                        select @cardno1,getdate(),'領：'+@carno1+' '+@msg1
+                    //card
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'card',@cardno1,getdate(),'領：'+@carno1+' '+@msg1
                         from tranvcce
                         where seq=@seq and ((cardno1!=@cardno1 and len(@cardno1)>0) or (carno1!=@carno1 and len(@carno1)>0))";
-                    queryString += @" insert into transtatus(carno,qtime,memo)
-                        select @cardno2,getdate(),'送：'+@carno2+' '+@msg2
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'card',@cardno2,getdate(),'送：'+@carno2+' '+@msg2
                         from tranvcce
                         where seq=@seq and ((cardno2!=@cardno2 and len(@cardno2)>0) or (carno2!=@carno2 and len(@carno2)>0))"; 
-                    queryString += @" insert into transtatus(carno,qtime,memo)
-                        select @cardno3,getdate(),'收：'+@carno3+' '+@msg3
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'card',@cardno3,getdate(),'收：'+@carno3+' '+@msg3
                         from tranvcce
                         where seq=@seq and ((cardno3!=@cardno3 and len(@cardno3)>0) or (carno3!=@carno3 and len(@carno3)>0))";    
-                    queryString += @" insert into transtatus(carno,qtime,memo)
-                        select @cardno4,getdate(),'交：'+@carno4+' '+@msg4
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'card',@cardno4,getdate(),'交：'+@carno4+' '+@msg4
                         from tranvcce
                         where seq=@seq and ((cardno4!=@cardno4 and len(@cardno4)>0) or (carno4!=@carno4 and len(@carno4)>0))";    
+                    //yard
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'yard',@yard1,getdate()
+                        ,'領：'+@cust
+                        	+case when len(@msg1)>0 then '，'+@msg1 else '' end
+                        	+case when len(@containerno1)>0 then '，'+@containerno1 else '' end
+                        	+case when len(@containerno2)>0 then '、'+@containerno2 else '' end	
+                        from tranvcce
+                        where seq=@seq and (isnull(yard1,'')!=@yard1 and len(@yard1)>0)";
+                    
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'yard',@yard2,getdate()
+                        ,'領：'+@cust
+                        	+case when len(@msg2)>0 then '，'+@msg2 else '' end
+                        	+case when len(@containerno1)>0 then '，'+@containerno1 else '' end
+                        	+case when len(@containerno2)>0 then '、'+@containerno2 else '' end	
+                        from tranvcce
+                        where seq=@seq and (isnull(yard2,'')!=@yard2 and len(@yard2)>0)";
+                    
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'yard',@yard3,getdate()
+                        ,'領：'+@cust
+                        	+case when len(@msg3)>0 then '，'+@msg3 else '' end
+                        	+case when len(@containerno1)>0 then '，'+@containerno1 else '' end
+                        	+case when len(@containerno2)>0 then '、'+@containerno2 else '' end	
+                        from tranvcce
+                        where seq=@seq and (isnull(yard3,'')!=@yard3 and len(@yard3)>0)";
+                    
+                    queryString += @" insert into transtatus(typea,noa,qtime,memo)
+                        select 'yard',@yard4,getdate()
+                        ,'領：'+@cust
+                        	+case when len(@msg4)>0 then '，'+@msg4 else '' end
+                        	+case when len(@containerno1)>0 then '，'+@containerno1 else '' end
+                        	+case when len(@containerno2)>0 then '、'+@containerno2 else '' end	
+                        from tranvcce
+                        where seq=@seq and (isnull(yard4,'')!=@yard4 and len(@yard4)>0)";
+                        
                     queryString += @" update tranvcce set
                         datea=@datea,straddrno=@straddrno,straddr=@straddr,vocc=@vocc,casetype=@casetype
 	                    ,containerno1=@containerno1,containerno2=@containerno2
@@ -94,10 +134,13 @@
                         ,carno4=@carno4,cardno4=@cardno4,msg4=@msg4
 	                    ,memo=@memo,edittime=getDate(),isassign=@isassign
 	                    ,mount=@mount,seal1=@seal1,seal2=@seal2
+	                    ,yard1=@yard1,yard2=@yard2,yard3=@yard3,yard4=@yard4
 	                     where seq=@seq and isnull(isdel,0)=0";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
                     cmd.Parameters.AddWithValue("@datea", itemIn.datea);
+                    cmd.Parameters.AddWithValue("@custno", itemIn.custno);
+                    cmd.Parameters.AddWithValue("@cust", itemIn.cust);
                     cmd.Parameters.AddWithValue("@straddrno", itemIn.straddrno);
                     cmd.Parameters.AddWithValue("@straddr", itemIn.straddr);
                     cmd.Parameters.AddWithValue("@vocc", itemIn.vocc);
@@ -121,6 +164,10 @@
                     cmd.Parameters.AddWithValue("@mount", itemIn.mount);
                     cmd.Parameters.AddWithValue("@seal1", itemIn.seal1);
                     cmd.Parameters.AddWithValue("@seal2", itemIn.seal2);
+                    cmd.Parameters.AddWithValue("@yard1", itemIn.yard1);
+                    cmd.Parameters.AddWithValue("@yard2", itemIn.yard2);
+                    cmd.Parameters.AddWithValue("@yard3", itemIn.yard3);
+                    cmd.Parameters.AddWithValue("@yard4", itemIn.yard4);
                     cmd.ExecuteNonQuery();
                     //--------------------------送資料給長輝--------------------------------------
                     bool isdelay = false;

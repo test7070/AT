@@ -202,13 +202,17 @@
 				goNextItem('txtSeal2','txtMount');
 				goNextItem('txtMount','txtCarno1');
 				goNextItem('txtCarno1','txtCardno1');
-				goNextItem('txtCardno1','txtCarno2');
+				goNextItem('txtCardno1','txtYard1');
+				goNextItem('txtYard1','txtCarno2');
 				goNextItem('txtCarno2','txtCardno2');
-				goNextItem('txtCardno2','txtCarno3');
+				goNextItem('txtCardno2','txtYard2');
+				goNextItem('txtYard2','txtCarno3');
 				goNextItem('txtCarno3','txtCardno3');
-				goNextItem('txtCardno3','txtCarno4');
+				goNextItem('txtCardno3','txtYard3');
+				goNextItem('txtYard3','txtCarno4');
 				goNextItem('txtCarno4','txtCardno4');
-				goNextItem('txtCardno4','txtMsg1');
+				goNextItem('txtCardno4','txtYard4');
+				goNextItem('txtYard4','txtMsg1');
 				goNextItem('txtMsg1','txtMsg2');
 				goNextItem('txtMsg2','txtMsg3');
 				goNextItem('txtMsg3','txtMsg4');
@@ -597,7 +601,7 @@
 			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:2470px;width: 2470px;overflow-y:scroll;">
+		<div style="min-width:2790px;width: 2790px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -613,9 +617,13 @@
 					<td align="center" style="width:60px; max-width:60px;color:black;"><a>訂單櫃數</a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><a>指定</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車場)</a><br></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><a>領</a></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a>備註(領)</a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><a>送</a></td>
@@ -628,7 +636,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:2470px;width: 2470px;overflow-y:scroll;">
+		<div style="display:none;min-width:2790px;width: 2790px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -644,9 +652,13 @@
 					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"style="display:block;width:100%;height:20px;"></a><a id="txtCardno1"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard1"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno2"style="display:block;width:100%;height:20px;"></a><a id="txtCardno2"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard2"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno3"style="display:block;width:100%;height:20px;"></a><a id="txtCardno3"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard3"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno4"style="display:block;width:100%;height:20px;"></a><a id="txtCardno4"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard4"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend1" /></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg1"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend2" /></td>
@@ -659,7 +671,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:2470px;width: 2470px;height:800px;overflow-y:scroll;">
+		<div style="min-width:2790px;width: 2790px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>

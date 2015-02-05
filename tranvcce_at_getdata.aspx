@@ -31,6 +31,7 @@
             public bool isassign;
             public float mount;
             public string seal1,seal2;
+            public string yard1,yard2,yard3,yard4;
         }
         public void Page_Load()
         {   
@@ -65,6 +66,7 @@
 	                ,memo,stype,ucr,por,pod,product
                     ,cast(0 as bit),cast(0 as bit),cast(0 as bit),cast(0 as bit)
                     ,isassign,mount,seal1,seal2
+                    ,yard1,yard2,yard3,yard4
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -134,6 +136,10 @@
                 tmp.mount = System.DBNull.Value.Equals(r.ItemArray[37]) ? 0 : (float)(System.Double)r.ItemArray[37];
                 tmp.seal1 = System.DBNull.Value.Equals(r.ItemArray[38]) ? "" : (System.String)r.ItemArray[38];
                 tmp.seal2 = System.DBNull.Value.Equals(r.ItemArray[39]) ? "" : (System.String)r.ItemArray[39];
+                tmp.yard1 = System.DBNull.Value.Equals(r.ItemArray[40]) ? "" : (System.String)r.ItemArray[40];
+                tmp.yard2 = System.DBNull.Value.Equals(r.ItemArray[41]) ? "" : (System.String)r.ItemArray[41];
+                tmp.yard3 = System.DBNull.Value.Equals(r.ItemArray[42]) ? "" : (System.String)r.ItemArray[42];
+                tmp.yard4 = System.DBNull.Value.Equals(r.ItemArray[43]) ? "" : (System.String)r.ItemArray[43];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));
