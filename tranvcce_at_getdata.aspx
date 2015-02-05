@@ -6,6 +6,7 @@
             public int nstr;
             public int nend;
             public string stype;
+            public string cust;
             public string bdate;
             public string edate;
         }
@@ -73,6 +74,7 @@
 	                from tranvcce
 	                where ISNULL(isdel,0)=0
 	                and (len(@stype)=0 or isnull(stype,'')=@stype)
+	                and (len(@cust)=0 or charindex(@cust,cust)>0)
 	                and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
 	                and (len(@edate)=0 or isnull(datea,'')<=@edate)
                 )a
@@ -84,6 +86,7 @@
                 cmd.Parameters.AddWithValue("@nstr", itemIn.nstr);
                 cmd.Parameters.AddWithValue("@nend", itemIn.nend);
                 cmd.Parameters.AddWithValue("@stype", itemIn.stype);
+                cmd.Parameters.AddWithValue("@cust", itemIn.cust);
                 cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
                 cmd.Parameters.AddWithValue("@edate", itemIn.edate);
                 adapter.SelectCommand = cmd;
