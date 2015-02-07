@@ -174,28 +174,24 @@
                     if (itemIn.issend1 && itemIn.carno1.Length>0)
                     {
                         sendCommand(connSource, itemIn, itemIn.carno1, itemIn.msg1, "card1");
-                        isdelay = true;
                     }
                     if (itemIn.issend2 && itemIn.carno2.Length > 0)
                     {
                         if(isdelay)
                             System.Threading.Thread.Sleep(1000);
                         sendCommand(connSource, itemIn, itemIn.carno2, itemIn.msg2, "card2");
-                        isdelay = true;
                     }
                     if (itemIn.issend3 && itemIn.carno3.Length > 0)
                     {
                         if (isdelay)
                             System.Threading.Thread.Sleep(1000);
                         sendCommand(connSource, itemIn, itemIn.carno3, itemIn.msg3, "card3");
-                        isdelay = true;
                     }
                     if (itemIn.issend4 && itemIn.carno4.Length > 0)
                     {
                         if (isdelay)
                             System.Threading.Thread.Sleep(1000);
                         sendCommand(connSource, itemIn, itemIn.carno4, itemIn.msg4, "card4");
-                        isdelay = true;
                     }
                     
                     connSource.Close();
@@ -299,6 +295,7 @@
                 st.Close();
             }
             string result = "";
+            System.Threading.Thread.Sleep(1000);
             // 取得回應資料
             using (System.Net.HttpWebResponse response = request.GetResponse() as System.Net.HttpWebResponse)
             {
