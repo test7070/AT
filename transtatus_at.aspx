@@ -170,13 +170,13 @@
 			<input type='button' id='btnYard' style='font-size:16px;float:left;' value='車場'/>
 		</div>
 		<div id="car" style="float:left;">
-			<div style="min-width:700px;width: 700px;overflow-y:scroll;">
+			<div style="min-width:600px;width: 600px;overflow-y:scroll;">
 				<table class="tHeader">
 					<tr>
 						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a>車牌</a></td>
-						<td align="center" style="width:150px; max-width:150px;color:black;"><a>時間</a></td>
-						<td align="center" style="width:400px; max-width:400px;color:black;"><a>備註</a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a>時間</a></td>
+						<td align="center" style="width:350px; max-width:350px;color:black;"><a>備註</a></td>
 					</tr>
 				</table>
 			</div>
@@ -185,64 +185,64 @@
 					<tr>
 						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
-						<td align="center" style="width:150px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
-						<td align="center" style="width:400px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtQtime"> </a></td>
+						<td align="center" style="width:350px; max-width:350px;color:black;"><a id="txtMemo"> </a></td>
 					</tr>
 				</table>
 			</div>
-			<div style="min-width:700px;width: 700px;height:800px;overflow-y:scroll;">
+			<div style="min-width:600px;width: 600px;height:800px;overflow-y:scroll;">
 				<table class="tData">
 				</table>
 			</div>
 		</div>
 		<div id="card" style="float:left;">
-			<div style="min-width:700px;width: 700px;overflow-y:scroll;">
+			<div style="min-width:600px;width: 600px;overflow-y:scroll;">
 				<table class="tHeader">
 					<tr>
 						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a>板台</a></td>
-						<td align="center" style="width:150px; max-width:150px;color:black;"><a>時間</a></td>
-						<td align="center" style="width:400px; max-width:400px;color:black;"><a>備註</a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a>時間</a></td>
+						<td align="center" style="width:350px; max-width:350px;color:black;"><a>備註</a></td>
 					</tr>
 				</table>
 			</div>
-			<div style="display:none;min-width:700px;width: 700px;overflow-y:scroll;">
+			<div style="display:none;min-width:600px;width: 600px;overflow-y:scroll;">
 				<table class="tSchema">
 					<tr>
 						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
-						<td align="center" style="width:150px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
-						<td align="center" style="width:400px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtQtime"> </a></td>
+						<td align="center" style="width:400px; max-width:350px;color:black;"><a id="txtMemo"> </a></td>
 					</tr>
 				</table>
 			</div>
-			<div style="min-width:700px;width: 700px;height:800px;overflow-y:scroll;">
+			<div style="min-width:600px;width: 600px;height:800px;overflow-y:scroll;">
 				<table class="tData">
 				</table>
 			</div>
 		</div>
 		<div id="yard" style="float:left;">
-			<div style="min-width:700px;width: 700px;overflow-y:scroll;">
+			<div style="min-width:600px;width: 600px;overflow-y:scroll;">
 				<table class="tHeader">
 					<tr>
 						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a>車場</a></td>
-						<td align="center" style="width:150px; max-width:150px;color:black;"><a>時間</a></td>
-						<td align="center" style="width:400px; max-width:400px;color:black;"><a>備註</a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a>時間</a></td>
+						<td align="center" style="width:350px; max-width:350px;color:black;"><a>備註</a></td>
 					</tr>
 				</table>
 			</div>
-			<div style="display:none;min-width:700px;width: 700px;overflow-y:scroll;">
+			<div style="display:none;min-width:600px;width: 600px;overflow-y:scroll;">
 				<table class="tSchema">
 					<tr>
 						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
-						<td align="center" style="width:150px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
-						<td align="center" style="width:400px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
+						<td align="center" style="width:100px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
+						<td align="center" style="width:350px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
 					</tr>
 				</table>
 			</div>
-			<div style="min-width:700px;width: 700px;height:800px;overflow-y:scroll;">
+			<div style="min-width:600px;width: 600px;height:800px;overflow-y:scroll;">
 				<table class="tData">
 				</table>
 			</div>
