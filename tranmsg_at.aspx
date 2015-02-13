@@ -55,6 +55,7 @@
 	                    	console.log(data);
 	                    },
 	                    complete: function(){
+	                    	$('#message').val('');
 	                    	$('#btnRefresh').click();
 	                    	timeout();            
 	                    },
@@ -207,7 +208,7 @@
 					<tr>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a>發送人</a></td>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a>時間</a></td>
-						<td align="center" style="width:350px; max-width:350px;color:black;"><a>備註</a></td>
+						<td align="center" style="width:350px; max-width:350px;color:black;"><a>訊息</a></td>
 					</tr>
 				</table>
 			</div>
