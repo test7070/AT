@@ -180,7 +180,7 @@
 					</tr>
 				</table>
 			</div>
-			<div style="display:none;min-width:700px;width: 700px;overflow-y:scroll;">
+			<div style="display:none;min-width:600px;width: 600px;overflow-y:scroll;">
 				<table class="tSchema">
 					<tr>
 						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
