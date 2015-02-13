@@ -16,6 +16,7 @@
 		<script type="text/javascript">
 			var q_name = 'tranmsg';
             var _curData = new Array();
+            var _timeout;
 			
             $(document).ready(function() {
             	_q_boxClose();
@@ -29,16 +30,59 @@
             function q_gfPost() {
                 q_langShow();
                 init();
-				$('#btnRefresh').click();
+                $('#btnRefresh').click();
             }
 
 			function init(){
-				
+				//-------Send
+				$('#btnSend').click(function(e){
+					var t_msg = $.trim($('#message').val());
+					if(t_msg.length==0){
+						alert('請輸入資料。');
+						return;
+					}
+					stoptimeout();
+					var t_data = JSON.stringify({sender:r_name,carno:$('#curCarno').text(),sendmsg:t_msg});
+					console.log(t_data);
+					$.ajax({
+	                    url: 'tranmsg_at_data.aspx',
+	                    headers: { 'database': q_db,'action':'setdata'},
+	                    type: 'POST',
+	                    data: t_data,
+	                    dataType: 'text',
+	                    timeout: 10000,
+	                    success: function(data){
+	                    	console.log(data);
+	                    },
+	                    complete: function(){
+	                    	$('#btnRefresh').click();
+	                    	timeout();            
+	                    },
+	                    error: function(jqXHR, exception) {
+	                        var errmsg = 'Send Error。\n';
+	                        if (jqXHR.status === 0) {
+	                            alert(errmsg+'Not connect.\n Verify Network.');
+	                        } else if (jqXHR.status == 404) {
+	                            alert(errmsg+'Requested page not found. [404]');
+	                        } else if (jqXHR.status == 500) {
+	                            alert(errmsg+'Internal Server Error [500].');
+	                        } else if (exception === 'parsererror') {
+	                            alert(errmsg+'Requested JSON parse failed.');
+	                        } else if (exception === 'timeout') {
+	                            alert(errmsg+'Time out error.');
+	                        } else if (exception === 'abort') {
+	                            alert(errmsg+'Ajax request aborted.');
+	                        } else {
+	                            alert(errmsg+'Uncaught Error.\n' + jqXHR.responseText);
+	                        }
+	                    }
+	                });
+				});
 				//-------REFRESH
 				$('#btnRefresh').click(function(e){
 					$.ajax({
-	                    url: 'transtatus_at_getdata.aspx',
-	                    headers: { 'database': q_db},
+	                    url: 'tranmsg_at_data.aspx',
+	                    headers: { 'database': q_db,'action':'getdata','carno':encodeURI($('#curCarno').text())},
 	                    type: 'POST',
 	                    data: '',
 	                    dataType: 'text',
@@ -50,9 +94,7 @@
 	                    	}
 	                    },
 	                    complete: function(){
-	                    	refresh('car'); 
-	                    	refresh('card'); 
-	                    	refresh('yard');                  
+	                    	refresh('msg');               
 	                    },
 	                    error: function(jqXHR, exception) {
 	                        var errmsg = this.url+'資料讀取異常。\n';
@@ -77,37 +119,35 @@
 				timeout();
 			}
 			function timeout() {
-			    setTimeout(function () {
+			    _timeout = setTimeout(function () {
 			        $('#btnRefresh').click();
 			        timeout();
-			    }, 30000);
+			    }, 10000);
+			}
+			function stoptimeout(){
+				clearTimeout(_timeout);
 			}
 			function refresh(key){
-				
-				while($('#'+key).find('.tData').find('tr').length<_curData[key].length){
+				for(var i=_curData.length-1;i>=0;i--){
 					var n = $('#'+key).find('.tData').find('tr').length;
-					$('#'+key).find('.tData').append($('#'+key).find('.tSchema').find('tr').eq(0).clone().data('key', n).data('data',''));
-					
-					for(var i=0;i<$('#'+key).find('.tData').find('tr').last().find('td').length;i++){
-						var obj = $('#'+key).find('.tData').find('tr').last().find('td').eq(i).find('input[type="button"]').eq(0);
-						obj.attr('id',obj.attr('id')+'_'+key+'_'+n).attr('value',n+1);
-						
-						var obj = $('#'+key).find('.tData').find('tr').last().find('td').eq(i).find('a');
-						for(var k=0;k<obj.length;k++){
-							t_id = obj.eq(k).attr('id');
-							obj.eq(k).addClass(t_id+'_'+key).attr('id',t_id+'_'+key+'_'+n);
+					if(n==0){
+						$('#'+key).find('.tData').prepend($('#'+key).find('.tSchema').find('tr').eq(0).clone().data('key', n).data('data',''));
+					}else{
+						if($('#'+key).find('.tData').find('tr').first().data("seq")>=_curData[i].seq){
+							continue;
+						}else{
+							$('#'+key).find('.tData').prepend($('#'+key).find('.tSchema').find('tr').eq(0).clone().data('key', n).data('data',''));
 						}
 					}
-				}
-				for(var i=0;i<$('#'+key).find('.tData').find('tr').length;i++){
-					if(i<_curData[key].length){
-						$('#'+key).find('.tData').find('tr').eq(i).css('display','');
-						$('#txtNoa_'+key+'_'+i).text(_curData[key][i].noa);
-						$('#txtQtime_'+key+'_'+i).text(_curData[key][i].qtime);
-						$('#txtMemo_'+key+'_'+i).text(_curData[key][i].memo);
-					}else{
-						$('#'+key).find('.tData').find('tr').eq(i).css('display','none');		
+					$('#'+key).find('.tData').find('tr').first().data("seq",_curData[i].seq);
+					var obj = $('#'+key).find('.tData').find('tr').first().find('td').find('a');
+					for(var j=0;j<obj.length;j++){
+						t_id = obj.eq(j).attr('id');
+						obj.eq(j).addClass(t_id).attr('id',t_id+'_'+n);
 					}
+					$('#txtSender_'+n).text(_curData[i].sender);
+					$('#txtSendtime_'+n).text(_curData[i].sendtime);
+					$('#txtSendmsg_'+n).text(_curData[i].sendmsg);
 				}
 			}
 			
@@ -149,23 +189,23 @@
 		</style>
 	</head>
 	<body>
-		<div style="min-width:1500px;width: 1500px;height:40px;float:none;">
-			<div id='q_menu'></div>
+		<div style="min-width:100%;width: 100%;height:40px;float:none;">
+			<div id="curCarno" style="float:left;">AA-001</div>
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
 			<input type='button' id='btnRefresh' name='btnRefresh' style='font-size:16px;float:left;' value='資料更新'/>
-			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
-			<input type='button' id='btnCar' style='font-size:16px;float:left;' value='車輛'/>
-			<input type='button' id='btnCard' style='font-size:16px;float:left;' value='板台'/>
-			<input type='button' id='btnYard' style='font-size:16px;float:left;' value='車場'/>
 		</div>
-		<div id="car" style="float:left;">
+		<div style="min-width:100%;width: 100%;height:30px;float:none;">
+			<input id="message" style="float:left;font-size:16px;width:500px;"/>
+			<span style="display:block;width:20px;float:left;text-align: center;">&nbsp;</span>
+			<input type='button' id='btnSend' name='btnSend' style='font-size:16px;float:left;width:80px;' value='發送'/>
+		</div>
+		<div id="msg" style="float:left;">
 			<div style="min-width:600px;width: 600px;overflow-y:scroll;">
 				<table class="tHeader">
 					<tr>
-						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a>車牌</a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a>發送人</a></td>
 						<td align="center" style="width:100px; max-width:100px;color:black;"><a>時間</a></td>
 						<td align="center" style="width:350px; max-width:350px;color:black;"><a>備註</a></td>
 					</tr>
@@ -174,62 +214,9 @@
 			<div style="display:none;min-width:600px;width: 600px;overflow-y:scroll;">
 				<table class="tSchema">
 					<tr>
-						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtQtime"> </a></td>
-						<td align="center" style="width:350px; max-width:350px;color:black;"><a id="txtMemo"> </a></td>
-					</tr>
-				</table>
-			</div>
-			<div style="min-width:600px;width: 600px;height:800px;overflow-y:scroll;">
-				<table class="tData">
-				</table>
-			</div>
-		</div>
-		<div id="card" style="float:left;">
-			<div style="min-width:600px;width: 600px;overflow-y:scroll;">
-				<table class="tHeader">
-					<tr>
-						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a>板台</a></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a>時間</a></td>
-						<td align="center" style="width:350px; max-width:350px;color:black;"><a>備註</a></td>
-					</tr>
-				</table>
-			</div>
-			<div style="display:none;min-width:600px;width: 600px;overflow-y:scroll;">
-				<table class="tSchema">
-					<tr>
-						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtQtime"> </a></td>
-						<td align="center" style="width:400px; max-width:350px;color:black;"><a id="txtMemo"> </a></td>
-					</tr>
-				</table>
-			</div>
-			<div style="min-width:600px;width: 600px;height:800px;overflow-y:scroll;">
-				<table class="tData">
-				</table>
-			</div>
-		</div>
-		<div id="yard" style="float:left;">
-			<div style="min-width:600px;width: 600px;overflow-y:scroll;">
-				<table class="tHeader">
-					<tr>
-						<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a>車場</a></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a>時間</a></td>
-						<td align="center" style="width:350px; max-width:350px;color:black;"><a>備註</a></td>
-					</tr>
-				</table>
-			</div>
-			<div style="display:none;min-width:600px;width: 600px;overflow-y:scroll;">
-				<table class="tSchema">
-					<tr>
-						<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
-						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtNoa"> </a></td>
-						<td align="center" style="width:100px; max-width:150px;color:black;"><a id="txtQtime"> </a></td>
-						<td align="center" style="width:350px; max-width:400px;color:black;"><a id="txtMemo"> </a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtSender"> </a></td>
+						<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtSendtime"> </a></td>
+						<td align="center" style="width:350px; max-width:350px;color:black;"><a id="txtSendmsg"> </a></td>
 					</tr>
 				</table>
 			</div>
