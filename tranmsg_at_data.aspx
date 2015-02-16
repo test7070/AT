@@ -24,14 +24,13 @@
         {
             System.Text.Encoding encoding = System.Text.Encoding.UTF8;
             Response.ContentEncoding = encoding;
-
-            string groupName = "CHITC771";
-             string action = HttpUtility.UrlDecode(Request.Headers["action"]);
-             string database = HttpUtility.UrlDecode(Request.Headers["database"]);
-             string carno = HttpUtility.UrlDecode(Request.Headers["carno"]);
-             connString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=" + database;
-
-            try {
+			try {
+            	string groupName = "CHITC771";
+             	string action = HttpUtility.UrlDecode(Request.Headers["action"]);
+             	string database = HttpUtility.UrlDecode(Request.Headers["database"]);
+             	string carno = HttpUtility.UrlDecode(Request.Headers["carno"]);
+             	connString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=" + database;
+            
                 switch (action)
                 {
                     case "setdata":
@@ -39,7 +38,9 @@
                         byte[] formData = Request.BinaryRead(formSize);
                         System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                         var pin = serializer.Deserialize<ParaIn>(encoding.GetString(formData));
-                        setData(pin);
+                        pin.carno = System.Web.HttpUtility.UrlDecode(pin.carno);
+                        pin.sendmsg = System.Web.HttpUtility.UrlDecode(pin.sendmsg);
+                        SendCommand(groupName, pin);
                         break;
                     case "getdata":
                         getData(carno);
@@ -53,21 +54,74 @@
                 Response.Write(e.Message);
             }
         }
-        public void setData(ParaIn pin) {
+       public void SendCommand(string groupName,ParaIn pin)
+        {
+            string targetUrl = "http://115.85.145.34/Service/Service.asmx?op=SendCommand";
+            string parame = @"<?xml version=""1.0"" encoding=""utf-8""?>
+                <soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">
+                  <soap:Body>
+                    <SendCommand xmlns=""http://tempuri.org/"">
+                      <GroupName>" + groupName + @"</GroupName>
+                      <CarId>" + pin.carno + @"</CarId>
+                      <Message>" + pin.sendmsg + @"</Message>
+                      <CommandId></CommandId>
+                    </SendCommand>
+                  </soap:Body>
+                </soap:Envelope>";
+            byte[] postData = Encoding.UTF8.GetBytes(parame);
+            System.Net.HttpWebRequest request = System.Net.HttpWebRequest.Create(targetUrl) as System.Net.HttpWebRequest;
+            request.Method = "POST";
+            request.ContentType = "text/xml; charset=\"utf-8\"";
+            request.Timeout = 120000;
+            using (System.IO.Stream st = request.GetRequestStream())
+            {
+                st.Write(postData, 0, postData.Length);
+                st.Close();
+            }
+            string result = "";
+            System.Threading.Thread.Sleep(1000);
+            // 取得回應資料
+            using (System.Net.HttpWebResponse response = request.GetResponse() as System.Net.HttpWebResponse)
+            {
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
+                {
+                    result = sr.ReadToEnd();
+                }
+                response.Close();
+            }
+            string sendCommandResult = "";
+            string commandId = "";
+            XDocument doc = XDocument.Parse(result);
+            foreach (XElement ew in doc.Elements())
+                foreach (XElement ex in ew.Elements())
+                    foreach (XElement ey in ex.Elements())
+                        foreach (XElement ez in ey.Elements())
+                        {
+                            if (ez.Name.ToString().IndexOf("SendCommandResult") >= 0)
+                                sendCommandResult = ez.Value;
+                            if (ez.Name.ToString().IndexOf("CommandId") >= 0)
+                                commandId = ez.Value;
+                        }
+            setData(pin, sendCommandResult, commandId);
+        }
+        public void setData(ParaIn pin,string sendCommandResult,string commandId) {
             string queryString;
             using (System.Data.SqlClient.SqlConnection connSource = new System.Data.SqlClient.SqlConnection(connString))
             {
                 System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
                 connSource.Open();
-                queryString = @"insert into tranmsg(sender,carno,sendmsg,sendtime) select @sender,@carno,@sendmsg,GETDATE()";
+                queryString = @"insert into tranmsg(sender,carno,sendmsg,sendtime,sendcommandresult,commandid)
+                    select @sender,@carno,@sendmsg,GETDATE(),@sendcommandresult,@commandid";
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                 cmd.Parameters.AddWithValue("@sender", pin.sender);
                 cmd.Parameters.AddWithValue("@carno", pin.carno);
                 cmd.Parameters.AddWithValue("@sendmsg", pin.sendmsg);
+                cmd.Parameters.AddWithValue("@sendcommandresult", sendCommandResult);
+                cmd.Parameters.AddWithValue("@commandid", commandId);
                 cmd.ExecuteNonQuery();
                 connSource.Close();
             }
-            Response.Write("send done!");
+            Response.Write("sendcommand done!");
         }
 
         public void getData(string carno) {
@@ -106,55 +160,6 @@
             Response.Write(serializer.Serialize(pout));
         }
         
-        public void SendCommand(string groupName,string carId,string message)
-        {
-            string targetUrl = "http://115.85.145.34/Service/Service.asmx?op=SendCommand";
-            string parame = @"<?xml version=""1.0"" encoding=""utf-8""?>
-                <soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">
-                  <soap:Body>
-                    <SendCommand xmlns=""http://tempuri.org/"">
-                      <GroupName>"+groupName+@"</GroupName>
-                      <CarId>"+carId+@"</CarId>
-                      <Message>"+message+@"</Message>
-                      <CommandId></CommandId>
-                    </SendCommand>
-                  </soap:Body>
-                </soap:Envelope>";
-            byte[] postData = Encoding.UTF8.GetBytes(parame);
-            System.Net.HttpWebRequest request = System.Net.HttpWebRequest.Create(targetUrl) as System.Net.HttpWebRequest;
-            request.Method = "POST";
-            request.ContentType = "text/xml; charset=\"utf-8\"";
-            request.Timeout = 5000;
-            using (System.IO.Stream st = request.GetRequestStream())
-            {
-                st.Write(postData, 0, postData.Length);
-                st.Close();
-            }
-            string result = "";
-            System.Threading.Thread.Sleep(1000);
-            // 取得回應資料
-            using (System.Net.HttpWebResponse response = request.GetResponse() as System.Net.HttpWebResponse)
-            {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(response.GetResponseStream()))
-                {
-                    result = sr.ReadToEnd();
-                }
-                response.Close();
-            }
-
-            XDocument doc = XDocument.Parse(result);
-            foreach (XElement ew in doc.Elements())
-                foreach (XElement ex in ew.Elements())
-                    foreach (XElement ey in ex.Elements())
-                        foreach (XElement ez in ey.Elements())
-                        {
-                            if (ez.Name.ToString().IndexOf("SendCommandResult") >= 0)
-                                Response.Write("SendCommandResult:" + ez.Value + "<br>");
-                            if (ez.Name.ToString().IndexOf("CommandId") >= 0)
-                                Response.Write("CommandId:" + ez.Value + "<br>");
-                        }
-        }
-
         public void QueryCommandStatus(string groupName, string commandId)
         {
             string targetUrl = "http://115.85.145.34/Service/Service.asmx?op=QueryCommandStatus";
@@ -172,7 +177,7 @@
             System.Net.HttpWebRequest request = System.Net.HttpWebRequest.Create(targetUrl) as System.Net.HttpWebRequest;
             request.Method = "POST";
             request.ContentType = "text/xml; charset=\"utf-8\"";
-            request.Timeout = 5000;
+            request.Timeout = 120000;
             using (System.IO.Stream st = request.GetRequestStream())
             {
                 st.Write(postData, 0, postData.Length);
@@ -204,3 +209,4 @@
         } 
       
     </script>
+

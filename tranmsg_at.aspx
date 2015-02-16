@@ -23,6 +23,7 @@
                 q_getId();
                 q_gf('', 'tranmsg');
 				
+				$('#curCarno').text(q_getId()[3]);
 				$('#btnAuthority').click(function () {
                     btnAuthority(q_name);
                 });
@@ -42,7 +43,7 @@
 						return;
 					}
 					stoptimeout();
-					var t_data = JSON.stringify({sender:r_name,carno:$('#curCarno').text(),sendmsg:t_msg});
+					var t_data = JSON.stringify({sender:r_name,carno:encodeURI($('#curCarno').text()),sendmsg:encodeURI(t_msg)});
 					console.log(t_data);
 					$.ajax({
 	                    url: 'tranmsg_at_data.aspx',
@@ -123,7 +124,7 @@
 			    _timeout = setTimeout(function () {
 			        $('#btnRefresh').click();
 			        timeout();
-			    }, 10000);
+			    }, 30000);
 			}
 			function stoptimeout(){
 				clearTimeout(_timeout);
@@ -191,7 +192,7 @@
 	</head>
 	<body>
 		<div style="min-width:100%;width: 100%;height:40px;float:none;">
-			<div id="curCarno" style="float:left;">AA-001</div>
+			<div id="curCarno" style="float:left;"></div>
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
 			<input type='button' id='btnRefresh' name='btnRefresh' style='font-size:16px;float:left;' value='資料更新'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>

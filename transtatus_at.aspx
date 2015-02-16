@@ -100,6 +100,13 @@
 					for(var i=0;i<$('#'+key).find('.tData').find('tr').last().find('td').length;i++){
 						var obj = $('#'+key).find('.tData').find('tr').last().find('td').eq(i).find('input[type="button"]').eq(0);
 						obj.attr('id',obj.attr('id')+'_'+key+'_'+n).attr('value',n+1);
+						obj.click(function(e){
+							if($(this).attr('id').indexOf('btnSel_car_')<0)
+								return;
+							var n = $(this).attr('id').replace(/(btnSel_car_)(.*)/g,'$2');
+							var t_carno = $('#txtNoa_car_'+n).text(); 
+							q_box("tranmsg_at.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_carno + ";" + r_accy, '', "95%", "95%", q_getMsg("popTranmsg"));
+						});
 						
 						var obj = $('#'+key).find('.tData').find('tr').last().find('td').eq(i).find('a');
 						for(var k=0;k<obj.length;k++){
@@ -114,6 +121,8 @@
 						$('#txtNoa_'+key+'_'+i).text(_curData[key][i].noa);
 						$('#txtQtime_'+key+'_'+i).text(_curData[key][i].qtime);
 						$('#txtMemo_'+key+'_'+i).text(_curData[key][i].memo);
+						
+						
 					}else{
 						$('#'+key).find('.tData').find('tr').eq(i).css('display','none');		
 					}
