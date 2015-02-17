@@ -558,6 +558,10 @@
 						<td><input type="text" id="txtTakeno" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">提單號碼</a></td>
 						<td><input type="text" id="txtDo2" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">掛號</a></td>
+						<td><input type="text" id="txtVr" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">艙號</a></td>
+						<td><input type="text" id="txtManifest" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="" class="lbl">放行日</a></td>
