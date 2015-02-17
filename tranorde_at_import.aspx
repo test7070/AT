@@ -67,6 +67,48 @@
                 	
                 	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'quat_orde_at', "95%", "95%", q_getMsg('popTranquat'));
                 });
+                
+                //有代表櫃號，明細個數補足到櫃數
+                $('#txtxxxMount').blur(function(e){
+                	q_gt('tranvcce', '', 0, 0, 0, JSON.stringify());
+                	
+                	var t_casepresent = $('#txtCasepresent').val();
+                	var t_mount = q_float('txtMount');
+                	if(t_casepresent.length>0 && t_mount!=0){
+                		
+                		
+                	}
+                	
+                	
+                	while(t_count>q_bbsCount){
+	            		$('#btnPlus').click();
+	            	}
+                	
+                	
+	            	var t_count = q_float('txtMount');
+	            	while(t_count>q_bbsCount){
+	            		$('#btnPlus').click();
+	            	}
+	            	var n = 0;
+	            	for(var i=0;i<q_bbsCount;i++){
+	            		//全形空白
+	            		if($('#txtAddr_'+i).val()=='_')
+	            			$('#txtAddr_'+i).val('');
+	            		if(!($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0))
+	            			n++;
+	            	}
+	            	//console.log(n+'_'+t_count);
+	            	if(n<t_count){
+	            		for(var i=0;i<q_bbsCount;i++){
+	            			if(n==t_count)
+	            				break;
+		            		if($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0){
+		            			$('#txtAddr_'+i).val('_');//全形空白
+		            			n++;
+		            		}
+		            	}
+	            	}
+                });
             }
             function q_funcPost(t_func, result) {
                 switch(t_func) { 
@@ -92,8 +134,12 @@
                     default:
                     	try{
                     		var t_para = JSON.parse(t_name);
-                    		if(t_para.action==""){
+                    		if(t_para.action=="tranvcce"){
+                    			var as = _q_appendData("tranvcce", "", true);
+                    			console.log("tranvcce");
+                    			console.log(as.length);
 							}
+							
                     	}catch(e){
                     		
                     	}
@@ -544,6 +590,8 @@
 						<td><input type="text" id="txtPort2" class="txt c1"/></td>
 						<td><span> </span><a class="lbl">船公司</a></td>
 						<td colspan="2"><input type="text" id="txtVocc" class="txt c1" title="Vessel Operating Common Carrier"/></td>
+						<td><span> </span><a class="lbl">代表櫃號</a></td>
+						<td colspan="2"><input type="text" id="txtCasepresent" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a class="lbl">櫃型</a></td>
