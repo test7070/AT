@@ -72,6 +72,9 @@
                 $('#txtxxxMount').blur(function(e){
                 	q_gt('tranvcce', '', 0, 0, 0, JSON.stringify());
                 	
+                	var t_count = q_float('txtMount');
+                	
+                	
                 	var t_casepresent = $('#txtCasepresent').val();
                 	var t_mount = q_float('txtMount');
                 	if(t_casepresent.length>0 && t_mount!=0){
