@@ -79,10 +79,14 @@
                 		
                 	}
                 	
-                	
-                	while(t_count>q_bbsCount){
+                	while(t_mount>q_bbsCount){
 	            		$('#btnPlus').click();
 	            	}
+	            	for(var i=0;i<q_bbsCount;i++){
+	            		
+	            		
+	            	}
+	            	
                 	
                 	
 	            	var t_count = q_float('txtMount');
