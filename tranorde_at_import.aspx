@@ -69,54 +69,44 @@
                 });
                 
                 //有代表櫃號，明細個數補足到櫃數
-                $('#txtxxxMount').blur(function(e){
-                	q_gt('tranvcce', '', 0, 0, 0, JSON.stringify());
-                	
-                	var t_count = q_float('txtMount');
-                	
-                	
-                	var t_casepresent = $('#txtCasepresent').val();
-                	var t_mount = q_float('txtMount');
-                	if(t_casepresent.length>0 && t_mount!=0){
-                		
-                		
-                	}
-                	
-                	while(t_mount>q_bbsCount){
-	            		$('#btnPlus').click();
-	            	}
-	            	for(var i=0;i<q_bbsCount;i++){
-	            		
-	            		
-	            	}
-	            	
-                	
-                	
-	            	var t_count = q_float('txtMount');
-	            	while(t_count>q_bbsCount){
-	            		$('#btnPlus').click();
-	            	}
-	            	var n = 0;
-	            	for(var i=0;i<q_bbsCount;i++){
-	            		//全形空白
-	            		if($('#txtAddr_'+i).val()=='_')
-	            			$('#txtAddr_'+i).val('');
-	            		if(!($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0))
-	            			n++;
-	            	}
-	            	//console.log(n+'_'+t_count);
-	            	if(n<t_count){
-	            		for(var i=0;i<q_bbsCount;i++){
-	            			if(n==t_count)
-	            				break;
-		            		if($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0){
-		            			$('#txtAddr_'+i).val('_');//全形空白
-		            			n++;
-		            		}
-		            	}
-	            	}
+                $('#txtMount').blur(function(e){
+                	addBbs();
+                });
+                $('#txtCasepresent').blur(function(e){
+                	addBbs();
                 });
             }
+            function addBbs(){
+            	//有代表櫃號，明細個數補足到櫃數
+            	var t_casepresent = $('#txtCasepresent').val();
+            	var t_mount = q_float('txtMount');
+            	if(t_casepresent.length==0 || t_mount==0){
+					return;            		
+            	}
+            	while(t_mount>q_bbsCount){
+            		$('#btnPlus').click();
+            	}
+            	var n = 0;
+            	for(var i=0;i<q_bbsCount;i++){
+            		//全形空白
+            		if($('#txtAddr_'+i).val()=='_')
+            			$('#txtAddr_'+i).val('');
+            		if(!($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0))
+            			n++;
+            	}
+            	//console.log(n+'_'+t_count);
+            	if(n<t_mount){
+            		for(var i=0;i<q_bbsCount;i++){
+            			if(n==t_mount)
+            				break;
+	            		if($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0){
+	            			$('#txtAddr_'+i).val('_');//全形空白
+	            			n++;
+	            		}
+	            	}
+            	}
+            }
+            
             function q_funcPost(t_func, result) {
                 switch(t_func) { 
                 	case 'qtxt.query.tranorde_tranvcce':
@@ -228,6 +218,7 @@
                     $('#txtWorker').val(r_name);
                 } else
                     $('#txtWorker2').val(r_name);
+                addBbs();
                 sum();
                 var t_noa = trim($('#txtNoa').val());
                 var t_date = trim($('#txtDatea').val());
