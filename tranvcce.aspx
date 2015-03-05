@@ -13,8 +13,107 @@
 		<script src="css/jquery/ui/jquery.ui.core.js"></script>
 		<script src="css/jquery/ui/jquery.ui.widget.js"></script>
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"></script>
-		<script src="http://59.125.143.170/html2canvas.js"></script>
 		<script type="text/javascript">
+			var q_name = 'tranvcce';
+			aPop = new Array(['txtCustno', 'lblCustno', 'cust', 'noa,comp', 'txtCustno', 'cust_b.aspx']);
+            
+			$(document).ready(function() {
+            	_q_boxClose();
+                q_getId();
+                q_gf('', 'tranvcce');
+				
+				$('#btnAuthority').click(function () {
+                    btnAuthority(q_name);
+                });
+            });
+            
+            function q_gfPost() {
+                $('#aa').grid({
+                    width : [300, 700],
+                    column1 : [{field : "recno",name : '序',width : 50}, 
+                    	{field : "datea",name : '日期',width : 100,type : 'date',nextField : 'ordeno'}, 
+                    	{field : "ordeno",name : '訂單編號',width : 150,type : 'norm',nextField : 'cust'}
+                    ],
+                    column2 : [
+                    	{field : "cust",name : '貨主',width : 100,type : 'norm',nextField : 'straddr'},
+                    	{field : "straddr",name : '起迄地點',width : 150,type : 'norm',nextField : 'containerno1'},
+                        {field : "containerno1",name : '櫃號一',width : 150,type : 'norm',nextField : 'containerno2'}, 
+                        {field : "containerno2",name : '櫃號二',width : 150,type : 'norm',nextField : 'date1'},
+                        {field : "date1",name : '領櫃日期',width : 100,type : 'date',nextField : 'carno1'},
+                        {field : "carno1",name : '領櫃車號',width : 100,type : 'norm',nextField : 'driver1'},
+                        {field : "driver1",name : '司機1',width : 100,type : 'norm',nextField : 'date2'},
+                        {field : "date2",name : '送櫃日期',width : 100,type : 'date',nextField : 'carno2'},
+                        {field : "carno2",name : '送櫃車號',width : 100,type : 'norm',nextField : 'driver2'},
+                        {field : "driver2",name : '司機2',width : 100,type : 'norm',nextField : 'date3'},
+                        {field : "date3",name : '收櫃日期',width : 100,type : 'date',nextField : 'carno3'},
+                        {field : "carno3",name : '收櫃車號',width : 100,type : 'norm',nextField : 'driver3'},
+                        {field : "driver3",name : '司機3',width : 100,type : 'norm',nextField : 'date4'},
+                        {field : "date4",name : '交櫃日期',width : 100,type : 'date',nextField : 'carno4'},
+                        {field : "carno4",name : '交櫃車號',width : 100,type : 'norm',nextField : 'driver4'},
+                        {field : "driver4",name : '司機4',width : 100,type : 'norm',nextField : 'date5'},
+                        {field : "date5",name : '移櫃日期(1)',width : 100,type : 'date',nextField : 'carno5'},
+                        {field : "carno5",name : '移櫃車號(1)',width : 100,type : 'norm',nextField : 'driver5'},
+                        {field : "driver5",name : '司機5',width : 100,type : 'norm',nextField : 'date6'},
+                    	{field : "date6",name : '移櫃日期(2)',width : 100,type : 'date',nextField : 'carno6'},
+                        {field : "carno6",name : '移櫃車號(2)',width : 100,type : 'norm',nextField : 'driver6'},
+                        {field : "driver6",name : '司機6',width : 100,type : 'norm',nextField : 'memo'},
+                        {field : "memo",name : '備註',width : 150,type : 'norm',nextField : 'memo'}
+                    ],
+                    record:new Array()
+                });
+                
+                q_getFormat();
+                q_langShow();
+                q_popAssign();
+                q_cur=2;
+                $('#txtBdate').mask('999/99/99');
+                $('#txtBdate').datepicker();
+                $('#txtEdate').mask('999/99/99');
+                $('#txtEdate').datepicker();
+                
+                $('#aa').data('info').getData = function(obj){
+                	Lock(1);
+                	var cust = $('#txtCustno').val();
+                	var bdate = $('#txtBdate').val();
+                	var edate = $('#txtEdate').val();
+                	$.ajax({
+                		obj : obj,
+	                    url: 'tranvcce_getdata.aspx',
+	                    headers: { 'database': q_db },
+	                    type: 'POST',
+	                    data: JSON.stringify({cust:cust,bdate:bdate,edate:edate}),
+	                    dataType: 'text',
+	                    timeout: 10000,
+	                    success: function(data){
+	                        this.obj.data('info').value.record = JSON.parse(data);
+	                    },
+	                    complete: function(){ 
+	                    	this.obj.data('info').setPage(obj,1);
+	                    	Unlock(1);                
+	                    },
+	                    error: function(jqXHR, exception) {
+	                        var errmsg = this.url+'資料讀取異常。\n';
+	                        if (jqXHR.status === 0) {
+	                            alert(errmsg+'Not connect.\n Verify Network.');
+	                        } else if (jqXHR.status == 404) {
+	                            alert(errmsg+'Requested page not found. [404]');
+	                        } else if (jqXHR.status == 500) {
+	                            alert(errmsg+'Internal Server Error [500].');
+	                        } else if (exception === 'parsererror') {
+	                            alert(errmsg+'Requested JSON parse failed.');
+	                        } else if (exception === 'timeout') {
+	                            alert(errmsg+'Time out error.');
+	                        } else if (exception === 'abort') {
+	                            alert(errmsg+'Ajax request aborted.');
+	                        } else {
+	                            alert(errmsg+'Uncaught Error.\n' + jqXHR.responseText);
+	                        }
+	                    }
+	                });
+                };
+                $('#aa').find('input[name="btnRefresh"]').click();
+            }
+            
 			jQuery.fn.selectText = function(){
 	            var doc = document;
 	            var element = this[0];
@@ -36,7 +135,8 @@
 		        var wheelHandler = function (evt) {
 		            var delta = evt.deltaY || evt.wheelDelta || evt.detail;
 		            //處理事件
-		            $('.grid').data('info').setPage($('.grid'),delta>0?1:-1);
+		            if(!$('.grid').hasClass('edit'))
+		            	$('.grid').data('info').setPage($('.grid'),delta>0?1:-1);
 		        };
 
 		        // detect event model
@@ -76,31 +176,40 @@
                     init : function(obj) {
                         obj.addClass('grid').css('background-color', 'pink').css('overflow','visible');
                         obj.append('<div style="background-color:PowderBlue;"></div>');
-                        obj.append('<div style="background-color:PowderBlue;"><table class="header"></table><table class="data"></table></div>');
-                        obj.append('<div style="background-color:BurlyWood;"><table class="header"></table><table class="data"></table></div>');
+                        obj.append('<div style="background-color:PowderBlue;"><table class="data"></table></div>');
+                        obj.append('<div style="background-color:PowderBlue;"><table class="data"></table></div>');
                         
                         obj.children('div').eq(1).css('float', 'left').css('overflow-x','hidden').css('overflow-y','hidden');
                         obj.children('div').eq(2).css('float', 'left').css('overflow-x','scroll').css('overflow-y','hidden');
 						
-                        obj.children('div').eq(1).children('table.header').css('background-color', 'AntiqueWhite');
-                        obj.children('div').eq(1).children('table.data').css('background-color', 'CornflowerBlue');
-                        obj.children('div').eq(2).children('table.header').css('background-color', 'DarkGoldenRod');
+                        obj.children('div').eq(1).children('table.data').css('background-color', 'DarkKhaki');
                         obj.children('div').eq(2).children('table.data').css('background-color', 'DarkKhaki');
                         //control
-                        obj.children('div').eq(0).append('<span name="curPage" style="float:left;display:block;height:25px;width:30px;font-size:16px;">0</span>');
-                        obj.children('div').eq(0).append('<span style="float:left;display:block;height:25px;width:25px;font-size:16px;">/</span>');
-                        obj.children('div').eq(0).append('<span name="totPage" style="float:left;display:block;height:25px;width:30px;font-size:16px;">0</span>');
-                        //left
-                        obj.children('div').eq(1).children('table.header').append("<tr></tr>");
-                        for (var i = 0; i < obj.data('info').value.column1.length; i++) {
-                            obj.children('div').eq(1).children('table.header').find('tr').eq(0).append('<td align="center" style="width:' + obj.data('info').value.column1[i].width + 'px;background-color:LightGoldenRodYellow;">' + obj.data('info').value.column1[i].name + '</td>')
-                        }
-                        //right
-                        obj.children('div').eq(2).children('table.header').append("<tr></tr>");
-                        for (var i = 0; i < obj.data('info').value.column2.length; i++) {
-                            obj.children('div').eq(2).children('table.header').find('tr').eq(0).append('<td align="center" style="width:' + obj.data('info').value.column2[i].width + 'px;background-color:LightGoldenRodYellow;">' + obj.data('info').value.column2[i].name + '</td>')
-                        }
+                        obj.children('div').eq(0).append('<span name="curPage" contenteditable=true style="text-align:center;float:left;display:block;height:25px;width:30px;font-size:16px;">0</span>');
+                        obj.children('div').eq(0).append('<span style="float:left;display:block;height:25px;width:10px;font-size:16px;">/</span>');
+                        obj.children('div').eq(0).append('<span name="totPage" style="text-align:center;float:left;display:block;height:25px;width:30px;font-size:16px;">0</span>');
+                        obj.children('div').eq(0).find('span[name="curPage"]').keydown(function(e) {
+                            if(e.which==13){
+								e.preventDefault();
+	                            obj.data('info').setPage(obj,0);
+                            }
+                        });
+                        obj.children('div').eq(0).append('<span style="float:left;display:block;height:25px;width:20px;font-size:16px;"></span>');
+                        obj.children('div').eq(0).append('<span id="lblCustno" style="text-align:center;float:left;display:block;height:25px;width:80px;font-size:16px;">客戶編號：</span>');
+                        obj.children('div').eq(0).append('<input type="text" id="txtCustno" style="float:left;width:100px;"/>');
+                        obj.children('div').eq(0).append('<span style="text-align:center;float:left;display:block;height:25px;width:50px;font-size:16px;">日期：</span>');
+                        obj.children('div').eq(0).append('<input type="text" id="txtBdate" style="float:left;width:100px;"/>');
+                        obj.children('div').eq(0).append('<span style="text-align:center;float:left;display:block;height:25px;width:20px;font-size:16px;">~</span>');
+                        obj.children('div').eq(0).append('<input type="text" id="txtEdate" style="float:left;width:100px;"/>');
+                        obj.children('div').eq(0).append('<span style="float:left;display:block;height:25px;width:40px;font-size:16px;"></span>');
+                        obj.children('div').eq(0).append('<input type="button" name="btnRefresh" style="float:left;width:100px;" value="刷新"/>');
+                        obj.children('div').eq(0).find('input[name="btnRefresh"]').click(function(e){
+                        	var obj = $(this).parent().parent();
+                        	obj.data('info').getData(obj);
+                        });
                         obj.data('info').setPage(obj,1);
+                    },
+                    getData : function(obj){
                     },
                     setPage : function(obj,n){
                     	var totPage = obj.data('info').value.record.length==0?0:Math.ceil(obj.data('info').value.record.length/obj.data('info').row_count);
@@ -115,7 +224,7 @@
                     			curPage = totPage==0?0:1;
                     		}
                     	}
-                    	console.log(curPage+'__'+totPage);
+                    	//console.log(curPage+'__'+totPage);
                     	obj.find('span[name="totPage"]').text(totPage);
                     	obj.find('span[name="curPage"]').text(curPage);
 			            obj.data('info').refresh(obj);
@@ -160,15 +269,17 @@
                         	right_table_width += obj.data('info').value.column2[i].width; 	
                         }
                         //reset
-                        obj.children('div').eq(1).children('table.header').height(top_table_height).width(left_table_width);
                         obj.children('div').eq(1).children('table.data').html('').height(bottom_table_height).width(left_table_width);
-                        obj.children('div').eq(2).children('table.header').height(top_table_height).width(right_table_width);
                         obj.children('div').eq(2).children('table.data').html('').height(bottom_table_height).width(right_table_width);
 
 						//left
+                        obj.children('div').eq(1).children('table.data').append("<tr></tr>");
+                        for (var i = 0; i < obj.data('info').value.column1.length; i++) {
+                            obj.children('div').eq(1).children('table.data').find('tr').eq(0).append('<th align="center" style="width:' + obj.data('info').value.column1[i].width + 'px;background-color:LightGoldenRodYellow;"><a style="white-space:nowrap;">' + obj.data('info').value.column1[i].name + '</a></th>')
+                        }
 						for(var i=0;i<obj.data('info').value.row.length;i++){
 							obj.children('div').eq(1).children('table.data').append('<tr></tr>');
-							objtr = obj.children('div').eq(1).children('table.data').find('tr').eq(i);
+							objtr = obj.children('div').eq(1).children('table.data').find('tr').eq(i+1);
 							objtr.attr('name',i);//記錄資料行數
 							objtr.height(obj.data('info').rowheight).css('margin','0px').css('padding','0px');
 							for(var j=0;j<obj.data('info').value.column1.length;j++){
@@ -186,30 +297,39 @@
 										var n = parseInt($(this).parent().parent().attr('name'));
 										if($(this).hasClass('edit')){
 											//修改確定
+											obj.removeClass('edit');
 											$(this).removeClass('edit');
 											obj.find('input[type="button"]').removeAttr('disabled','disabled');
 											
-											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
-											obj.children('div').eq(2).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
-											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
-											obj.children('div').eq(2).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
+											obj.children('div').eq(1).children('table.data').find('tr').eq(n+1).find('td').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
+											obj.children('div').eq(2).children('table.data').find('tr').eq(n+1).find('td').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
+											obj.children('div').eq(1).children('table.data').find('tr').eq(n+1).find('td').find('a').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
+											obj.children('div').eq(2).children('table.data').find('tr').eq(n+1).find('td').find('a').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
 											
 											obj.find('td').find('a').removeAttr("contenteditable","true");
+											
+											// control 解除鎖定
+											obj.children('div').eq(0).find('[name="curPage"]').attr("contenteditable","true");
+											obj.children('div').eq(0).find('[name="btnRefresh"]').removeAttr('disabled');
 											//回寫資料庫
 											obj.data('info').save(n);
 										}else{
 											//修改
+											obj.addClass('edit');
 											$(this).addClass('edit');
 											obj.find('input[type="button"]').attr('disabled','disabled');
 											$(this).removeAttr('disabled','disabled');
 											
-											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').focus_color);
-											obj.children('div').eq(2).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').focus_color);
-											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').focus_color);
-											obj.children('div').eq(2).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').focus_color);					
+											obj.children('div').eq(1).children('table.data').find('tr').eq(n+1).find('td').css('background-color',obj.data('info').focus_color);
+											obj.children('div').eq(2).children('table.data').find('tr').eq(n+1).find('td').css('background-color',obj.data('info').focus_color);
+											obj.children('div').eq(1).children('table.data').find('tr').eq(n+1).find('td').find('a').css('background-color',obj.data('info').focus_color);
+											obj.children('div').eq(2).children('table.data').find('tr').eq(n+1).find('td').find('a').css('background-color',obj.data('info').focus_color);					
+											// control 鎖定
+											obj.children('div').eq(0).find('[name="curPage"]').attr("contenteditable","false");
+											obj.children('div').eq(0).find('[name="btnRefresh"]').attr('disabled','disabled');
 											//欄位變成修改狀態
 											//left
-											objtr = obj.children('div').eq(1).children('table.data').find('tr').eq(n);
+											objtr = obj.children('div').eq(1).children('table.data').find('tr').eq(n+1);
 											for(var i=0;i<obj.data('info').value.column1.length;i++){
 												//recno 可以算是保留欄位,  忽略
 												if(obj.data('info').value.column1[i].field == 'recno'){
@@ -218,14 +338,14 @@
 												objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable","true");
 											}
 											//right
-											objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(n);
+											objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(n+1);
 											for(var i=0;i<obj.data('info').value.column2.length;i++){
 												objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable","true");
 											}
 										}
 									});
 								}else{
-									objtr.append('<td><a></a></td>');
+									objtr.append('<td><a style="white-space:nowrap;"></a></td>');
 									objtd = objtr.find('td').eq(j);
 									obja = objtd.find('a').eq(0);
 									obja.attr('name',obj.data('info').value.column1[j].field+i);
@@ -236,12 +356,17 @@
 							}
 						}
 						//right
+                        obj.children('div').eq(2).children('table.data').append("<tr></tr>");
+                        for (var i = 0; i < obj.data('info').value.column2.length; i++) {
+                            obj.children('div').eq(2).children('table.data').find('tr').eq(0).append('<th align="center" style="width:' + obj.data('info').value.column2[i].width + 'px;background-color:LightGoldenRodYellow;"><a style="white-space:nowrap;">' + obj.data('info').value.column2[i].name + '</a></th>')
+                        }
+						//right
 						for(var i=0;i<obj.data('info').value.row.length;i++){
 							obj.children('div').eq(2).children('table.data').append('<tr></tr>');
-							objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(i);
+							objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(i+1);
 							objtr.height(obj.data('info').rowheight).css('margin','0px').css('padding','0px');
 							for(var j=0;j<obj.data('info').value.column2.length;j++){
-								objtr.append('<td><a></a></td>');
+								objtr.append('<td><a style="white-space:nowrap;"></a></td>');
 								objtd = objtr.find('td').eq(j);
 								obja = objtd.find('a').eq(0);
 								obja.attr('name',obj.data('info').value.column2[j].field+i);
@@ -252,8 +377,8 @@
 						}
 						//field event
 						for(var i=0;i<obj.data('info').value.row.length;i++){
-							objtr_left = obj.children('div').eq(1).children('table.data').find('tr').eq(i);
-							objtr_right = obj.children('div').eq(2).children('table.data').find('tr').eq(i);
+							objtr_left = obj.children('div').eq(1).children('table.data').find('tr').eq(i+1);
+							objtr_right = obj.children('div').eq(2).children('table.data').find('tr').eq(i+1);
 							for(var j=0;j<obj.data('info').value.column1.length;j++){
 								if(obj.data('info').value.column1[j].field == 'recno'){
 									continue;
@@ -399,73 +524,19 @@
                 $(this).data('info').init($(this));
             };
 
-            $(document).ready(function() {
-                $('#aa').grid({
-                    width : [300, 500],
-                    column1 : [{
-                        field : "recno",
-                        name : '序',
-                        width : 50
-                    }, {
-                        field : "datea",
-                        name : '日期',
-                        width : 100,
-                        type : 'date',
-                        nextField : 'noa'
-                    }, {
-                        field : "noa",
-                        name : '單號',
-                        width : 150,
-                        type : 'norm',
-                        nextField : 'addrno'
-                    }],
-                    column2 : [{
-                        field : "addrno",
-                        name : '起迄地點',
-                        width : 200,
-                        type : 'norm',
-                        nextField : 'containerno1'
-                    }, {
-                        field : "containerno1",
-                        name : '櫃號一',
-                        width : 200,
-                        type : 'norm',
-                        nextField : 'containerno2'
-                    }, {
-                        field : "containerno2",
-                        name : '櫃號二',
-                        width : 200,
-                        type : 'norm',
-                        nextField : 'containerno2'
-                    }],
-                    record:[{recno:1,datea:'104/01/05',noa:'AA1040105001',addrno:"A->B",containerno1:'WDSU1234567',containerno2:'WDSU3234567'}
-                    	,{recno:2,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:3,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:4,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:5,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:6,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:7,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:8,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:9,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:10,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:12,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:13,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:14,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:15,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:16,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:17,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:18,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:19,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	]
-                });
-            });
+            
 
 		</script>
 		<style type="text/css">
 		</style>
 	</head>
 	<body>
+		<div id='q_menu'> </div>
+		<div id='q_acDiv'> </div>
+		<div style="height:40px;"> 
+			<span style="display:block;width:100px;height:20px;float:left;"></span>
+			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
+		</div>
 		<div id="aa"></div>
 	</body>
 </html>
