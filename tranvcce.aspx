@@ -31,37 +31,113 @@
 	                selection.addRange(range);
 	            }
             };
+            function MouseWheel() {
+		        var _addEventListener, wheel_event_name = 'wheel', inverse_wheel_direction = false;
+		        var wheelHandler = function (evt) {
+		            var delta = evt.deltaY || evt.wheelDelta || evt.detail;
+		            //處理事件
+		            $('.grid').data('info').setPage($('.grid'),delta>0?1:-1);
+		        };
+
+		        // detect event model
+		        if (window.addEventListener) {
+		            _addEventListener = "addEventListener";
+		        } else {
+		            _addEventListener = "attachEvent";
+		        }
+
+		        // detect available wheel event
+		        if (document.onmousewheel === null && window.addEventListener === undefined) {
+		            // IE 8, note that it is test onmousewheel strictly equals to null
+		            wheel_event_name = 'onmousewheel';
+		        } else if (Modernizr.hasEvent('wheel') || (!!window.WheelEvent && !!window.MouseWheelEvent)) {
+		            // detect if browser has DOM L3 wheel event: Firefox 17 and IE 9 or later version
+		            wheel_event_name = 'wheel';
+		            inverse_wheel_direction = true;
+		        } else if (!!window.WheelEvent) {
+		            // Safari, Chrome
+		            wheel_event_name = 'mousewheel';
+		        } else {
+		            // Firefox 16 and earlier version
+		            wheel_event_name = 'DOMMouseScroll';
+		            inverse_wheel_direction = true;
+		        }
+		        document[_addEventListener](wheel_event_name, wheelHandler);
+		    };
+		    MouseWheel();
             $.fn.grid = function(value) {
                 $(this).data('info', {
                 	headerheight : 50,
                 	rowheight : 30,
+                	row_count : 10,//每頁顯示筆數
                     value : value,
                     row_color : ['LavenderBlush','LightGray'],//grid row color
                     focus_color : 'pink',//grid row color  focus
                     init : function(obj) {
-                        obj.css('background-color', 'pink').css('overflow','visible');
+                        obj.addClass('grid').css('background-color', 'pink').css('overflow','visible');
+                        obj.append('<div style="background-color:PowderBlue;"></div>');
                         obj.append('<div style="background-color:PowderBlue;"><table class="header"></table><table class="data"></table></div>');
                         obj.append('<div style="background-color:BurlyWood;"><table class="header"></table><table class="data"></table></div>');
-                        obj.children('div').eq(0).css('float', 'left').css('overflow-x','hidden').css('overflow-y','hidden');
-                        obj.children('div').eq(1).css('float', 'left').css('overflow-x','scroll').css('overflow-y','hidden');
-
-                        obj.children('div').eq(0).children('table.header').css('background-color', 'AntiqueWhite');
-                        obj.children('div').eq(0).children('table.data').css('background-color', 'CornflowerBlue');
-                        obj.children('div').eq(1).children('table.header').css('background-color', 'DarkGoldenRod');
-                        obj.children('div').eq(1).children('table.data').css('background-color', 'DarkKhaki');
+                        
+                        obj.children('div').eq(1).css('float', 'left').css('overflow-x','hidden').css('overflow-y','hidden');
+                        obj.children('div').eq(2).css('float', 'left').css('overflow-x','scroll').css('overflow-y','hidden');
+						
+                        obj.children('div').eq(1).children('table.header').css('background-color', 'AntiqueWhite');
+                        obj.children('div').eq(1).children('table.data').css('background-color', 'CornflowerBlue');
+                        obj.children('div').eq(2).children('table.header').css('background-color', 'DarkGoldenRod');
+                        obj.children('div').eq(2).children('table.data').css('background-color', 'DarkKhaki');
+                        //control
+                        obj.children('div').eq(0).append('<span name="curPage" style="float:left;display:block;height:25px;width:30px;font-size:16px;">0</span>');
+                        obj.children('div').eq(0).append('<span style="float:left;display:block;height:25px;width:25px;font-size:16px;">/</span>');
+                        obj.children('div').eq(0).append('<span name="totPage" style="float:left;display:block;height:25px;width:30px;font-size:16px;">0</span>');
                         //left
-                        obj.children('div').eq(0).children('table.header').append("<tr></tr>");
+                        obj.children('div').eq(1).children('table.header').append("<tr></tr>");
                         for (var i = 0; i < obj.data('info').value.column1.length; i++) {
-                            obj.children('div').eq(0).children('table.header').find('tr').eq(0).append('<td align="center" style="width:' + obj.data('info').value.column1[i].width + 'px;background-color:LightGoldenRodYellow;">' + obj.data('info').value.column1[i].name + '</td>')
+                            obj.children('div').eq(1).children('table.header').find('tr').eq(0).append('<td align="center" style="width:' + obj.data('info').value.column1[i].width + 'px;background-color:LightGoldenRodYellow;">' + obj.data('info').value.column1[i].name + '</td>')
                         }
                         //right
-                        obj.children('div').eq(1).children('table.header').append("<tr></tr>");
+                        obj.children('div').eq(2).children('table.header').append("<tr></tr>");
                         for (var i = 0; i < obj.data('info').value.column2.length; i++) {
-                            obj.children('div').eq(1).children('table.header').find('tr').eq(0).append('<td align="center" style="width:' + obj.data('info').value.column2[i].width + 'px;background-color:LightGoldenRodYellow;">' + obj.data('info').value.column2[i].name + '</td>')
+                            obj.children('div').eq(2).children('table.header').find('tr').eq(0).append('<td align="center" style="width:' + obj.data('info').value.column2[i].width + 'px;background-color:LightGoldenRodYellow;">' + obj.data('info').value.column2[i].name + '</td>')
                         }
-                        obj.data('info').refresh(obj);
+                        obj.data('info').setPage(obj,1);
+                    },
+                    setPage : function(obj,n){
+                    	var totPage = obj.data('info').value.record.length==0?0:Math.ceil(obj.data('info').value.record.length/obj.data('info').row_count);
+                    	var curPage = parseInt(obj.find('span[name="curPage"]').text());
+                    	if(totPage==0){
+                    		curPage = 0;
+                    	}else{
+                    		curPage += n;
+                    		if(curPage<=0){
+                    			curPage = totPage;
+                    		}else if(curPage>totPage){
+                    			curPage = totPage==0?0:1;
+                    		}
+                    	}
+                    	console.log(curPage+'__'+totPage);
+                    	obj.find('span[name="totPage"]').text(totPage);
+                    	obj.find('span[name="curPage"]').text(curPage);
+			            obj.data('info').refresh(obj);
+                    },
+                    getCurData : function(obj){
+                    	//將value.record要顯示的資料寫到value.row
+                    	//當前頁數
+                    	var curPage = parseInt(obj.find('span[name="curPage"]').text());
+                    	var begin = (curPage-1)*obj.data('info').row_count;
+                    	var end = curPage*obj.data('info').row_count-1;
+                    	if(begin<0 || end<0)
+                    		obj.data('info').value.row = new Array();
+                    	else{
+                    		end = end>=obj.data('info').value.record.length?obj.data('info').value.record.length-1:end; 
+                    		//console.log(begin+'__'+end);
+                    		obj.data('info').value.row = obj.data('info').value.record.slice(begin, end+1);
+                    	}
                     },
                     refresh : function(obj) {
+                    	obj.data('info').getCurData(obj);
+                    	
+                    	var control_height = 50;
                     	var t_height = obj.data('info').headerheight+obj.data('info').value.row.length*obj.data('info').rowheight + 2*obj.data('info').rowheight;
                     	var t_width = obj.data('info').value.width[0]+obj.data('info').value.width[1];
                     	
@@ -70,9 +146,10 @@
                     	var t_width1 = obj.data('info').value.width[0];
                     	var t_width2 = obj.data('info').value.width[1];
                     	
-                    	obj.css('height', t_height).css('width', t_width);
-                    	obj.children('div').eq(0).css('height', t_height).css('width',t_width1);
-                        obj.children('div').eq(1).css('height', t_height).css('width',t_width2);
+                    	obj.css('height', t_height+control_height).css('width', t_width);
+                    	obj.children('div').eq(0).css('height', control_height).css('width',t_width);
+                    	obj.children('div').eq(1).css('height', t_height).css('width',t_width1);
+                        obj.children('div').eq(2).css('height', t_height).css('width',t_width2);
                         
                         left_table_width = 0;
                         for(var i=0;i<obj.data('info').value.column1.length;i++){
@@ -83,15 +160,15 @@
                         	right_table_width += obj.data('info').value.column2[i].width; 	
                         }
                         //reset
-                        obj.children('div').eq(0).children('table.header').height(top_table_height).width(left_table_width);
-                        obj.children('div').eq(0).children('table.data').html('').height(bottom_table_height).width(left_table_width);
-                        obj.children('div').eq(1).children('table.header').height(top_table_height).width(right_table_width);
-                        obj.children('div').eq(1).children('table.data').html('').height(bottom_table_height).width(right_table_width);
+                        obj.children('div').eq(1).children('table.header').height(top_table_height).width(left_table_width);
+                        obj.children('div').eq(1).children('table.data').html('').height(bottom_table_height).width(left_table_width);
+                        obj.children('div').eq(2).children('table.header').height(top_table_height).width(right_table_width);
+                        obj.children('div').eq(2).children('table.data').html('').height(bottom_table_height).width(right_table_width);
 
 						//left
 						for(var i=0;i<obj.data('info').value.row.length;i++){
-							obj.children('div').eq(0).children('table.data').append('<tr></tr>');
-							objtr = obj.children('div').eq(0).children('table.data').find('tr').eq(i);
+							obj.children('div').eq(1).children('table.data').append('<tr></tr>');
+							objtr = obj.children('div').eq(1).children('table.data').find('tr').eq(i);
 							objtr.attr('name',i);//記錄資料行數
 							objtr.height(obj.data('info').rowheight).css('margin','0px').css('padding','0px');
 							for(var j=0;j<obj.data('info').value.column1.length;j++){
@@ -112,10 +189,10 @@
 											$(this).removeClass('edit');
 											obj.find('input[type="button"]').removeAttr('disabled','disabled');
 											
-											obj.children('div').eq(0).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
 											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
-											obj.children('div').eq(0).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
+											obj.children('div').eq(2).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
 											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
+											obj.children('div').eq(2).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').row_color[n%obj.data('info').row_color.length]);
 											
 											obj.find('td').find('a').removeAttr("contenteditable","true");
 											//回寫資料庫
@@ -126,13 +203,13 @@
 											obj.find('input[type="button"]').attr('disabled','disabled');
 											$(this).removeAttr('disabled','disabled');
 											
-											obj.children('div').eq(0).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').focus_color);
 											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').focus_color);
-											obj.children('div').eq(0).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').focus_color);
-											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').focus_color);					
+											obj.children('div').eq(2).children('table.data').find('tr').eq(n).find('td').css('background-color',obj.data('info').focus_color);
+											obj.children('div').eq(1).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').focus_color);
+											obj.children('div').eq(2).children('table.data').find('tr').eq(n).find('td').find('a').css('background-color',obj.data('info').focus_color);					
 											//欄位變成修改狀態
 											//left
-											objtr = obj.children('div').eq(0).children('table.data').find('tr').eq(n);
+											objtr = obj.children('div').eq(1).children('table.data').find('tr').eq(n);
 											for(var i=0;i<obj.data('info').value.column1.length;i++){
 												//recno 可以算是保留欄位,  忽略
 												if(obj.data('info').value.column1[i].field == 'recno'){
@@ -141,7 +218,7 @@
 												objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable","true");
 											}
 											//right
-											objtr = obj.children('div').eq(1).children('table.data').find('tr').eq(n);
+											objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(n);
 											for(var i=0;i<obj.data('info').value.column2.length;i++){
 												objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable","true");
 											}
@@ -160,8 +237,8 @@
 						}
 						//right
 						for(var i=0;i<obj.data('info').value.row.length;i++){
-							obj.children('div').eq(1).children('table.data').append('<tr></tr>');
-							objtr = obj.children('div').eq(1).children('table.data').find('tr').eq(i);
+							obj.children('div').eq(2).children('table.data').append('<tr></tr>');
+							objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(i);
 							objtr.height(obj.data('info').rowheight).css('margin','0px').css('padding','0px');
 							for(var j=0;j<obj.data('info').value.column2.length;j++){
 								objtr.append('<td><a></a></td>');
@@ -175,8 +252,8 @@
 						}
 						//field event
 						for(var i=0;i<obj.data('info').value.row.length;i++){
-							objtr_left = obj.children('div').eq(0).children('table.data').find('tr').eq(i);
-							objtr_right = obj.children('div').eq(1).children('table.data').find('tr').eq(i);
+							objtr_left = obj.children('div').eq(1).children('table.data').find('tr').eq(i);
+							objtr_right = obj.children('div').eq(2).children('table.data').find('tr').eq(i);
 							for(var j=0;j<obj.data('info').value.column1.length;j++){
 								if(obj.data('info').value.column1[j].field == 'recno'){
 									continue;
@@ -243,12 +320,11 @@
 											obj.data('info').event_date(objtd,nextObjtd);
 										break;
 									default:
-									console.log(i+'__'+j);
-											console.log(i+'__'+j+'__'+nextObjtd.attr('name')+'__'+objtd.attr('name'));
+									//console.log(i+'__'+j);
+											//console.log(i+'__'+j+'__'+nextObjtd.attr('name')+'__'+objtd.attr('name'));
 											obj.data('info').event_norm(objtd,nextObjtd);
 										break;
 								}	
-								
 							}
 						}
                    },
@@ -362,7 +438,7 @@
                         type : 'norm',
                         nextField : 'containerno2'
                     }],
-                    row:[{recno:1,datea:'104/01/05',noa:'AA1040105001',addrno:"A->B",containerno1:'WDSU1234567',containerno2:'WDSU3234567'}
+                    record:[{recno:1,datea:'104/01/05',noa:'AA1040105001',addrno:"A->B",containerno1:'WDSU1234567',containerno2:'WDSU3234567'}
                     	,{recno:2,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
                     	,{recno:3,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
                     	,{recno:4,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
@@ -373,14 +449,14 @@
                     	,{recno:9,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
                     	,{recno:10,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
                     	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
-                    	,{recno:11,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
+                    	,{recno:12,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
+                    	,{recno:13,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
+                    	,{recno:14,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
+                    	,{recno:15,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
+                    	,{recno:16,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
+                    	,{recno:17,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
+                    	,{recno:18,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
+                    	,{recno:19,datea:'104/02/01',noa:'AA1040201013',addrno:"C->B",containerno1:'WDSU8234567',containerno2:'WDSU4234567'}
                     	]
                 });
             });
