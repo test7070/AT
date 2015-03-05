@@ -31,11 +31,11 @@
                 $('#aa').grid({
                     width : [300, 700],
                     column1 : [{field : "recno",name : '序',width : 50}, 
-                    	{field : "datea",name : '日期',width : 100,type : 'date',nextField : 'ordeno'}, 
-                    	{field : "ordeno",name : '訂單編號',width : 150,type : 'norm',nextField : 'cust'}
+                    	{field : "datea",name : '日期',width : 100,type : 'date',nextField : 'straddr'}, 
+                    	{field : "ordeno",name : '訂單編號',width : 150,type : 'norm',nextField : 'cust',readonly:true}
                     ],
                     column2 : [
-                    	{field : "cust",name : '貨主',width : 100,type : 'norm',nextField : 'straddr'},
+                    	{field : "cust",name : '貨主',width : 100,type : 'norm',nextField : 'straddr',readonly:true},
                     	{field : "straddr",name : '起迄地點',width : 150,type : 'norm',nextField : 'containerno1'},
                         {field : "containerno1",name : '櫃號一',width : 150,type : 'norm',nextField : 'containerno2'}, 
                         {field : "containerno2",name : '櫃號二',width : 150,type : 'norm',nextField : 'date1'},
@@ -335,11 +335,17 @@
 												if(obj.data('info').value.column1[i].field == 'recno'){
 													continue;
 												}
+												if(obj.data('info').value.column1[i].readonly){
+													continue;
+												}
 												objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable","true");
 											}
 											//right
 											objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(n+1);
 											for(var i=0;i<obj.data('info').value.column2.length;i++){
+												if(obj.data('info').value.column2[i].readonly){
+													continue;
+												}
 												objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable","true");
 											}
 										}
