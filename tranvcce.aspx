@@ -89,7 +89,7 @@
 	                        this.obj.data('info').value.record = JSON.parse(data);
 	                    },
 	                    complete: function(){ 
-	                    	this.obj.data('info').setPage(obj,1);
+	                    	this.obj.data('info').setPage(obj,null);
 	                    	Unlock(1);                
 	                    },
 	                    error: function(jqXHR, exception) {
@@ -215,6 +215,10 @@
                     setPage : function(obj,n){
                     	var totPage = obj.data('info').value.record.length==0?0:Math.ceil(obj.data('info').value.record.length/obj.data('info').row_count);
                     	var curPage = parseInt(obj.find('span[name="curPage"]').text());
+                    	if(n==null){
+                    		curPage = 1;
+                    		n=0;
+                    	}
                     	if(totPage==0){
                     		curPage = 0;
                     	}else{
@@ -313,7 +317,7 @@
 											obj.children('div').eq(0).find('[name="curPage"]').attr("contenteditable","true");
 											obj.children('div').eq(0).find('[name="btnRefresh"]').removeAttr('disabled');
 											//回寫資料庫
-											obj.data('info').save(n);
+											obj.data('info').save(obj,n);
 										}else{
 											//修改
 											obj.addClass('edit');
@@ -460,9 +464,22 @@
 							}
 						}
                    },
-                   save : function(n){
+                   save : function(obj,n){
                    	//先將畫面上資料寫到陣列中
-                   	
+                   	var targetN = -1;
+                   	for(var i=0;i<obj.data('info').value.record.length;i++){
+                   		if(obj.data('info').value.record[i].recno == obj.data('info').value.row[n].recno){
+                   			targetN = i;
+                   			break;	
+                   		}
+                   	}
+                   	qdjTd = obj.children(1).find('tr').eq(n+1).find('td');
+                   	for(var i=0;i<obj.data('info').value.column1.length;i++){
+						 if(obj.data('info').value.column1[i].field=='recno')
+					 		continue;	                  		
+           		    	obj.data('info').value.recno[targetN][obj.data('info').value.column1[i].field] = qdjTd.eq(i).find('a').eq(0).text();
+                   		obj.data('info').value.row[n][obj.data('info').value.column1[i].field] = qdjTd.eq(i).find('a').eq(0).text();
+                   	}
                    	//將陣列資料存到資料庫
                    	
                    	//必要時刷新畫面資料	
