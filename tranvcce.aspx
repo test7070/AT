@@ -29,31 +29,47 @@
 
             function q_gfPost() {
                 $('#aa').grid({
-                    width : [300, 700],
+                    width : [400, 700],
                     column1 : [{
                         field : "recno",
                         name : '序',
-                        width : 50
+                        width : 40
                     }, {
                         field : "datea",
                         name : '日期',
-                        width : 100,
+                        width : 80,
                         type : 'date',
-                        nextField : 'straddr'
+                        nextField : 'chk1',
+                        center : true
                     }, {
                         field : "ordeno",
                         name : '訂單編號',
-                        width : 150,
+                        width : 120,
                         type : 'norm',
-                        nextField : 'cust',
+                        nextField : 'ordeno',
+                        center : true,
                         readonly : true
+                    }, {
+                        field : "chk1",
+                        name : '客戶簽收',
+                        width : 80,
+                        type : 'norm',
+                        nextField : 'chk2',
+                        center : true
+                    }, {
+                        field : "chk2",
+                        name : '櫃單已回',
+                        width : 80,
+                        type : 'norm',
+                        nextField : 'straddr',
+                        center : true
                     }],
                     column2 : [{
                         field : "cust",
                         name : '貨主',
                         width : 100,
                         type : 'norm',
-                        nextField : 'straddr',
+                        nextField : 'cust',
                         readonly : true
                     }, {
                         field : "straddr",
@@ -198,7 +214,8 @@
                         name : '結案',
                         width : 50,
                         type : 'norm',
-                        nextField : 'enda'
+                        nextField : 'enda',
+                        center : true
                     }],
                     record : new Array()
                 });
@@ -317,7 +334,7 @@
                 $(this).data('info', {
                     headerheight : 50,
                     rowheight : 30,
-                    row_count : 10, //每頁顯示筆數
+                    row_count : 15, //每頁顯示筆數
                     value : value,
                     row_color : ['LavenderBlush', 'LightGray'], //grid row color
                     focus_color : 'pink', //grid row color  focus
@@ -513,6 +530,8 @@
                                     obja.text(obj.data('info').value.row[i][obj.data('info').value.column1[j].field]);
                                     if(obj.data('info').value.column1[j].readonly)
                                     	objtd.css('color','green');
+                                	if(obj.data('info').value.column1[j].center)
+                                		objtd.parent().css('text-align','center');
                                 }
                             }
                         }
@@ -535,7 +554,9 @@
                                 obja.css('background-color', obj.data('info').row_color[i % obj.data('info').row_color.length]);
                                 obja.text(obj.data('info').value.row[i][obj.data('info').value.column2[j].field]);
                             	if(obj.data('info').value.column2[j].readonly)
-                                    	objtd.css('color','green');
+                                	objtd.css('color','green');
+                            	if(obj.data('info').value.column2[j].center)
+                            		objtd.parent().css('text-align','center');
                             }
                         }
                         //field event
