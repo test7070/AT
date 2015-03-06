@@ -32,7 +32,10 @@
 			brwList = [];
 			brwNowPage = 0;
 			brwKey = 'Datea';
-			aPop = new Array(['txtProductno', 'lblProductno', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx'], ['txtSalesno_', '', 'sss', 'noa,namea', 'txtSalesno_,txtSales_', 'sss_b.aspx'], ['txtCaseuseno', 'lblCaseuse', 'cust', 'noa,comp', 'txtCaseuseno,txtCaseuse', 'cust_b.aspx']);
+			aPop = new Array(['txtProductno', 'lblProductno', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
+			, ['txtCustno_', 'btnCust_', 'cust', 'noa,nick', 'txtCustno_,txtCust_', 'cust_b.aspx']);
+			
+			q_bbsLen = 10;
 			$(document).ready(function() {
 				bbmKey = ['noa'];
 				bbsKey = ['noa', 'noq'];
@@ -182,6 +185,21 @@
 			function btnMinus(id) {
 				_btnMinus(id);
 			}
+			function bbsAssign() {
+                for (var i = 0; i < q_bbsCount; i++) {
+                    $('#lblNo_' + i).text(i + 1);
+                    if (!$('#btnMinus_' + i).hasClass('isAssign')) {
+                    	$('#txtCustno_' + i).bind('contextmenu', function(e) {
+                            /*滑鼠右鍵*/
+                            e.preventDefault();
+                            var n = $(this).attr('id').replace('txtCustno_', '');
+                            $('#btnCust_'+n).click();
+                        });
+                    }
+                }
+                _bbsAssign();
+            }
+            
 			function btnPlus(org_htm, dest_tag, afield) {
 				_btnPlus(org_htm, dest_tag, afield);
 			}
@@ -419,8 +437,8 @@
                     <td><a id="lblNo.*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
                     <td><input type="text" id="txtDatea.*" style="width:95%;" /></td>
                     <td>
-                    	<input type="text" id="txtCustno.*" style="width:45%;"/>
-                    	<input type="text" id="txtCust.*" style="width:50%;"/>
+                    	<input type="text" id="txtCustno.*" style="width:45%;float:left;"/>
+                    	<input type="text" id="txtCust.*" style="width:45%;float:left;"/>
                     	<input type="button" id="btnCust.*" style="display:none;"/>
                     </td>
                     <td><input type="text" id="txtCustprice.*" style="width:95%;text-align:right;" /></td>
