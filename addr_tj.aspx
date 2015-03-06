@@ -439,7 +439,7 @@
                     <td>
                     	<input type="text" id="txtCustno.*" style="width:45%;float:left;"/>
                     	<input type="text" id="txtCust.*" style="width:45%;float:left;"/>
-                    	<input type="button" id="btnCust.*" style="display:none;"/>
+                    	<input type="button" id="btnCust.*" style="display:none;float:left;"/>
                     </td>
                     <td><input type="text" id="txtCustprice.*" style="width:95%;text-align:right;" /></td>
                     <td><input type="text" id="txtDriverprice.*" style="width:95%;text-align:right;"/></td>
