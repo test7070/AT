@@ -11,7 +11,7 @@
             public string carno1, carno2, carno3, carno4, carno5, carno6;
             public string cardno1, cardno2, cardno3, cardno4, cardno5, cardno6;
             public string msg1, msg2, msg3, msg4, msg5, msg6;
-            public string memo;
+            public string memo,enda;
         }
         
         //連接字串   
@@ -28,8 +28,6 @@
                 byte[] formData = Request.BinaryRead(formSize);
                 System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 var itemIn = serializer.Deserialize<ParaIn>(encoding.GetString(formData));
-                //string aa= "{\"recno\":4,\"seq\":3,\"isdel\":false,\"stype\":\"出口\",\"ucr\":\"\",\"por\":\"\",\"pod\":\"\",\"product\":\"\",\"ordeaccy\":\"104\",\"ordeno\":\"BB1040129001\",\"ordenoq\":\"002\",\"datea\":\"\",\"custno\":\"A001\",\"cust\":\"誼友交通事業股份有限公司\",\"straddrno\":\"C003-001\",\"straddr\":\"W-橋頭\",\"vocc\":\"\",\"casetype\":\"\",\"containerno1\":\"c\",\"containerno2\":\"\",\"carno1\":\"\",\"cardno1\":\"\",\"msg1\":\"\",\"carno2\":\"\",\"cardno2\":\"\",\"msg2\":\"\",\"carno3\":\"\",\"cardno3\":\"\",\"msg3\":\"\",\"carno4\":\"\",\"cardno4\":\"\",\"msg4\":\"\",\"memo\":\"\",\"issend1\":false,\"issend2\":false,\"issend3\":false,\"issend4\":false,\"isassign\":false,\"mount\":\"0\",\"seal1\":\"\",\"seal2\":\"\",\"edittime\":\"\"}";   
-                //var itemIn = serializer.Deserialize<ParaIn>(aa);
                 //資料寫入
                 
                 System.Data.DataTable tranvcce = new System.Data.DataTable();
@@ -48,7 +46,7 @@
 	                    ,carno1=@carno1,carno2=@carno2,carno3=@carno3,carno4=@carno4,carno5=@carno5,carno6=@carno6
 	                    ,cardno1=@cardno1,cardno2=@cardno2,cardno3=@cardno3,cardno4=@cardno4,cardno5=@cardno5,cardno6=@cardno6
 	                    ,msg1=@msg1,msg2=@msg2,msg3=@msg3,msg4=@msg4,msg5=@msg5,msg6=@msg6
-	                    ,memo=@memo where seq=@seq and isnull(isdel,0)=0";
+	                    ,memo=@memo,enda=@enda where seq=@seq and isnull(isdel,0)=0 and len(isnull(enda,''))=0";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
                     cmd.Parameters.AddWithValue("@datea", itemIn.datea);
@@ -88,6 +86,7 @@
                     cmd.Parameters.AddWithValue("@msg5", itemIn.msg5);
                     cmd.Parameters.AddWithValue("@msg6", itemIn.msg6);
                     cmd.Parameters.AddWithValue("@memo", itemIn.memo);
+                    cmd.Parameters.AddWithValue("@enda", itemIn.enda);
                     cmd.ExecuteNonQuery();
                     connSource.Close();
                 }

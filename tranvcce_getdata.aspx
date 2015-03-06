@@ -18,7 +18,7 @@
 	        public string carno1,carno2,carno3,carno4,carno5,carno6;
 	        public string cardno1,cardno2,cardno3,cardno4,cardno5,cardno6;
 	        public string msg1,msg2,msg3,msg4,msg5,msg6;
-            public string memo;
+            public string memo,enda;
         }
         public void Page_Load()
         {   
@@ -51,12 +51,12 @@
 	                ,carno1,carno2,carno3,carno4,carno5,carno6
 	                ,cardno1,cardno2,cardno3,cardno4,cardno5,cardno6
 	                ,msg1,msg2,msg3,msg4,msg5,msg6
-	                ,memo
+	                ,memo,enda
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
 	                from tranvcce
-	                where ISNULL(isdel,0)=0
+	                where ISNULL(isdel,0)=0 and len(isnull(enda,''))=0
 	                and (len(@cust)=0 or charindex(@cust,cust)>0)
 	                and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
 	                and (len(@edate)=0 or isnull(datea,'')<=@edate)
@@ -118,6 +118,7 @@
                 tmp.msg5 = System.DBNull.Value.Equals(r.ItemArray[39]) ? "" : (System.String)r.ItemArray[39];
                 tmp.msg6 = System.DBNull.Value.Equals(r.ItemArray[40]) ? "" : (System.String)r.ItemArray[40];
                 tmp.memo = System.DBNull.Value.Equals(r.ItemArray[41]) ? "" : (System.String)r.ItemArray[41];
+                tmp.enda = System.DBNull.Value.Equals(r.ItemArray[42]) ? "" : (System.String)r.ItemArray[42];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));
