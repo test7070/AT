@@ -684,7 +684,7 @@
 		                    	Unlock(1);                
 		                    },
 		                    error: function(jqXHR, exception) {
-		                        var errmsg = this.url+'資料寫入異常 SEQ:'+this.seq+'。\n';
+		                        var errmsg = this.url+'資料寫入異常。\n';
 		                        if (jqXHR.status === 0) {
 		                            alert(errmsg+'Not connect.\n Verify Network.');
 		                        } else if (jqXHR.status == 404) {
