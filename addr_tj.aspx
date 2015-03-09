@@ -33,7 +33,7 @@
 			brwNowPage = 0;
 			brwKey = 'Datea';
 			aPop = new Array(['txtProductno', 'lblProductno', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
-			,['txtBorkerno', 'lblBorker', 'borker', 'noa,namea', 'txtBorkerno,txtBorker', 'borker_b.aspx']
+			,['txtBrokerno', 'lblBroker', 'broker', 'noa,namea', 'txtBrokerno,txtBroker', 'broker_b.aspx']
 			, ['txtCustno_', 'btnCust_', 'cust', 'noa,nick', 'txtCustno_,txtCust_', 'cust_b.aspx']);
 			
 			q_bbsLen = 10;
@@ -421,6 +421,13 @@
                         <td><span> </span><a id='lblAddr' class="lbl"> </a></td>
                         <td colspan="3">
                         <input id="txtAddr" type="text" class="txt c1" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span> </span><a id='lblBroker' class="lbl btn"> </a></td>
+                        <td colspan="3">
+                        <input id="txtBrokerno" type="text" style="float:left; width:40%;"/>
+                        <input id="txtBroker" type="text" style="float:left; width:60%;"/>
                         </td>
                     </tr>
                     <tr>
