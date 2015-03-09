@@ -67,6 +67,10 @@
                 	
                 	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'quat_orde_at', "95%", "95%", q_getMsg('popTranquat'));
                 });
+                
+                $('#txtMount').click(function(e){
+                	
+                });
             }
             function q_funcPost(t_func, result) {
                 switch(t_func) { 
