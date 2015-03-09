@@ -614,12 +614,12 @@
 					<tr style="background-color: burlywood;">
 						<td><span> </span><a id="" class="lbl">提單號碼</a></td>
 						<td><input type="text" id="txtDo2" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">領櫃代號</a></td>
-						<td><input type="text" id="txtTakeno" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">領櫃編號</a></td>
-						<td><input type="text" id="txtOption1" class="txt c1"/></td>
+						<td><input type="text" id="txtTakeno" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">領櫃單</a></td>
 						<td><input type="text" id="txtOption2" class="txt c1"/></td>
+						<td></td>
+						<td></td>
 						<td class="tdZ"></td>
 					</tr>
 					<tr style="background-color: burlywood;">
