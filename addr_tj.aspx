@@ -22,9 +22,9 @@
 			q_tables = 's';
 			var q_name = "addr";
 			var q_readonly = [];
-			var q_readonlys = [];
+			var q_readonlys = ['txtDriverprice6'];
 			var bbmNum = [];
-			var bbsNum = [['txtCustprice', 10, 3], ['txtDriverprice', 10, 3], ['txtDriverprice2', 10, 3]];
+			var bbsNum = [['txtCustprice', 10, 3], ['txtDriverprice', 10, 3], ['txtDriverprice2', 10, 3], ['txtDriverprice3', 10, 3], ['txtDriverprice4', 10, 3], ['txtDriverprice5', 10, 3], ['txtDriverprice6', 10, 3]];
 			var bbmMask = [];
 			var bbsMask = [];
 			q_sqlCount = 6;
@@ -33,6 +33,7 @@
 			brwNowPage = 0;
 			brwKey = 'Datea';
 			aPop = new Array(['txtProductno', 'lblProductno', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
+			,['txtBrokerno', 'lblBroker', 'broker', 'noa,namea', 'txtBrokerno,txtBroker', 'broker_b.aspx']
 			, ['txtCustno_', 'btnCust_', 'cust', 'noa,nick', 'txtCustno_,txtCust_', 'cust_b.aspx']);
 			
 			q_bbsLen = 10;
@@ -119,7 +120,7 @@
 				
 				Lock(1,{opacity:0}); 
 				$('#txtNoa').val($.trim($('#txtNoa').val()));
-
+				sum();
 				if (q_cur == 1) {
 					t_where = "where=^^ noa='" + $('#txtNoa').val() + "'^^";
 					q_gt('addr', t_where, 0, 0, 0, "checkAddrno_btnOk", r_accy);
@@ -131,11 +132,6 @@
 				if (q_cur > 0 && q_cur < 4)
 					return;
 				q_box('addr_s.aspx', q_name + '_s', "500px", "330px", q_getMsg("popSeek"));
-			}
-			function bbsAssign() {
-				for (var i = 0; i < q_bbsCount; i++) {
-				}
-				_bbsAssign();
 			}
 			function btnIns() {
 				_btnIns();
@@ -167,6 +163,16 @@
 				return true;
 			}
 			function sum() {
+				if(!(q_cur==1 || q_cur==2))
+					return;
+				for (var i = 0; i < q_bbsCount; i++) {
+					t_total = q_float('txtDriverprice_'+i)
+						+q_float('txtDriverprice2_'+i)
+						+q_float('txtDriverprice3_'+i)
+						+q_float('txtDriverprice4_'+i)
+						+q_float('txtDriverprice5_'+i);
+					$('#txtDriverprice6_'+i).val(t_total);
+				}
 			}
 			function refresh(recno) {
 				_refresh(recno);
@@ -194,6 +200,21 @@
                             e.preventDefault();
                             var n = $(this).attr('id').replace('txtCustno_', '');
                             $('#btnCust_'+n).click();
+                        });
+                        $('#txtDriverprice_'+i).change(function(e){
+                        	sum();
+                        });
+                        $('#txtDriverprice2_'+i).change(function(e){
+                        	sum();
+                        });
+                        $('#txtDriverprice3_'+i).change(function(e){
+                        	sum();
+                        });
+                        $('#txtDriverprice4_'+i).change(function(e){
+                        	sum();
+                        });
+                        $('#txtDriverprice5_'+i).change(function(e){
+                        	sum();
                         });
                     }
                 }
@@ -403,6 +424,13 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><span> </span><a id='lblBroker' class="lbl btn"> </a></td>
+                        <td colspan="3">
+                        <input id="txtBrokerno" type="text" style="float:left; width:40%;"/>
+                        <input id="txtBroker" type="text" style="float:left; width:60%;"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><span> </span><a id='lblProductno' class="lbl btn"> </a></td>
                         <td colspan="3">
                         <input id="txtProductno" type="text" style="float:left; width:40%;"/>
@@ -423,10 +451,11 @@
                     <td align="center" style="width:120px;">客戶</td>
                     <td align="center" style="width:80px;"><a id='lblCustprice_s'> </a></td>
                     <td align="center" style="width:80px;"><a>領</a></td>
-                    <td align="center" style="width:80px;"><a>交</a></td>
-                    <td align="center" style="width:80px;"><a>收</a></td>
                     <td align="center" style="width:80px;"><a>送</a></td>
+                    <td align="center" style="width:80px;"><a>收</a></td>
+                    <td align="center" style="width:80px;"><a>交</a></td>
                     <td align="center" style="width:80px;"><a>移</a></td>
+                    <td align="center" style="width:80px;"><a>小計</a></td>
                     <td align="center" style="width:150px;"><a id='lblMemo_s'> </a></td>
                 </tr>
                 <tr  style='background:#cad3ff;'>
@@ -447,6 +476,7 @@
                     <td><input type="text" id="txtDriverprice3.*" style="width:95%;text-align:right;"/></td>
                     <td><input type="text" id="txtDriverprice4.*" style="width:95%;text-align:right;"/></td>
                     <td><input type="text" id="txtDriverprice5.*" style="width:95%;text-align:right;"/></td>
+                    <td><input type="text" id="txtDriverprice6.*" style="width:95%;text-align:right;"/></td>
                     <td><input type="text" id="txtMemo.*" style="width:95%;" /></td>
                 </tr>
             </table>
