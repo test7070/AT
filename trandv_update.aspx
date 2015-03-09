@@ -4,7 +4,7 @@
         {
             public int seq;
             public string field, sendtime;
-            public string caseno, caseno2, po,miles,receivetime;
+            public string caseno, caseno2,cardno, po,miles,receivetime;
         }
         
         //連接字串   
@@ -31,7 +31,7 @@
                     
                     //更新資料
                     string queryString = @"update tranvcces
-	                    set caseno=@caseno,caseno2=@caseno2,po=@po,miles=@miles,receivetime=@receivetime
+	                    set caseno=@caseno,caseno2=@caseno2,cardno=@cardno,po=@po,miles=@miles,receivetime=@receivetime
 	                    where seq=@seq and field=@field and sendtime=@sendtime";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
@@ -39,6 +39,7 @@
                     cmd.Parameters.AddWithValue("@sendtime", itemIn.sendtime);
                     cmd.Parameters.AddWithValue("@caseno", itemIn.caseno);
                     cmd.Parameters.AddWithValue("@caseno2", itemIn.caseno2);
+                    cmd.Parameters.AddWithValue("@cardno", itemIn.cardno);
                     cmd.Parameters.AddWithValue("@po", itemIn.po);
                     cmd.Parameters.AddWithValue("@miles", itemIn.miles);
                     cmd.Parameters.AddWithValue("@receivetime", itemIn.receivetime);
