@@ -32,9 +32,9 @@
                     string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">Seq</td>';
                     string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">發送時間</td>';
                     string+='<td id="tranvcces_enda" align="center" style="width:40px; color:black;">回報</td>';
-                    string+='<td id="tranvcces_carno" onclick="orde.sort(\'carno\',false)" title="車號" align="center" style="width:100px; color:black;">車號</td>';
-                    string+='<td id="tranvcces_driver" onclick="orde.sort(\'driver\',false)" title="司機" align="center" style="width:100px; color:black;">司機</td>';
-                    string+='<td id="tranvcces_work" onclick="orde.sort(\'work\',false)" title="作業" align="center" style="width:40px; color:black;">作業</td>';
+                    string+='<td id="tranvcces_carno" onclick="tranvcces.sort(\'carno\',false)" title="車號" align="center" style="width:100px; color:black;">車號</td>';
+                    string+='<td id="tranvcces_driver" onclick="tranvcces.sort(\'driver\',false)" title="司機" align="center" style="width:100px; color:black;">司機</td>';
+                    string+='<td id="tranvcces_work" onclick="tranvcces.sort(\'work\',false)" title="作業" align="center" style="width:40px; color:black;">作業</td>';
                     string+='<td id="tranvcces_message" align="center" style="color:black;">任務內容</td>';
                     string+='</tr>';
                     
@@ -79,6 +79,7 @@
                         //資料清空
                         $('#textCaseno').val('');
                         $('#textCaseno2').val('');
+                        $('#textCardno').val('');
                         $('#textPo').val('');
                         $('#textMiles').val('');
                         //顯示
@@ -247,6 +248,7 @@
 							sendtime:$('#textSendtime').val().substr(0,$('#textSendtime').val().length-6),
 							caseno:$('#textCaseno').val(),
 							caseno2:$('#textCaseno2').val(),
+							cardno:$('#textCardno').val(),
 							po:$('#textPo').val(),
 							miles:$('#textMiles').val(),
 							receivetime:(dec($('#textDatea').val().substr(0,3))+1911)+$('#textDatea').val().substr(3,6)+' '+$('#textTimea').val()
@@ -310,7 +312,6 @@
 			
 			var mouse_point;
 			var tranvcces_n='';//目前tranvcces的列數
-			var t_ordemount = 0,  t_ordcmount = 0,t_ordeweight = 0,  t_ordcweight = 0;//顯示庫存用
 			function q_gtPost(t_name) {
 				switch (t_name) {
                     case 'tranvcces_init':
@@ -493,6 +494,10 @@
 				<tr>
 					<td style="background-color: #f8d463;" align="center">櫃號2</td>
 					<td style="background-color: #f8d463;" colspan="2" ><input id="textCaseno2"  type="text" class="txt " style="width: 98%;"/></td>
+				</tr>
+				<tr>
+					<td style="background-color: #f8d463;" align="center">板架</td>
+					<td style="background-color: #f8d463;" colspan="2" ><input id="textCardno"  type="text" class="txt " style="width: 98%;"/></td>
 				</tr>
 				<tr>
 					<td style="background-color: #f8d463;" align="center">P/O號碼</td>
