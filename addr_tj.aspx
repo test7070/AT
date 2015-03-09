@@ -33,6 +33,7 @@
 			brwNowPage = 0;
 			brwKey = 'Datea';
 			aPop = new Array(['txtProductno', 'lblProductno', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
+			,['txtBorkerno', 'lblBorker', 'borker', 'noa,namea', 'txtBorkerno,txtBorker', 'borker_b.aspx']
 			, ['txtCustno_', 'btnCust_', 'cust', 'noa,nick', 'txtCustno_,txtCust_', 'cust_b.aspx']);
 			
 			q_bbsLen = 10;
