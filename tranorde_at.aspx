@@ -24,7 +24,7 @@
             var bbmNum = [['txtMount',10,0,1]];
             var bbsNum = [];
             var bbtNum = [];
-            var bbmMask = [['txtDatea','999/99/99'],['txtStrdate','999/99/99'],['txtDldate','999/99/99'],['txtEtc','999/99/99'],['txtEta','999/99/99'],['txtEtd','999/99/99'],['txtRedate','999/99/99']];
+            var bbmMask = [['txtDatea','999/99/99'],['txtStrdate','999/99/99'],['txtDldate','999/99/99'],['txtEtc','999/99/99'],['txtEta','999/99/99'],['txtEtd','999/99/99'],['txtRedate','999/99/99'],['txtEf','999/99/99']];
             var bbsMask = [];
             var bbtMask = [];
             q_sqlCount = 6;
@@ -248,6 +248,7 @@
                     $('#txtRedate').datepicker('destroy');
                     $('#txtStrdate').datepicker('destroy');
                     $('#txtDldate').datepicker('destroy');
+                    $('#txtEf').datepicker('destroy');
                     $('#btnImport').attr('disabled','disabled');
                 } else {	
                     $('#txtDatea').datepicker();
@@ -257,6 +258,7 @@
                     $('#txtRedate').datepicker();
                     $('#txtStrdate').datepicker();
                     $('#txtDldate').datepicker();
+                    $('#txtEf').datepicker();
                     $('#btnImport').removeAttr('disabled');
                 }
             }
