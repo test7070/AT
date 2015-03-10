@@ -370,6 +370,10 @@
 						<td><input id="txtNick" type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
+						<td><span> </span><a id="lblConn" class="lbl"> </a></td>
+						<td><input id="txtConn" type="text" class="txt c1"/></td>
+					</tr>
+					<tr>
 						<td><span> </span><a id="lblAddr" class="lbl"> </a></td>
 						<td colspan="3"><input id="txtAddr" type="text" class="txt c1"/></td>
 					</tr>

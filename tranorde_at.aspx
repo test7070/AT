@@ -37,7 +37,8 @@
 
             aPop = new Array(['txtProductno', 'btnProduct', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
             , ['txtAddrno_', 'btnAddr_', 'addr', 'noa,addr', 'txtAddrno_,txtAddr_', 'addr_b2.aspx']
-            , ['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,tel,fax', 'txtCustno,txtComp,txtNick,txtTel,txtFax', 'cust_b.aspx']);
+            , ['txtCustno', 'lblCust', 'cust', 'noa,comp,nick,tel,fax', 'txtCustno,txtComp,txtNick,txtTel,txtFax', 'cust_b.aspx']
+            , ['txtCbno', 'lblCb', 'broker', 'noa,namea,conn,tel', 'txtCbno,txtCb,txtCbconn,txtCbtel', 'broker_b.aspx']);
 			
 			var z_mech = new Array();
             $(document).ready(function() {
@@ -704,21 +705,22 @@
 						<td><input type="text" id="txtFreetime" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">放行日</a></td>
 						<td><input type="text" id="txtRedate" class="txt c1"/></td>
-						<td><span> </span><a id="" class="lbl">空/重櫃期限</a></td>
+						<td><span> </span><a id="" class="lbl">重櫃期限</a></td>
 						<td><input type="text" id="txtEf" class="txt c1"/></td>
 						<td></td>
 						<td></td>
 						<td class="tdZ"></td>
 					</tr>
 					<tr>
-						<td><span> </span><a class="lbl">報關行</a></td>
-						<td><input id="txtCb" type="text" class="txt c1" title="customs broker"/></td>
+						<td><span> </span><a id="lblCb" class="lbl btn" title="customs broker">報關行</a></td>
+						<td colspan="3">
+							<input id="txtCbno" type="text" class="txt" style="width:35%;" />
+							<input id="txtCb" type="text" class="txt" style="width:65%;"/>
+						</td>
 						<td><span> </span><a class="lbl">連絡人</a></td>
 						<td><input type="text" id="txtCbconn" class="txt c1"/></td>
 						<td><span> </span><a class="lbl">電話</a></td>
 						<td><input type="text" id="txtCbtel" class="txt c1"/></td>
-						<td><span> </span><a class="lbl">分機</a></td>
-						<td><input type="text" id="txtCbext" class="txt c1"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>
