@@ -97,6 +97,34 @@
                 			
                 			break;
                 		case '進口':
+                			console.log('進口');
+                			//有代表櫃號，明細個數補足到櫃數
+			            	var t_casepresent = $('#txtCasepresent').val();
+			            	if(t_casepresent.length==0 || t_count==0){
+								return;            		
+			            	}
+			            	while(t_count>q_bbsCount){
+			            		$('#btnPlus').click();
+			            	}
+			            	var n = 0;
+			            	for(var i=0;i<q_bbsCount;i++){
+			            		//全形空白
+			            		if($('#txtAddr_'+i).val()=='_')
+			            			$('#txtAddr_'+i).val('');
+			            		if(!($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0))
+			            			n++;
+			            	}
+			            	if(n<t_count){
+			            		for(var i=0;i<q_bbsCount;i++){
+			            			if(n==t_count)
+			            				break;
+				            		if($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0){
+				            			$('#txtAddr_'+i).val('_');//全形空白
+				            			n++;
+				            		}
+				            	}
+			            	}
+                			
                 			break;
                 		default:
                 		
