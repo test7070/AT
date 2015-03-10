@@ -68,8 +68,40 @@
                 	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'quat_orde_at', "95%", "95%", q_getMsg('popTranquat'));
                 });
                 
-                $('#txtMount').click(function(e){
-                	
+                $('#txtMount').change(function(e){
+                	var t_count = q_float('txtMount');
+                	switch($('#cmbStype').val()){
+                		case '出口':
+                			console.log('出口');
+                			//出口明細個數補足到櫃數
+			            	while(t_count>q_bbsCount){
+			            		$('#btnPlus').click();
+			            	}
+			            	var n = 0;
+			            	for(var i=0;i<q_bbsCount;i++){
+			            		if($('#txtAddr_'+i).val()=='_')
+			            			$('#txtAddr_'+i).val('');
+			            		if(!($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0))
+			            			n++;
+			            	}
+			            	if(n<t_count){
+			            		for(var i=0;i<q_bbsCount;i++){
+			            			if(n==t_count)
+			            				break;
+				            		if($.trim($('#txtAddrno_'+i).val()).length==0 && $.trim($('#txtAddr_'+i).val()).length==0){
+				            			$('#txtAddr_'+i).val('_');
+				            			n++;
+				            		}
+				            	}
+			            	}
+                			
+                			break;
+                		case '進口':
+                			break;
+                		default:
+                		
+                			break;
+                	}
                 });
             }
             function q_funcPost(t_func, result) {
@@ -622,8 +654,8 @@
 						<td><input type="text" id="txtTakeno" class="txt c1"/></td>
 						<td><span> </span><a id="" class="lbl">領櫃單</a></td>
 						<td><input type="text" id="txtOption2" class="txt c1"/></td>
-						<td></td>
-						<td></td>
+						<td><span> </span><a class="lbl">代表櫃號</a></td>
+						<td><input type="text" id="txtCasepresent" class="txt c1"/></td>
 						<td class="tdZ"></td>
 					</tr>
 					<tr style="background-color: burlywood;">
