@@ -100,6 +100,12 @@
                         name : '領櫃日期',
                         width : 100,
                         type : 'date',
+                        nextField : 'time1'
+                    }, {
+                        field : "time1",
+                        name : '時間',
+                        width : 100,
+                        type : 'time',
                         nextField : 'carno1'
                     }, {
                         field : "carno1",
@@ -118,6 +124,12 @@
                         name : '送櫃日期',
                         width : 100,
                         type : 'date',
+                        nextField : 'time2'
+                    }, {
+                        field : "time2",
+                        name : '時間',
+                        width : 100,
+                        type : 'time',
                         nextField : 'carno2'
                     }, {
                         field : "carno2",
@@ -136,6 +148,12 @@
                         name : '收櫃日期',
                         width : 100,
                         type : 'date',
+                        nextField : 'time3'
+                    }, {
+                        field : "time3",
+                        name : '時間',
+                        width : 100,
+                        type : 'time',
                         nextField : 'carno3'
                     }, {
                         field : "carno3",
@@ -154,6 +172,12 @@
                         name : '交櫃日期',
                         width : 100,
                         type : 'date',
+                        nextField : 'time4'
+                    }, {
+                        field : "time4",
+                        name : '時間',
+                        width : 100,
+                        type : 'time',
                         nextField : 'carno4'
                     }, {
                         field : "carno4",
@@ -172,6 +196,12 @@
                         name : '移櫃日期(1)',
                         width : 100,
                         type : 'date',
+                        nextField : 'time5'
+                    }, {
+                        field : "time5",
+                        name : '時間',
+                        width : 100,
+                        type : 'time',
                         nextField : 'carno5'
                     }, {
                         field : "carno5",
@@ -190,6 +220,12 @@
                         name : '移櫃日期(2)',
                         width : 100,
                         type : 'date',
+                        nextField : 'time6'
+                    }, {
+                        field : "time6",
+                        name : '時間',
+                        width : 100,
+                        type : 'time',
                         nextField : 'carno6'
                     }, {
                         field : "carno6",
@@ -628,6 +664,9 @@
                                         //console.log(i+'__'+j+'__'+objtd.attr('name'));
                                         obj.data('info').event_date(objtd, nextObjtd);
                                         break;
+                                    case 'time':
+                                        obj.data('info').event_time(objtd, nextObjtd);
+                                        break;
                                     default:
                                         //console.log(i+'__'+j);
                                         //console.log(i+'__'+j+'__'+nextObjtd.attr('name')+'__'+objtd.attr('name'));
@@ -747,6 +786,51 @@
                                 $(this).text(curVal.replace(/^(\d{3})(\d)$/, '$1/$2'));
                             } else if (/^\d{3}\/\d{3}$/.test(curVal)) {
                                 $(this).text(curVal.replace(/^(\d{3}\/\d{2})(\d)$/, '$1/$2'));
+                            } else if (!patt.test(curVal)) {
+                                $(this).text(prevVal);
+                            }
+                            //跳到字尾
+                            var doc = document;
+                            var element = $(this)[0];
+                            if (window.getSelection) {
+                                var selection = window.getSelection();
+                                var range = document.createRange();
+                                range.selectNodeContents(element);
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                                selection.collapseToEnd();
+                            }
+                            //跳下一格
+                            if (e.which == 13) {
+                                $(this).text(prevVal);
+                                if (nextObj != null)
+                                    $(this).data('nextObj').focus();
+                            }
+                        });
+                    },
+                    event_time : function(obj, nextObj) {
+                        //欄位事件
+                        //日期格式
+                        obj.data('nextObj', nextObj);
+                        obj.focus(function() {
+                            $(this).text($(this).text());
+                        }).keydown(function(e) {
+                            if (e.which == 13)
+                                e.preventDefault();
+                            $(this).data('pervData', this.text);
+                        }).keyup(function(e) {
+                            //var n = $(this).attr('id').replace(/^.*_(\d+)$/,'$1');
+                            //console.log(e.which);
+                            //上下左右  , shift
+                            if((e.which>=37 && e.which<=40) || e.which==16)
+                            	return;
+                            
+                            var prevVal = $(this).data('pervData');
+                            var curVal = $(this).text();
+                            //格式判斷
+                            var patt = /(^\d{0,2}$)|(^\d{2}\:$)|(^\d{2}\:\d{0,2}$)|(^\d{2}\:\d{2}$)/;
+                            if (/^\d{2}\d$/.test(curVal)) {
+                                $(this).text(curVal.replace(/^(\d{2})(\d)$/, '$1:$2'));
                             } else if (!patt.test(curVal)) {
                                 $(this).text(prevVal);
                             }
