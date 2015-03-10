@@ -118,6 +118,12 @@
                         name : '司機１',
                         width : 100,
                         type : 'norm',
+                        nextField : 'msg1'
+                    }, {
+                        field : "msg1",
+                        name : '領櫃訊息',
+                        width : 100,
+                        type : 'norm',
                         nextField : 'date2'
                     }, {
                         field : "date2",
@@ -140,6 +146,12 @@
                     }, {
                         field : "driver2",
                         name : '司機２',
+                        width : 100,
+                        type : 'norm',
+                        nextField : 'msg2'
+                    }, {
+                        field : "msg2",
+                        name : '送櫃訊息',
                         width : 100,
                         type : 'norm',
                         nextField : 'date3'
@@ -166,6 +178,12 @@
                         name : '司機３',
                         width : 100,
                         type : 'norm',
+                        nextField : 'msg3'
+                    }, {
+                        field : "msg3",
+                        name : '收櫃訊息',
+                        width : 100,
+                        type : 'norm',
                         nextField : 'date4'
                     }, {
                         field : "date4",
@@ -188,6 +206,12 @@
                     }, {
                         field : "driver4",
                         name : '司機４',
+                        width : 100,
+                        type : 'norm',
+                        nextField : 'msg4'
+                    }, {
+                        field : "msg4",
+                        name : '交櫃訊息',
                         width : 100,
                         type : 'norm',
                         nextField : 'date5'
@@ -214,6 +238,12 @@
                         name : '司機５',
                         width : 100,
                         type : 'norm',
+                        nextField : 'msg5'
+                    }, {
+                        field : "msg5",
+                        name : '移櫃訊息(1)',
+                        width : 100,
+                        type : 'norm',
                         nextField : 'date6'
                     }, {
                         field : "date6",
@@ -236,6 +266,12 @@
                     }, {
                         field : "driver6",
                         name : '司機６',
+                        width : 100,
+                        type : 'norm',
+                        nextField : 'msg5'
+                    }, {
+                        field : "msg5",
+                        name : '移櫃訊息(2)',
                         width : 100,
                         type : 'norm',
                         nextField : 'memo'
