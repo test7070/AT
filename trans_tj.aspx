@@ -572,13 +572,13 @@
 						</td>
 						<td><span> </span><a id="lblTrandate" class="lbl"> </a></td>
 						<td><input id="txtTrandate"  type="text" class="txt c1"/></td>
-						<td><span> </span><a id="lblCalctype" class="lbl"> </a></td>
-						<td><select id="cmbCalctype" class="txt c1"> </select></td>
 						<td><span> </span><a id="lblCarteam" class="lbl"> </a></td>
 						<td>
 							<select id="cmbCarteamno" class="txt c1"> </select>
 							<input id="txtCarteam" type="text" style="display:none;"/>
 						</td>
+						<td><span> </span><a id="lblCalctype" class="lbl"> </a></td>
+						<td><select id="cmbCalctype" class="txt c1"> </select></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblCarno" class="lbl btn"> </a></td>
@@ -657,12 +657,12 @@
 						<td class="tdZ"></td>
 					</tr>
 					<tr  style="background-color:pink;">
-					    <td><span> </span><a class="lbl">扣％(百分比)</a></td>
-                        <td><input id="txtOverw"  type="text" class="txt c1 num"/></td>
-                        <td><span> </span><a class="lbl">抽成(百分比)</a></td>
-                        <td><input id="txtOverh"  type="text" class="txt c1 num"/></td>
+					    <td><span> </span><a class="lbl" style="display:none;">扣％(百分比)</a></td>
+                        <td><input id="txtOverw"  type="text" class="txt c1 num" style="display:none;"/></td>
+                        <td><span> </span><a class="lbl" style="display:none;">抽成(百分比)</a></td>
+                        <td><input id="txtOverh"  type="text" class="txt c1 num" style="display:none;"/></td>
 						<td><span> </span><a id="lblDiscount" class="lbl"> </a></td>
-						<td><input id="txtDiscount"  type="text" class="txt c1 num"/></td>
+						<td><input id="txtDiscount"  type="text" class="txt c1 num" /></td>
 						<td><span> </span><a id="lblTotal2" class="lbl"> </a></td>
                         <td>
                             <input id="txtMount2"  type="text" style="display:none;"/>
