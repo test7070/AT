@@ -58,9 +58,9 @@
                     string+='<a id="lblDriver" style="float:left;">司機編號</a><input id="textDriverno"  type="text" style="float:left;width:100px;"/>';
                     string+='<a id="lblDriver" style="float:left;">司機姓名</a><input id="textDriver"  type="text" style="float:left;width:100px;"/>';
                     string+='<input id="btnTranvcces_refresh"  type="button" style="float:left;width:100px;" value="任務刷新"/>';
-                    string+='<input id="btnTranvcces_previous" onclick="orde.previous()" type="button" style="float:left;width:100px;" value="上一頁"/>';
-                    string+='<input id="btnTranvcces_next" onclick="orde.next()" type="button" style="float:left;width:100px;" value="下一頁"/>';
-                    string+='<input id="textCurPage" onchange="orde.page(parseInt($(this).val()))" type="text" style="float:left;width:100px;text-align: right;"/>';
+                    string+='<input id="btnTranvcces_previous" onclick="tranvcces.previous()" type="button" style="float:left;width:100px;" value="上一頁"/>';
+                    string+='<input id="btnTranvcces_next" onclick="tranvcces.next()" type="button" style="float:left;width:100px;" value="下一頁"/>';
+                    string+='<input id="textCurPage" onchange="tranvcces.page(parseInt($(this).val()))" type="text" style="float:left;width:100px;text-align: right;"/>';
                     string+='<span style="float:left;display:block;width:10px;font-size: 25px;">/</span>';
                     string+='<input id="textTotPage"  type="text" readonly="readonly" style="float:left;width:100px;color:green;"/>';
                     $('#tranvcces_control').append(string);
@@ -110,8 +110,8 @@
 
                     if (isFloat) {
                         this.data.sort(function(a, b) {
-                            var m = parseFloat(a[orde.curIndex] == undefined ? "0" : a[orde.curIndex]);
-                            var n = parseFloat(b[orde.curIndex] == undefined ? "0" : b[orde.curIndex]);
+                            var m = parseFloat(a[tranvcces.curIndex] == undefined ? "0" : a[tranvcces.curIndex]);
+                            var n = parseFloat(b[tranvcces.curIndex] == undefined ? "0" : b[tranvcces.curIndex]);
                             if (m == n) {
                                 if (a['seq'] < b['seq'])
                                     return 1;
@@ -123,8 +123,8 @@
                         });
                     } else {
                         this.data.sort(function(a, b) {
-                            var m = a[orde.curIndex] == undefined ? "" : a[orde.curIndex];
-                            var n = b[orde.curIndex] == undefined ? "" : b[orde.curIndex];
+                            var m = a[tranvcces.curIndex] == undefined ? "" : a[tranvcces.curIndex];
+                            var n = b[tranvcces.curIndex] == undefined ? "" : b[tranvcces.curIndex];
                             if (m == n) {
                                 if (a['seq'] < b['seq'])
                                     return 1;
