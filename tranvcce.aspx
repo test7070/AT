@@ -611,6 +611,10 @@
                                     	objtd.css('color','green');
                                 	if(obj.data('info').value.column1[j].center)
                                 		objtd.parent().css('text-align','center');
+                            		//訂單超連結
+                            		if(obj.data('info').value.column1[j].field=="ordeno"){
+                            			obja.attr('href',"JavaScript:q_box('tranorde_tj.aspx',' ;noa=\\'"+obja.text()+"\\' and 1=1;"+r_accy+"','95%','95%','"+r_accy+"')")
+                            		}	
                                 }
                             }
                         }
@@ -636,6 +640,7 @@
                                 	objtd.css('color','green');
                             	if(obj.data('info').value.column2[j].center)
                             		objtd.parent().css('text-align','center');
+                            	
                             }
                         }
                         //field event
