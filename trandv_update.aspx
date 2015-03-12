@@ -239,14 +239,14 @@
 			                    ,straddrno,straddr,carno,cardno,driverno,driver,cstype
 			                    ,uccno,product,carteamno,calctype,inmount,price,total
 			                    ,outmount,price2,price3,discount,total2
-			                    ,caseno,caseno2,casetype,miles,ordeno)
+			                    ,caseno,caseno2,casetype,miles,po,ordeno)
 		                    select noa,noq,datea,trandate,custno,comp,nick
 			                    ,straddrno,straddr,carno,cardno,driverno,driver,cstype
 			                    ,productno,product,carteamno,calctype,inmount,price,total
 			                    ,outmount,price2,price3,discount,total2
-			                    ,caseno,caseno2,casetype,miles,@seq+'_'+@field
+			                    ,caseno,caseno2,casetype,miles,@po,cast(@seq as nvarchar)+'_'+@field
 		                    from #tranvcce_tranvcces""
-		                    execute sp_executesql @cmd,N'@seq int,@field nvarchar(20)',@seq=@seq,@field=@field
+		                    execute sp_executesql @cmd,N'@seq int,@field nvarchar(20),@po nvarchar(50)',@seq=@seq,@field=@field,@po=@po
 	                    end
 	                    drop table #tranvcce_tranvcces";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
