@@ -19,6 +19,7 @@
 	        public string cardno1,cardno2,cardno3,cardno4,cardno5,cardno6;
 	        public string msg1,msg2,msg3,msg4,msg5,msg6;
             public string memo,enda,chk1,chk2;
+            public string time1,time2,time3,time4,time5,time6;
         }
         public void Page_Load()
         {   
@@ -52,6 +53,7 @@
 	                ,cardno1,cardno2,cardno3,cardno4,cardno5,cardno6
 	                ,msg1,msg2,msg3,msg4,msg5,msg6
 	                ,memo,enda,chk1,chk2
+	                ,time1,time2,time3,time4,time5,time6
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -121,6 +123,12 @@
                 tmp.enda = System.DBNull.Value.Equals(r.ItemArray[42]) ? "" : (System.String)r.ItemArray[42];
                 tmp.chk1 = System.DBNull.Value.Equals(r.ItemArray[43]) ? "" : (System.String)r.ItemArray[43];
                 tmp.chk2 = System.DBNull.Value.Equals(r.ItemArray[44]) ? "" : (System.String)r.ItemArray[44];
+                tmp.time1 = System.DBNull.Value.Equals(r.ItemArray[45]) ? "" : (System.String)r.ItemArray[45];
+                tmp.time2 = System.DBNull.Value.Equals(r.ItemArray[46]) ? "" : (System.String)r.ItemArray[46];
+                tmp.time3 = System.DBNull.Value.Equals(r.ItemArray[47]) ? "" : (System.String)r.ItemArray[47];
+                tmp.time4 = System.DBNull.Value.Equals(r.ItemArray[48]) ? "" : (System.String)r.ItemArray[48];
+                tmp.time5 = System.DBNull.Value.Equals(r.ItemArray[49]) ? "" : (System.String)r.ItemArray[49];
+                tmp.time6 = System.DBNull.Value.Equals(r.ItemArray[50]) ? "" : (System.String)r.ItemArray[50];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));

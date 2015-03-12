@@ -12,6 +12,7 @@
             public string cardno1, cardno2, cardno3, cardno4, cardno5, cardno6;
             public string msg1, msg2, msg3, msg4, msg5, msg6;
             public string memo,enda,chk1,chk2;
+            public string time1,time2,time3,time4,time5,time6;
         }
         
         //連接字串   
@@ -74,8 +75,8 @@
 					    -------------------------------------------
 					    --以派車單上的資料為主，不足再從訂單找
 					
-					    select @t_carno1 = a.carno1,@t_carno2=a.carno2,@t_carno3=a.carno3
-					        ,@t_carno4=a.carno4,@t_carno5=a.carno5,@t_carno6=a.carno6
+					    select @t_carno1 = isnull(a.carno1,''),@t_carno2 = isnull(a.carno2,''),@t_carno3 = isnull(a.carno3,'')
+					    	,@t_carno4 = isnull(a.carno4,''),@t_carno5 = isnull(a.carno5,''),@t_carno6 = isnull(a.carno6,'')
 					        ,@t_containerno1=a.containerno1,@t_containerno2=a.containerno2
 					        ,@t_driver1=a.driver1,@t_driver2=a.driver2,@t_driver3=a.driver3
 					        ,@t_driver4=a.driver4,@t_driver5=a.driver5,@t_driver6=a.driver6
@@ -166,7 +167,10 @@
 	                    ,carno1=@carno1,carno2=@carno2,carno3=@carno3,carno4=@carno4,carno5=@carno5,carno6=@carno6
 	                    ,cardno1=@cardno1,cardno2=@cardno2,cardno3=@cardno3,cardno4=@cardno4,cardno5=@cardno5,cardno6=@cardno6
 	                    ,msg1=@msg1,msg2=@msg2,msg3=@msg3,msg4=@msg4,msg5=@msg5,msg6=@msg6
-	                    ,memo=@memo,enda=@enda,chk1=@chk1,chk2=@chk2 where seq=@seq and isnull(isdel,0)=0 and len(isnull(enda,''))=0";
+	                    ,memo=@memo,enda=@enda,chk1=@chk1,chk2=@chk2 
+	                    ,time1=@time1,time2=@time2,time3=@time3
+	                    ,time4=@time4,time5=@time5,time6=@time6 
+	                     where seq=@seq and isnull(isdel,0)=0 and len(isnull(enda,''))=0";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
                     cmd.Parameters.AddWithValue("@datea", itemIn.datea);
@@ -209,6 +213,12 @@
                     cmd.Parameters.AddWithValue("@enda", itemIn.enda);
                     cmd.Parameters.AddWithValue("@chk1", itemIn.chk1);
                     cmd.Parameters.AddWithValue("@chk2", itemIn.chk2);
+                    cmd.Parameters.AddWithValue("@time1", itemIn.time1);
+                    cmd.Parameters.AddWithValue("@time2", itemIn.time2);
+                    cmd.Parameters.AddWithValue("@time3", itemIn.time3);
+                    cmd.Parameters.AddWithValue("@time4", itemIn.time4);
+                    cmd.Parameters.AddWithValue("@time5", itemIn.time5);
+                    cmd.Parameters.AddWithValue("@time6", itemIn.time6);
                     cmd.ExecuteNonQuery();
                     connSource.Close();
                 }
