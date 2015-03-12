@@ -99,11 +99,11 @@
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
 			                    ,productno,product,casetype)
-		                    select a.date1,a.date1,b.custno,b.comp,b.nick,c.addrno,c.addr
+		                    select a.date1,a.date1,b.custno,b.comp,b.nick,c.straddrno,c.straddr
 			                    ,b.productno,b.product,a.casetype
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end	
 	                    --送
@@ -111,11 +111,11 @@
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
 			                    ,productno,product,casetype)
-		                    select a.date2,a.date2,b.custno,b.comp,b.nick,c.addrno,c.addr
+		                    select a.date2,a.date2,b.custno,b.comp,b.nick,c.straddrno,c.straddr
 			                    ,b.productno,b.product,a.casetype
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end	
 	                    --收
@@ -123,11 +123,11 @@
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
 			                    ,productno,product,casetype)
-		                    select a.date3,a.date3,b.custno,b.comp,b.nick,c.addrno,c.addr
+		                    select a.date3,a.date3,b.custno,b.comp,b.nick,c.straddrno,c.straddr
 			                    ,b.productno,b.product,a.casetype
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end	
 	                    --交
@@ -135,11 +135,11 @@
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
 			                    ,productno,product,casetype)
-		                    select a.date4,a.date4,b.custno,b.comp,b.nick,c.addrno,c.addr
+		                    select a.date4,a.date4,b.custno,b.comp,b.nick,c.straddrno,c.straddr
 			                    ,b.productno,b.product,a.casetype
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end
 	                    --移1
@@ -147,11 +147,11 @@
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
 			                    ,productno,product,casetype)
-		                    select a.date5,a.date5,b.custno,b.comp,b.nick,c.addrno,c.addr
+		                    select a.date5,a.date5,b.custno,b.comp,b.nick,c.straddrno,c.straddr
 			                    ,b.productno,b.product,a.casetype
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end
 	                    --移2
@@ -159,11 +159,11 @@
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
 			                    ,productno,product,casetype)
-		                    select a.date6,a.date6,b.custno,b.comp,b.nick,c.addrno,c.addr
+		                    select a.date6,a.date6,b.custno,b.comp,b.nick,c.straddrno,c.straddr
 			                    ,b.productno,b.product,a.casetype
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end
 		
