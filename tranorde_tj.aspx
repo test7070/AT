@@ -196,11 +196,11 @@
                 if (q_cur == 1 || q_cur == 2){
                 	Lock(1,{opacity:0});
                 	var t_noa = $('#txtNoa').val();
-            		q_func('qtxt.query.tranorde_tranvcce', 'tranorde_at.txt,tranorde_tranvcce,' + encodeURI(t_noa));
+            		q_func('qtxt.query.tranorde_tranvcce', 'tranorde_tj.txt,tranorde_tranvcce,' + encodeURI(t_noa));
                 }else{
                 	Lock(1,{opacity:0});
                 	var t_noa = $('body').data('deleteno');
-                	q_func('qtxt.query.tranorde_tranvcce', 'tranorde_at.txt,tranorde_tranvcce,' + encodeURI(t_noa));
+                	q_func('qtxt.query.tranorde_tranvcce', 'tranorde_tj.txt,tranorde_tranvcce,' + encodeURI(t_noa));
                 }
             }
 
