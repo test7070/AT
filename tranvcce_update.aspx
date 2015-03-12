@@ -90,7 +90,7 @@
 					        ,@t_date6 = a.date6 + case when len(ISNULL(a.time6,''))>0 then '_'+a.time6 else '' end
 					    from tranvcce a
 					    left join view_tranorde b on a.ordeaccy=b.accy and a.ordenoq=b.noa
-					    left join view_tranordes c on a.ordeaccy=c.accy and a.ordenoq=c.noa and a.ordenoq=c.noq
+					    left join view_tranordet c on a.ordeaccy=c.accy and a.ordenoq=c.noa and a.ordenoq=c.noq
 					    where a.seq = @seq
 					    --領
 					    if(@carno1!=@t_carno1 and len(@carno1)>0)
