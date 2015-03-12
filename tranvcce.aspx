@@ -71,6 +71,13 @@
                         type : 'norm',
                         nextField : 'cust',
                         readonly : true
+                    },{
+                        field : "stype",
+                        name : '類別',
+                        width : 60,
+                        type : 'norm',
+                        nextField : 'stype',
+                        readonly : true
                     }, {
                         field : "straddr",
                         name : '起迄地點',

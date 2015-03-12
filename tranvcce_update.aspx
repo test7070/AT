@@ -13,6 +13,7 @@
             public string msg1, msg2, msg3, msg4, msg5, msg6;
             public string memo,enda,chk1,chk2;
             public string time1,time2,time3,time4,time5,time6;
+            public string stype;
         }
         
         //連接字串   
@@ -204,6 +205,7 @@
                     cmd.Parameters.AddWithValue("@time4", itemIn.time4);
                     cmd.Parameters.AddWithValue("@time5", itemIn.time5);
                     cmd.Parameters.AddWithValue("@time6", itemIn.time6);
+                    cmd.Parameters.AddWithValue("@stype", itemIn.stype);
                     cmd.ExecuteNonQuery();
                     connSource.Close();
                 }
