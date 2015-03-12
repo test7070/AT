@@ -237,13 +237,13 @@
 		                    set @cmd =
 		                    ""insert into trans""+LEFT(@t_date,3)+""(noa,noq,datea,trandate,custno,comp,nick
 			                    ,straddrno,straddr,carno,cardno,driverno,driver,cstype
-			                    ,uccno,product,carteamno,calctype,inmount,price,total
-			                    ,outmount,price2,price3,discount,total2
+			                    ,uccno,product,carteamno,calctype,inmount,mount,price,total
+			                    ,outmount,mount2,price2,price3,discount,total2
 			                    ,caseno,caseno2,casetype,miles,po,ordeno)
 		                    select noa,noq,datea,trandate,custno,comp,nick
 			                    ,straddrno,straddr,carno,cardno,driverno,driver,cstype
-			                    ,productno,product,carteamno,calctype,inmount,price,total
-			                    ,outmount,price2,price3,discount,total2
+			                    ,productno,product,carteamno,calctype,inmount,inmount,price,total
+			                    ,outmount,outmount,price2,price3,discount,total2
 			                    ,caseno,caseno2,casetype,miles,@po,cast(@seq as nvarchar)+'_'+@field
 		                    from #tranvcce_tranvcces""
 		                    execute sp_executesql @cmd,N'@seq int,@field nvarchar(20),@po nvarchar(50)',@seq=@seq,@field=@field,@po=@po
