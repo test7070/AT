@@ -170,7 +170,7 @@
                         			$('#txtAddrno_'+i).attr('disabled','disabled');
                         			$('#txtAddr_'+i).attr('disabled','disabled');
                         			$('#txtMount_'+i).attr('disabled','disabled');
-                        			$('#chkIsdaul_'+i).attr('disabled','disabled');
+                        			$('#chkIsdual_'+i).attr('disabled','disabled');
                         		}
                         	}
                         }
