@@ -680,87 +680,87 @@
                         					objtr.find('td').eq(j).find('input[type="text"]').eq(0).mask('999/99/99');
                             				break;
                             			case 'carno1':
-                            				if(obj.data('info').value.column2[j]._carno1 == undefined){
+                            				if(obj.data('info').value.column2[j]['carno1_'+i] == undefined){
 	                            				t_apop = [['carno1_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno1_'+i+','+'driver1_'+i, 'car2_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._carno1 = true;
+	                            				obj.data('info').value.column2[j]['carno1_'+i] = true;
                             				}
                             				break;
                         				case 'carno2':
-                            				if(obj.data('info').value.column2[j]._carno2 == undefined){
+                            				if(obj.data('info').value.column2[j]['carno2_'+i]== undefined){
 	                            				t_apop = [['carno2_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno2_'+i+','+'driver2_'+i, 'car2_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._carno2 = true;
+	                            				obj.data('info').value.column2[j]['carno2_'+i] = true;
                             				}
                             				break;
                         				case 'carno3':
-                            				if(obj.data('info').value.column2[j]._carno3 == undefined){
+                            				if(obj.data('info').value.column2[j]['carno3_'+i] == undefined){
 	                            				t_apop = [['carno3_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno3_'+i+','+'driver3_'+i, 'car2_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._carno3 = true;
+	                            				obj.data('info').value.column2[j]['carno3_'+i] = true;
                             				}
                             				break;
                         				case 'carno4':
-                            				if(obj.data('info').value.column2[j]._carno4 == undefined){
+                            				if(obj.data('info').value.column2[j]['carno4_'+i]== undefined){
 	                            				t_apop = [['carno4_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno4_'+i+','+'driver4_'+i, 'car2_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._carno4 = true;
+	                            				obj.data('info').value.column2[j]['carno4_'+i] = true;
                             				}
                             				break;
                         				case 'carno5':
-                            				if(obj.data('info').value.column2[j]._carno5 == undefined){
+                            				if(obj.data('info').value.column2[j]['carno5_'+i] == undefined){
 	                            				t_apop = [['carno5_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno5_'+i+','+'driver5_'+i, 'car2_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._carno5 = true;
+	                            				obj.data('info').value.column2[j]['carno5_'+i] = true;
                             				}
                             				break;
                         				case 'carno6':
-                            				if(obj.data('info').value.column2[j]._carno6 == undefined){
+                            				if(obj.data('info').value.column2[j]['carno6_'+i] == undefined){
 	                            				t_apop = [['carno6_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno6_'+i+','+'driver6_'+i, 'car2_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._carno6 = true;
+	                            				obj.data('info').value.column2[j]['carno6_'+i] = true;
                             				}
                             				break;
                             			case 'driver1':
-                            				if(obj.data('info').value.column2[j]._driver1 == undefined){
+                            				if(obj.data('info').value.column2[j]['driver1_'+i] == undefined){
 	                            				t_apop = [['driver1_'+i, '', 'driver', 'namea,noa', 'driver1_'+i, 'driver_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._driver1 = true;
+	                            				obj.data('info').value.column2[j]['driver1_'+i] = true;
                             				}
                             				break;
                         				case 'driver2':
-                            				if(obj.data('info').value.column2[j]._driver2 == undefined){
+                            				if(obj.data('info').value.column2[j]['driver2_'+i] == undefined){
 	                            				t_apop = [['driver2_'+i, '', 'driver', 'namea,noa', 'driver2_'+i, 'driver_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._driver2 = true;
+	                            				obj.data('info').value.column2[j]['driver2_'+i] = true;
                             				}
                             				break;
                         				case 'driver3':
-                            				if(obj.data('info').value.column2[j]._driver3 == undefined){
+                            				if(obj.data('info').value.column2[j]['driver3_'+i] == undefined){
 	                            				t_apop = [['driver3_'+i, '', 'driver', 'namea,noa', 'driver3_'+i, 'driver_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._driver3 = true;
+	                            				obj.data('info').value.column2[j]['driver3_'+i] = true;
                             				}
                             				break;
                         				case 'driver4':
-                            				if(obj.data('info').value.column2[j]._driver4 == undefined){
+                            				if(obj.data('info').value.column2[j]['driver4_'+i] == undefined){
 	                            				t_apop = [['driver4_'+i, '', 'driver', 'namea,noa', 'driver4_'+i, 'driver_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._driver4 = true;
+	                            				obj.data('info').value.column2[j]['driver4_'+i] = true;
                             				}
                             				break;
                         				case 'driver5':
-                            				if(obj.data('info').value.column2[j]._driver5 == undefined){
+                            				if(obj.data('info').value.column2[j]['driver5_'+i] == undefined){
 	                            				t_apop = [['driver5_'+i, '', 'driver', 'namea,noa', 'driver5_'+i, 'driver_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._driver5 = true;
+	                            				obj.data('info').value.column2[j]['driver5_'+i] = true;
                             				}
                             				break;
                         				case 'driver6':
-                            				if(obj.data('info').value.column2[j]._driver6 == undefined){
+                            				if(obj.data('info').value.column2[j]['driver6_'+i] == undefined){
 	                            				t_apop = [['driver6_'+i, '', 'driver', 'namea,noa', 'driver6_'+i, 'driver_b.aspx']];
 	                            				aPop = aPop.concat(t_apop);
-	                            				obj.data('info').value.column2[j]._driver6 = true;
+	                            				obj.data('info').value.column2[j]['driver6_'+i] = true;
                             				}
                             				break;
                             			default:

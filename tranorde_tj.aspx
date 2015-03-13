@@ -880,7 +880,7 @@
 						</td>
 						<td style="width:20px;"></td>
 						<td style="width:350px; text-align: center;">起迄地點</td>
-						<td style="width:60px; text-align: center;">數量</td>
+						<td style="width:60px; text-align: center;display:none;">數量</td>
 						<td style="width:150px; text-align: center;">櫃號一</td>
 						<td style="width:150px; text-align: center;">櫃號二</td>
 					</tr>
@@ -893,7 +893,7 @@
 							<input class="txt" id="txtStraddrno..*" type="text" style="width:45%;float:left;"/>
 							<input class="txt" id="txtStraddr..*" type="text" style="width:45%;float:left;"/>
 						</td>
-						<td><input class="txt num" id="txtMount..*" type="text" style="width:95%;" title=""/></td>
+						<td style="display:none;"><input class="txt num" id="txtMount..*" type="text" style="width:95%;" title=""/></td>
 						<td><input class="txt" id="txtContainerno1..*" type="text" style="width:95%;" title=""/></td>
 						<td><input class="txt" id="txtContainerno2..*" type="text" style="width:95%;" title=""/></td>
 					</tr>
