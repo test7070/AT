@@ -106,6 +106,13 @@
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
 		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
+		                    
+		                    --出口   櫃號回寫 tranvcce
+		                    update tranvcce set containerno1 = @caseno
+		                    	,containerno2 = @caseno2
+		                    from tranvcce a
+		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
+		                    where a.seq=@seq and b.stype='出口'
 	                    end	
 	                    --送
 	                    if @field = '送'

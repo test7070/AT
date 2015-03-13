@@ -167,7 +167,7 @@
                         field : "date3",
                         name : '收櫃日期',
                         width : 100,
-                        type : 'date',
+                        type : 'date2',
                         nextField : 'time3'
                     }, {
                         field : "time3",
@@ -179,13 +179,13 @@
                         field : "carno3",
                         name : '收櫃車號',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'driver3'
                     }, {
                         field : "driver3",
                         name : '司機３',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'msg3'
                     }, {
                         field : "msg3",

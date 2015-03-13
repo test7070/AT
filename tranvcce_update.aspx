@@ -112,7 +112,10 @@
 					        set @t_date = @date1 + case when len(ISNULL(@time1,''))>0 then '_'+@time1 else '' end
 					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'領',@carno1,@t_driverno,@driver1
-								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 領櫃日期：'+@t_date+case when len(isnull(@msg1,''))>0 then '注意事項：'+@msg1 else '' end
+								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 領櫃日期：'+@t_date
+								+case when len(isnull(@containerno1,''))>0 then '櫃號一：'+@containerno1 else '' end
+								+case when len(isnull(@containerno2,''))>0 then '櫃號二：'+@containerno2 else '' end
+								+case when len(isnull(@msg1,''))>0 then '注意事項：'+@msg1 else '' end
 								,getdate(),@date1,@time1,@containerno1,@containerno2
 					    end
 					    --送
@@ -126,7 +129,10 @@
                             set @t_date = @date2 + case when len(ISNULL(@time2,''))>0 then '_'+@time2 else '' end
 					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'送',@carno2,@t_driverno,@driver2
-								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 送櫃日期：'+@t_date+case when len(isnull(@msg2,''))>0 then '注意事項：'+@msg2 else '' end
+								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 送櫃日期：'+@t_date
+								+case when len(isnull(@containerno1,''))>0 then '櫃號一：'+@containerno1 else '' end
+								+case when len(isnull(@containerno2,''))>0 then '櫃號二：'+@containerno2 else '' end
+								+case when len(isnull(@msg2,''))>0 then '注意事項：'+@msg2 else '' end
 								,getdate(),@date2,@time2,@containerno1,@containerno2
 					    end
 					    --收
@@ -140,7 +146,10 @@
                             set @t_date = @date3 + case when len(ISNULL(@time3,''))>0 then '_'+@time3 else '' end
 					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'收',@carno3,@t_driverno,@driver3
-								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 收櫃日期：'+@t_date+case when len(isnull(@msg3,''))>0 then '注意事項：'+@msg3 else '' end
+								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 收櫃日期：'+@t_date
+								+case when len(isnull(@containerno1,''))>0 then '櫃號一：'+@containerno1 else '' end
+								+case when len(isnull(@containerno2,''))>0 then '櫃號二：'+@containerno2 else '' end
+								+case when len(isnull(@msg3,''))>0 then '注意事項：'+@msg3 else '' end
 								,getdate(),@date3,@time3,@containerno1,@containerno2
 					    end
 					    --交
@@ -154,7 +163,10 @@
                             set @t_date = @date4 + case when len(ISNULL(@time4,''))>0 then '_'+@time4 else '' end
 					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'交',@carno4,@t_driverno,@driver4
-								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 交櫃日期：'+@t_date+case when len(isnull(@msg4,''))>0 then '注意事項：'+@msg4 else '' end
+								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 交櫃日期：'+@t_date
+								+case when len(isnull(@containerno1,''))>0 then '櫃號一：'+@containerno1 else '' end
+								+case when len(isnull(@containerno2,''))>0 then '櫃號二：'+@containerno2 else '' end
+								+case when len(isnull(@msg4,''))>0 then '注意事項：'+@msg4 else '' end
 								,getdate(),@date4,@time4,@containerno1,@containerno2
 					    end
 					    --移1
@@ -168,7 +180,10 @@
                             set @t_date = @date5 + case when len(ISNULL(@time5,''))>0 then '_'+@time5 else '' end
 					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'移1',@carno5,@t_driverno,@driver5
-								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 移櫃日期：'+@t_date+case when len(isnull(@msg5,''))>0 then '注意事項：'+@msg5 else '' end
+								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 移櫃日期：'+@t_date
+								+case when len(isnull(@containerno1,''))>0 then '櫃號一：'+@containerno1 else '' end
+								+case when len(isnull(@containerno2,''))>0 then '櫃號二：'+@containerno2 else '' end
+								+case when len(isnull(@msg5,''))>0 then '注意事項：'+@msg5 else '' end
 								,getdate(),@date5,@time5,@containerno1,@containerno2
 					    end
 					    --移2
@@ -182,7 +197,10 @@
                             set @t_date = @date6 + case when len(ISNULL(@time6,''))>0 then '_'+@time6 else '' end
 					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'移2',@carno6,@t_driverno,@driver6
-								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 移櫃日期：'+@t_date+case when len(isnull(@msg6,''))>0 then '注意事項：'+@msg6 else '' end
+								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 移櫃日期：'+@t_date
+								+case when len(isnull(@containerno1,''))>0 then '櫃號一：'+@containerno1 else '' end
+								+case when len(isnull(@containerno2,''))>0 then '櫃號二：'+@containerno2 else '' end
+								+case when len(isnull(@msg6,''))>0 then '注意事項：'+@msg6 else '' end
 								,getdate(),@date6,@time6,@containerno1,@containerno2
 					    end";                   
                     //更新資料
