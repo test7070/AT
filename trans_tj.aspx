@@ -699,7 +699,10 @@
 							<input id="txtNoq"  type="text" style="display:none;"/>
 						</td>
 						<td><span> </span><a class="lbl">轉來</a></td>
-						<td><input id="txtOrdeno"  type="text" class="txt c1"/></td>
+						<td>
+							<input id="txtOrdeno"  type="text" class="txt c1"/>
+							<input id="txtCasecustno"  type="text" style="display:none;" title="記錄派車單"/>
+						</td>
 						<td><span> </span><a id="lblWorker" class="lbl"> </a></td>
 						<td><input id="txtWorker" type="text" class="txt c1"/></td>
 						<td><span> </span><a id="lblWorker2" class="lbl"> </a></td>
