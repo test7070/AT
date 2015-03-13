@@ -101,7 +101,7 @@
                         $('#div_return').css('top',e.pageY);
 						$('#div_return').css('left',e.pageX);
                         $('#div_return').show();
-                        
+                        $('#textCaseno').focus();
                         $('#tranvcces_control').hide();
                         $('.tranvcces_btn').attr('disabled', 'disabled');
                     });
@@ -158,7 +158,7 @@
                     this.page(1);
                 },
                 next : function() {
-                    if (this.curPage == this.totPage) {
+                    if (this.curPage >= this.totPage) {
                         alert('最末頁。');
                         return;
                     }
@@ -256,6 +256,23 @@
 					q_gt('tranvcces', t_where, 0, 0, 0,'tranvcces_init', r_accy);
                 });
                 
+                //div跳下一個物件
+                var SeekF= new Array();
+				$('#table_return td').children("input:text").each(function() {
+					if($(this).attr('disabled')!='disabled')
+						SeekF.push($(this).attr('id'));
+				});
+						
+				SeekF.push('btnOk_div_return');
+				$('#table_return td').children("input:text").each(function() {
+					$(this).keydown(function(event) {
+						if( event.which == 13) {
+							$('#'+SeekF[SeekF.indexOf($(this).attr('id'))+1]).focus();
+							$('#'+SeekF[SeekF.indexOf($(this).attr('id'))+1]).select();
+						}
+					});
+				});
+                
                 $('#btnClose_div_return').click(function(e) {
                 	for (var i = 0; i < tranvcces.tbCount; i++) {
                         if (!emp($('#tranvcces_seq' + i).text())) 
@@ -347,7 +364,7 @@
                         tranvcces.init(as);
                         if (as[0] == undefined){
                             Unlock();
-                            alert('無資料。');
+                            alert('無任務資料。');
                         }
                         break;
 					case q_name:
