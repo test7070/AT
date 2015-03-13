@@ -53,7 +53,8 @@
 		                    straddrno nvarchar(20),
 		                    straddr nvarchar(50),
 		                    cstype nvarchar(2),
-		
+							ordeno nvarchar(20),
+							
 		                    carno nvarchar(20),
 		                    cardno nvarchar(20),
 		                    driverno nvarchar(20),
@@ -93,77 +94,77 @@
 	                    declare @t_caseno nvarchar(20)
 	                    declare @t_caseno2 nvarchar(20)
 	                    declare @t_miles float
-	
+						declare @t_ordeno nvarchar(20)
 	                    --領
 	                    if @field = '領'
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
-			                    ,productno,product,casetype)
-		                    select a.date1,a.date1,b.custno,b.comp,b.nick,c.addrno,c.addr
-			                    ,b.productno,b.product,a.casetype
+			                    ,productno,product,casetype,ordeno)
+		                    select a.date1,a.date1,b.custno,b.comp,b.nick,c.straddrno,c.straddr
+			                    ,b.productno,b.product,a.casetype,b.noa
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end	
 	                    --送
 	                    if @field = '送'
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
-			                    ,productno,product,casetype)
-		                    select a.date2,a.date2,b.custno,b.comp,b.nick,c.addrno,c.addr
-			                    ,b.productno,b.product,a.casetype
+			                    ,productno,product,casetype,ordeno)
+		                    select a.date2,a.date2,b.custno,b.comp,b.nick,c.straddrno,c.straddr
+			                    ,b.productno,b.product,a.casetype,b.noa
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end	
 	                    --收
 	                    if @field = '收'
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
-			                    ,productno,product,casetype)
-		                    select a.date3,a.date3,b.custno,b.comp,b.nick,c.addrno,c.addr
-			                    ,b.productno,b.product,a.casetype
+			                    ,productno,product,casetype,ordeno)
+		                    select a.date3,a.date3,b.custno,b.comp,b.nick,c.straddrno,c.straddr
+			                    ,b.productno,b.product,a.casetype,b.noa
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end	
 	                    --交
 	                    if @field = '交'
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
-			                    ,productno,product,casetype)
-		                    select a.date4,a.date4,b.custno,b.comp,b.nick,c.addrno,c.addr
-			                    ,b.productno,b.product,a.casetype
+			                    ,productno,product,casetype,ordeno)
+		                    select a.date4,a.date4,b.custno,b.comp,b.nick,c.straddrno,c.straddr
+			                    ,b.productno,b.product,a.casetype,b.noa
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end
 	                    --移1
 	                    if @field = '移1'
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
-			                    ,productno,product,casetype)
-		                    select a.date5,a.date5,b.custno,b.comp,b.nick,c.addrno,c.addr
-			                    ,b.productno,b.product,a.casetype
+			                    ,productno,product,casetype,ordeno)
+		                    select a.date5,a.date5,b.custno,b.comp,b.nick,c.straddrno,c.straddr
+			                    ,b.productno,b.product,a.casetype,b.noa
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end
 	                    --移2
 	                    if @field = '移2'
 	                    begin
 		                    insert into #tranvcce_tranvcces(datea,trandate,custno,comp,nick,straddrno,straddr
-			                    ,productno,product,casetype)
-		                    select a.date6,a.date6,b.custno,b.comp,b.nick,c.addrno,c.addr
-			                    ,b.productno,b.product,a.casetype
+			                    ,productno,product,casetype,ordeno)
+		                    select a.date6,a.date6,b.custno,b.comp,b.nick,c.straddrno,c.straddr
+			                    ,b.productno,b.product,a.casetype,b.noa
 		                    from tranvcce a
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
-		                    left join view_tranordes c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
+		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
 	                    end
 		
@@ -173,9 +174,9 @@
 	                    ---------------------------------------------------------------------------
 	                    select @t_carno='',@t_date='',@t_addrno='',@t_custno=''
 		                    ,@t_custprice=null,@t_driverprice=null,@t_isoutside=1,@t_calctype = '',@t_mount=0
-		                    ,@t_cardno='',@t_caseno='',@t_caseno2='',@t_miles=0
+		                    ,@t_cardno='',@t_caseno='',@t_caseno2='',@t_miles=0,@t_ordeno=''
 	
-	                    select @t_date=trandate,@t_addrno=straddrno from #tranvcce_tranvcces
+	                    select @t_date=trandate,@t_addrno=straddrno,@t_custno=custno,@t_ordeno=ordeno from #tranvcce_tranvcces
 	                    select top 1 @t_custprice = custprice,@t_driverprice=driverprice 
 	                    from addrs where noa=@t_addrno and datea<=@t_date and custno=@t_custno order by datea
 	                    --判斷公司車、外車
@@ -237,16 +238,18 @@
 		                    set @cmd =
 		                    ""insert into trans""+LEFT(@t_date,3)+""(noa,noq,datea,trandate,custno,comp,nick
 			                    ,straddrno,straddr,carno,cardno,driverno,driver,cstype
-			                    ,uccno,product,carteamno,calctype,inmount,price,total
-			                    ,outmount,price2,price3,discount,total2
-			                    ,caseno,caseno2,casetype,miles)
+			                    ,uccno,product,carteamno,calctype,inmount,mount,price,total
+			                    ,outmount,mount2,price2,price3,discount,total2
+			                    ,caseno,caseno2,casetype,miles,po,casecustno,ordeno)
 		                    select noa,noq,datea,trandate,custno,comp,nick
 			                    ,straddrno,straddr,carno,cardno,driverno,driver,cstype
-			                    ,productno,product,carteamno,calctype,inmount,price,total
-			                    ,outmount,price2,price3,discount,total2
-			                    ,caseno,caseno2,casetype,miles
+			                    ,productno,product,carteamno,calctype,inmount,inmount,price,total
+			                    ,outmount,outmount,price2,price3,discount,total2
+			                    ,caseno,caseno2,casetype,miles,@po
+			                    ,cast(@seq as nvarchar)+'_'+@field,@t_ordeno
 		                    from #tranvcce_tranvcces""
-		                    execute sp_executesql @cmd
+		                    execute sp_executesql @cmd,N'@seq int,@field nvarchar(20),@po nvarchar(50),@t_ordeno nvarchar(20)'
+		                    	,@seq=@seq,@field=@field,@po=@po,@t_ordeno=@t_ordeno
 	                    end
 	                    drop table #tranvcce_tranvcces";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
