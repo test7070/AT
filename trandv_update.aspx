@@ -106,6 +106,13 @@
 		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
 		                    left join view_tranordet c on a.ordeaccy=c.accy and a.ordeno=c.noa and a.ordenoq=c.noq
 		                    where a.seq = @seq
+		                    
+		                    --出口   櫃號回寫 tranvcce
+		                    update tranvcce set containerno1 = @caseno
+		                    	,containerno2 = @caseno2
+		                    from tranvcce a
+		                    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
+		                    where a.seq=@seq and b.stype='出口'
 	                    end	
 	                    --送
 	                    if @field = '送'
@@ -250,6 +257,7 @@
 		                    from #tranvcce_tranvcces""
 		                    execute sp_executesql @cmd,N'@seq int,@field nvarchar(20),@po nvarchar(50),@t_ordeno nvarchar(20)'
 		                    	,@seq=@seq,@field=@field,@po=@po,@t_ordeno=@t_ordeno
+		                    	
 	                    end
 	                    drop table #tranvcce_tranvcces";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
