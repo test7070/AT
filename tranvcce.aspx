@@ -40,7 +40,8 @@
                         width : 80,
                         type : 'date',
                         nextField : 'chk1',
-                        center : true
+                        center : true,
+                        readonly : true
                     }, {
                         field : "ordeno",
                         name : '訂單編號',
@@ -106,7 +107,7 @@
                         field : "date1",
                         name : '領櫃日期',
                         width : 100,
-                        type : 'date',
+                        type : 'date2',
                         nextField : 'time1'
                     }, {
                         field : "time1",
@@ -118,13 +119,13 @@
                         field : "carno1",
                         name : '領櫃車號',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'driver1'
                     }, {
                         field : "driver1",
                         name : '司機１',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'msg1'
                     }, {
                         field : "msg1",
@@ -136,7 +137,7 @@
                         field : "date2",
                         name : '送櫃日期',
                         width : 100,
-                        type : 'date',
+                        type : 'date2',
                         nextField : 'time2'
                     }, {
                         field : "time2",
@@ -148,13 +149,13 @@
                         field : "carno2",
                         name : '送櫃車號',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'driver2'
                     }, {
                         field : "driver2",
                         name : '司機２',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'msg2'
                     }, {
                         field : "msg2",
@@ -196,7 +197,7 @@
                         field : "date4",
                         name : '交櫃日期',
                         width : 100,
-                        type : 'date',
+                        type : 'date2',
                         nextField : 'time4'
                     }, {
                         field : "time4",
@@ -208,13 +209,13 @@
                         field : "carno4",
                         name : '交櫃車號',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'driver4'
                     }, {
                         field : "driver4",
                         name : '司機４',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'msg4'
                     }, {
                         field : "msg4",
@@ -226,7 +227,7 @@
                         field : "date5",
                         name : '移櫃日期(1)',
                         width : 100,
-                        type : 'date',
+                        type : 'date2',
                         nextField : 'time5'
                     }, {
                         field : "time5",
@@ -238,13 +239,13 @@
                         field : "carno5",
                         name : '移櫃車號(1)',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'driver5'
                     }, {
                         field : "driver5",
                         name : '司機５',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'msg5'
                     }, {
                         field : "msg5",
@@ -256,7 +257,7 @@
                         field : "date6",
                         name : '移櫃日期(2)',
                         width : 100,
-                        type : 'date',
+                        type : 'date2',
                         nextField : 'time6'
                     }, {
                         field : "time6",
@@ -268,13 +269,13 @@
                         field : "carno6",
                         name : '移櫃車號(2)',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'driver6'
                     }, {
                         field : "driver6",
                         name : '司機６',
                         width : 100,
-                        type : 'norm',
+                        type : 'text',
                         nextField : 'msg5'
                     }, {
                         field : "msg5",
@@ -556,7 +557,20 @@
                                             obj.children('div').eq(2).children('table.data').find('tr').eq(n + 1).find('td').find('a').css('background-color', obj.data('info').row_color[n % obj.data('info').row_color.length]);
 
                                             obj.find('td').find('a').removeAttr("contenteditable", "true");
-
+											//right
+                                            objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(n + 1);
+                                            for (var i = 0; i < obj.data('info').value.column2.length; i++) {
+                                                if (obj.data('info').value.column2[i].readonly) {
+                                                    continue;
+                                                }
+	                                        	 if (obj.data('info').value.column2[i].type=='text' || obj.data('info').value.column2[i].type=='date2') {
+	                                        	 	objtr.find('td').eq(i).find('input[type="text"]').eq(0).hide();
+	                                        	 	objtr.find('td').eq(i).find('a').eq(0).show();
+	                                        	 	objtr.find('td').eq(i).find('a').eq(0).text(objtr.find('td').eq(i).find('input[type="text"]').eq(0).val());
+	                                        	 }else{
+	                                        	 	objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable", "true");
+	                                        	 }
+                                            }
                                             // control 解除鎖定
                                             obj.children('div').eq(0).find('[name="curPage"]').attr("contenteditable", "true");
                                             obj.children('div').eq(0).find('[name="btnRefresh"]').removeAttr('disabled');
@@ -595,7 +609,13 @@
                                                 if (obj.data('info').value.column2[i].readonly) {
                                                     continue;
                                                 }
-                                                objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable", "true");
+	                                        	 if (obj.data('info').value.column2[i].type=='text' || obj.data('info').value.column2[i].type=='date2') {
+	                                        	 	objtr.find('td').eq(i).find('input[type="text"]').eq(0).show();
+	                                        	 	objtr.find('td').eq(i).find('a').eq(0).hide();
+	                                        	 	objtr.find('td').eq(i).find('input[type="text"]').eq(0).val(objtr.find('td').eq(i).find('a').eq(0).text());
+	                                        	 }else{
+	                                        	 	objtr.find('td').eq(i).find('a').eq(0).attr("contenteditable", "true");
+	                                        	 }
                                             }
                                         }
                                     });
@@ -603,7 +623,7 @@
                                     objtr.append('<td><a style="white-space:nowrap;"></a></td>');
                                     objtd = objtr.find('td').eq(j);
                                     obja = objtd.find('a').eq(0);
-                                    obja.attr('name', obj.data('info').value.column1[j].field + i);
+                                    obja.attr('name', obj.data('info').value.column1[j].field +'_'+ i);
                                     objtd.width(obj.data('info').value.column1[j].width).css('background-color', obj.data('info').row_color[i % obj.data('info').row_color.length]);
                                     obja.css('background-color', obj.data('info').row_color[i % obj.data('info').row_color.length]);
                                     obja.text(obj.data('info').value.row[i][obj.data('info').value.column1[j].field]);
@@ -629,10 +649,129 @@
                             objtr = obj.children('div').eq(2).children('table.data').find('tr').eq(i + 1);
                             objtr.height(obj.data('info').rowheight).css('margin', '0px').css('padding', '0px');
                             for (var j = 0; j < obj.data('info').value.column2.length; j++) {
-                                objtr.append('<td><a style="white-space:nowrap;"></a></td>');
+                            	if(obj.data('info').value.column2[j].type=='text' || obj.data('info').value.column2[j].type=='date2'){
+                            		objtr.append('<td><a style="white-space:nowrap;"></a><input type="text" style="display:none;width:95%;"></td>');
+                            		var t_id = obj.data('info').value.column2[j].field +'_'+ i;
+                            		objtr.find('td').eq(j).find('input[type="text"]').eq(0).attr('id',t_id)
+                            		
+                            		switch(obj.data('info').value.column2[j].field){
+                            			case 'date1':
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).datepicker();
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).mask('999/99/99');
+                            				break;
+                        				case 'date2':
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).datepicker();
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).mask('999/99/99');
+                            				break;
+                        				case 'date3':
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).datepicker();
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).mask('999/99/99');
+                            				break;
+                        				case 'date4':
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).datepicker();
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).mask('999/99/99');
+                            				break;
+                        				case 'date5':
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).datepicker();
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).mask('999/99/99');
+                            				break;
+                        				case 'date6':
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).datepicker();
+                        					objtr.find('td').eq(j).find('input[type="text"]').eq(0).mask('999/99/99');
+                            				break;
+                            			case 'carno1':
+                            				if(obj.data('info').value.column2[j]._carno1 == undefined){
+	                            				t_apop = [['carno1_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno1_'+i+','+'driver1_'+i, 'car2_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._carno1 = true;
+                            				}
+                            				break;
+                        				case 'carno2':
+                            				if(obj.data('info').value.column2[j]._carno2 == undefined){
+	                            				t_apop = [['carno2_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno2_'+i+','+'driver2_'+i, 'car2_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._carno2 = true;
+                            				}
+                            				break;
+                        				case 'carno3':
+                            				if(obj.data('info').value.column2[j]._carno3 == undefined){
+	                            				t_apop = [['carno3_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno3_'+i+','+'driver3_'+i, 'car2_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._carno3 = true;
+                            				}
+                            				break;
+                        				case 'carno4':
+                            				if(obj.data('info').value.column2[j]._carno4 == undefined){
+	                            				t_apop = [['carno4_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno4_'+i+','+'driver4_'+i, 'car2_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._carno4 = true;
+                            				}
+                            				break;
+                        				case 'carno5':
+                            				if(obj.data('info').value.column2[j]._carno5 == undefined){
+	                            				t_apop = [['carno5_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno5_'+i+','+'driver5_'+i, 'car2_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._carno5 = true;
+                            				}
+                            				break;
+                        				case 'carno6':
+                            				if(obj.data('info').value.column2[j]._carno6 == undefined){
+	                            				t_apop = [['carno6_'+i, '', 'car2', 'a.noa,driver,driverno', 'carno6_'+i+','+'driver6_'+i, 'car2_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._carno6 = true;
+                            				}
+                            				break;
+                            			case 'driver1':
+                            				if(obj.data('info').value.column2[j]._driver1 == undefined){
+	                            				t_apop = [['driver1_'+i, '', 'driver', 'namea,noa', 'driver1_'+i, 'driver_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._driver1 = true;
+                            				}
+                            				break;
+                        				case 'driver2':
+                            				if(obj.data('info').value.column2[j]._driver2 == undefined){
+	                            				t_apop = [['driver2_'+i, '', 'driver', 'namea,noa', 'driver2_'+i, 'driver_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._driver2 = true;
+                            				}
+                            				break;
+                        				case 'driver3':
+                            				if(obj.data('info').value.column2[j]._driver3 == undefined){
+	                            				t_apop = [['driver3_'+i, '', 'driver', 'namea,noa', 'driver3_'+i, 'driver_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._driver3 = true;
+                            				}
+                            				break;
+                        				case 'driver4':
+                            				if(obj.data('info').value.column2[j]._driver4 == undefined){
+	                            				t_apop = [['driver4_'+i, '', 'driver', 'namea,noa', 'driver4_'+i, 'driver_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._driver4 = true;
+                            				}
+                            				break;
+                        				case 'driver5':
+                            				if(obj.data('info').value.column2[j]._driver5 == undefined){
+	                            				t_apop = [['driver5_'+i, '', 'driver', 'namea,noa', 'driver5_'+i, 'driver_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._driver5 = true;
+                            				}
+                            				break;
+                        				case 'driver6':
+                            				if(obj.data('info').value.column2[j]._driver6 == undefined){
+	                            				t_apop = [['driver6_'+i, '', 'driver', 'namea,noa', 'driver6_'+i, 'driver_b.aspx']];
+	                            				aPop = aPop.concat(t_apop);
+	                            				obj.data('info').value.column2[j]._driver6 = true;
+                            				}
+                            				break;
+                            			default:
+                            				break;
+                            		}
+                            	}else{
+                            		objtr.append('<td><a style="white-space:nowrap;"></a></td>');
+                            	}
                                 objtd = objtr.find('td').eq(j);
                                 obja = objtd.find('a').eq(0);
-                                obja.attr('name', obj.data('info').value.column2[j].field + i);
+                                obja.attr('name', obj.data('info').value.column2[j].field +'_'+ i);
                                 objtd.width(obj.data('info').value.column2[j].width).css('background-color', obj.data('info').row_color[i % obj.data('info').row_color.length]);
                                 obja.css('background-color', obj.data('info').row_color[i % obj.data('info').row_color.length]);
                                 obja.text(obj.data('info').value.row[i][obj.data('info').value.column2[j].field]);
@@ -664,7 +803,10 @@
                                 if (nextObjtd == null) {
                                     for (var k = 0; k < obj.data('info').value.column2.length; k++) {
                                         if (obj.data('info').value.column1[j].nextField == obj.data('info').value.column2[k].field) {
-                                            nextObjtd = objtr_right.find('td').eq(k).find('a').eq(0);
+                                            if(obj.data('info').value.column2[k].type=='text' || obj.data('info').value.column2[k].type=='date2')
+                                            	nextObjtd = objtr_right.find('td').eq(k).find('input[type="text"]').eq(0);
+                                            else	
+                                            	nextObjtd = objtr_right.find('td').eq(k).find('a').eq(0);
                                             break;
                                         }
                                     }
@@ -687,7 +829,10 @@
                                 if (obj.data('info').value.column2[j].field == 'recno') {
                                     continue;
                                 }
-                                objtd = objtr_right.find('td').eq(j).find('a').eq(0);
+                                if(obj.data('info').value.column2[j].type=='text' || obj.data('info').value.column2[j].type=='date2')
+                                	objtd = objtr_right.find('td').eq(j).find('input[type="text"]').eq(0);
+                                else
+                                	objtd = objtr_right.find('td').eq(j).find('a').eq(0);
                                 if (objtd.length == 0)
                                     continue;
                                 nextObjtd = null;
@@ -700,7 +845,10 @@
                                 if (nextObjtd == null) {
                                     for (var k = 0; k < obj.data('info').value.column2.length; k++) {
                                         if (obj.data('info').value.column2[j].nextField == obj.data('info').value.column2[k].field) {
-                                            nextObjtd = objtr_right.find('td').eq(k).find('a').eq(0);
+                                            if(obj.data('info').value.column2[k].type=='text' || obj.data('info').value.column2[k].type=='date2')
+                                            	nextObjtd = objtr_right.find('td').eq(k).find('input[type="text"]').eq(0);
+                                            else
+                                            	nextObjtd = objtr_right.find('td').eq(k).find('a').eq(0);
                                             break;
                                         }
                                     }
@@ -723,6 +871,7 @@
                                 }
                             }
                         }
+                        q_popAssign();//更新aPop
                     },
                     save : function(obj, n) {
                         console.log('save:' + n);
