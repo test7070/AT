@@ -31,6 +31,11 @@
                     string+='<tr id="tranvcces_header">';
                     string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">Seq</td>';
                     string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">發送時間</td>';
+                    string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">櫃號1</td>';
+                    string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">櫃號2</td>';
+                    string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">板架</td>';
+                    string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">PO</td>';
+                    string+='<td id="tranvcces_seq" align="center" style="color:black;display:none;">公里數</td>';
                     string+='<td id="tranvcces_enda" align="center" style="width:40px; color:black;">回報</td>';
                     string+='<td id="tranvcces_carno" onclick="tranvcces.sort(\'carno\',false)" title="車號" align="center" style="width:100px; color:black;">車號</td>';
                     string+='<td id="tranvcces_driver" onclick="tranvcces.sort(\'driver\',false)" title="司機" align="center" style="width:100px; color:black;">司機</td>';
@@ -43,6 +48,11 @@
                         string+='<tr id="tranvcces_tr'+i+'">';
                         string+='<td id="tranvcces_seq'+i+'" style="text-align: center; font-weight: bolder; color:black;display:none;"></td>';
                         string+='<td id="tranvcces_sendtime'+i+'" style="text-align: center; font-weight: bolder; color:black;display:none;"></td>';
+                        string+='<td id="tranvcces_caseno1'+i+'" style="text-align: center; font-weight: bolder; color:black;display:none;"></td>';
+                        string+='<td id="tranvcces_caseno2'+i+'" style="text-align: center; font-weight: bolder; color:black;display:none;"></td>';
+                        string+='<td id="tranvcces_cardno'+i+'" style="text-align: center; font-weight: bolder; color:black;display:none;"></td>';
+                        string+='<td id="tranvcces_po'+i+'" style="text-align: center; font-weight: bolder; color:black;display:none;"></td>';
+                        string+='<td id="tranvcces_miles'+i+'" style="text-align: center; font-weight: bolder; color:black;display:none;"></td>';
                         string+='<td id="tranvcces_enda'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"><input class="tranvcces_btn" id="btnEnda_'+i+'" type="button" value="'+(i+1)+'" style=" width: 35px;" /></td>';
                         string+='<td id="tranvcces_carno'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
                         string+='<td id="tranvcces_driver'+i+'" style="text-align: center;color:'+t_color[i%t_color.length]+'"></td>';
@@ -74,14 +84,19 @@
                         $('#textSeq').val($('#tranvcces_seq'+n).text());
                         $('#textField').val($('#tranvcces_work'+n).text());
                         $('#textSendtime').val($('#tranvcces_sendtime'+n).text());
+                        $('#textCaseno').val($('#tranvcces_caseno1'+n).text());
+                        $('#textCaseno2').val($('#tranvcces_caseno2'+n).text());
+                        $('#textCardno').val($('#tranvcces_cardno'+n).text());
+                        $('#textPo').val($('#tranvcces_po'+n).text());
+                        $('#textMiles').val($('#tranvcces_miles'+n).text());
                         $('#textDatea').val(q_date());
                         $('#textTimea').val(padL(new Date().getHours(), '0', 2)+':'+padL(new Date().getMinutes(),'0',2));
                         //資料清空
-                        $('#textCaseno').val('');
-                        $('#textCaseno2').val('');
-                        $('#textCardno').val('');
-                        $('#textPo').val('');
-                        $('#textMiles').val('');
+                       	//$('#textCaseno').val('');
+                        //$('#textCaseno2').val('');
+                        //$('#textCardno').val('');
+                        //$('#textPo').val('');
+                        //$('#textMiles').val('');
                         //顯示
                         $('#div_return').css('top',e.pageY);
 						$('#div_return').css('left',e.pageX);
@@ -179,6 +194,11 @@
                         	$('#btnEnda_' + i).removeAttr('disabled');
                             $('#tranvcces_seq' + i).html(this.data[n+i]['seq']);
                             $('#tranvcces_sendtime' + i).html(this.data[n+i]['sendtime']);
+                            $('#tranvcces_caseno1' + i).html(this.data[n+i]['caseno']);
+                            $('#tranvcces_caseno2' + i).html(this.data[n+i]['caseno2']);
+                            $('#tranvcces_cardno' + i).html(this.data[n+i]['cardno']);
+                            $('#tranvcces_po' + i).html(this.data[n+i]['po']);
+                            $('#tranvcces_miles' + i).html(this.data[n+i]['miles']);
                             $('#tranvcces_carno' + i).html(this.data[n+i]['carid']);
                             $('#tranvcces_driver' + i).html(this.data[n+i]['driver']);
                             $('#tranvcces_work' + i).html(this.data[n+i]['field']);
@@ -186,6 +206,12 @@
                         } else {
                             $('#btnEnda_' + i).attr('disabled', 'disabled');
                             $('#tranvcces_seq' + i).text('');
+                            $('#tranvcces_sendtime' + i).text('');
+                            $('#tranvcces_caseno1' + i).text('');
+                            $('#tranvcces_caseno2' + i).text('');
+                            $('#tranvcces_cardno' + i).text('');
+                            $('#tranvcces_po' + i).text('');
+                            $('#tranvcces_miles' + i).text('');
                             $('#tranvcces_carno' + i).html('');
                             $('#tranvcces_driver' + i).html('');
                             $('#tranvcces_work' + i).html('');
@@ -212,7 +238,7 @@
                 $('#textDatea').mask(r_picd);
                 $('#textTimea').mask('99:99');
                 
-                t_where="where=^^1=1 and cast(seq as nvarchar(50))+'-'+field+'-'+CONVERT(VARCHAR(50),sendtime,20) in (select cast(seq as nvarchar(50))+'-'+field+'-'+MAX(isnull(CONVERT(VARCHAR(50),sendtime,20),'')) from tranvcces group by cast(seq as nvarchar(50)),field ) and isnull(receivetime,'')='' ^^";
+                t_where="where=^^1=1 and cast(seq as nvarchar(50))+'-'+field+'-'+CONVERT(VARCHAR(50),sendtime,20) in (select cast(seq as nvarchar(50))+'-'+field+'-'+MAX(isnull(CONVERT(VARCHAR(50),sendtime,20),'')) from tranvcces group by cast(seq as nvarchar(50)),field ) and isnull(receivetime,'')='' order by datea,timea ^^";
 				q_gt('tranvcces', t_where, 0, 0, 0,'tranvcces_init', r_accy);
                 
                 $('#btnTranvcces_refresh').click(function(e) {
@@ -222,7 +248,9 @@
                     var t_driver = $('#textDriver').val();
                     
                     t_where += q_sqlPara2("carid", t_carno)+q_sqlPara2("driverno", t_driverno)+q_sqlPara2("driver", t_driver);
-                    
+                    //排序
+                    t_where += "order by datea,timea"; 
+                                        
                     t_where="where=^^"+t_where+"^^";
                     Lock();
 					q_gt('tranvcces', t_where, 0, 0, 0,'tranvcces_init', r_accy);
