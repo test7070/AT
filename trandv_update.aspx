@@ -183,7 +183,7 @@
 		                    ,@t_custprice=null,@t_driverprice=null,@t_isoutside=1,@t_calctype = '',@t_mount=0
 		                    ,@t_cardno='',@t_caseno='',@t_caseno2='',@t_miles=0,@t_ordeno=''
 	
-	                    select @t_date=trandate,@t_addrno=straddrno,@t_custno=custno,@t_ordeno=ordeno from #tranvcce_tranvcces
+	                    select @t_date=trandate,@t_addrno=straddrno,@t_custno=custno,@t_ordeno=ordeno,@t_carno=carno from #tranvcce_tranvcces
 	                    select top 1 @t_custprice = custprice,@t_driverprice=driverprice 
 	                    from addrs where noa=@t_addrno and datea<=@t_date and custno=@t_custno order by datea
 	                    --判斷公司車、外車
