@@ -94,6 +94,8 @@
                             ,@t_time4 =  isnull(a.time4,''),@t_time5 =  isnull(a.time5,''),@t_time6 =  isnull(a.time6,'')
                             ,@t_msg1 = isnull(a.msg1,''),@t_msg2 = isnull(a.msg2,''),@t_msg3 = isnull(a.msg3,'')
                             ,@t_msg4 = isnull(a.msg4,''),@t_msg5 = isnull(a.msg5,''),@t_msg6 = isnull(a.msg6,'')
+                            ,@t_driver1 = isnull(a.driver1,''),@t_driver2 = isnull(a.driver2,''),@t_driver3 = isnull(a.driver3,'')
+                            ,@t_driver4 = isnull(a.driver4,''),@t_driver5 = isnull(a.driver5,''),@t_driver6 = isnull(a.driver6,'')
                             ,@t_addr = isnull(c.straddr,''),@t_nick = isnull(b.comp,'')
 					    from tranvcce a
 					    left join view_tranorde b on a.ordeaccy=b.accy and a.ordeno=b.noa
@@ -108,10 +110,10 @@
 					        select @t_driverno=noa from driver where namea=@driver1
 
 					        set @t_date = @date1 + case when len(ISNULL(@time1,''))>0 then '_'+@time1 else '' end
-					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime)
+					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'領',@carno1,@t_driverno,@driver1
 								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 領櫃日期：'+@t_date+case when len(isnull(@msg1,''))>0 then '注意事項：'+@msg1 else '' end
-								,getdate()
+								,getdate(),@date1,@time1,@containerno1,@containerno2
 					    end
 					    --送
 					    if((@carno2!=@t_carno2 and len(@carno2)>0) or (@driver2!=@t_driver2 and len(@driver2)>0)
@@ -122,10 +124,10 @@
 					        select @t_driverno=noa from driver where namea=@driver2
 					        
                             set @t_date = @date2 + case when len(ISNULL(@time2,''))>0 then '_'+@time2 else '' end
-					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime)
+					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'送',@carno2,@t_driverno,@driver2
 								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 送櫃日期：'+@t_date+case when len(isnull(@msg2,''))>0 then '注意事項：'+@msg2 else '' end
-								,getdate()
+								,getdate(),@date2,@time2,@containerno1,@containerno2
 					    end
 					    --收
 					    if((@carno3!=@t_carno3 and len(@carno3)>0) or (@driver3!=@t_driver3 and len(@driver3)>0)
@@ -136,10 +138,10 @@
 					        select @t_driverno=noa from driver where namea=@driver3
 					        
                             set @t_date = @date3 + case when len(ISNULL(@time3,''))>0 then '_'+@time3 else '' end
-					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime)
+					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'收',@carno3,@t_driverno,@driver3
 								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 收櫃日期：'+@t_date+case when len(isnull(@msg3,''))>0 then '注意事項：'+@msg3 else '' end
-								,getdate()
+								,getdate(),@date3,@time3,@containerno1,@containerno2
 					    end
 					    --交
 					    if((@carno4!=@t_carno4 and len(@carno4)>0) or (@driver4!=@t_driver4 and len(@driver4)>0)
@@ -150,10 +152,10 @@
 					        select @t_driverno=noa from driver where namea=@driver4
 					        
                             set @t_date = @date4 + case when len(ISNULL(@time4,''))>0 then '_'+@time4 else '' end
-					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime)
+					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'交',@carno4,@t_driverno,@driver4
 								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 交櫃日期：'+@t_date+case when len(isnull(@msg4,''))>0 then '注意事項：'+@msg4 else '' end
-								,getdate()
+								,getdate(),@date4,@time4,@containerno1,@containerno2
 					    end
 					    --移1
 					    if((@carno5!=@t_carno5 and len(@carno5)>0) or (@driver5!=@t_driver5 and len(@driver5)>0)
@@ -164,10 +166,10 @@
 					        select @t_driverno=noa from driver where namea=@driver5
 					        
                             set @t_date = @date5 + case when len(ISNULL(@time5,''))>0 then '_'+@time5 else '' end
-					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime)
+					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'移1',@carno5,@t_driverno,@driver5
 								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 移櫃日期：'+@t_date+case when len(isnull(@msg5,''))>0 then '注意事項：'+@msg5 else '' end
-								,getdate()
+								,getdate(),@date5,@time5,@containerno1,@containerno2
 					    end
 					    --移2
 					    if((@carno6!=@t_carno6 and len(@carno6)>0) or (@driver6!=@t_driver6 and len(@driver6)>0)
@@ -178,10 +180,10 @@
 					        select @t_driverno=noa from driver where namea=@driver6
 					        
                             set @t_date = @date6 + case when len(ISNULL(@time6,''))>0 then '_'+@time6 else '' end
-					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime)
+					        insert into tranvcces(seq,field,carid,driverno,driver,[message],sendtime,datea,timea,caseno,caseno2)
 					        select @seq,'移2',@carno6,@t_driverno,@driver6
 								,'貨主：'+@t_nick+' 地點：'+@t_addr+' 移櫃日期：'+@t_date+case when len(isnull(@msg6,''))>0 then '注意事項：'+@msg6 else '' end
-								,getdate()
+								,getdate(),@date6,@time6,@containerno1,@containerno2
 					    end";                   
                     //更新資料
                     queryString += @" update tranvcce
