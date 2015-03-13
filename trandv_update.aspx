@@ -246,9 +246,10 @@
 			                    ,productno,product,carteamno,calctype,inmount,inmount,price,total
 			                    ,outmount,outmount,price2,price3,discount,total2
 			                    ,caseno,caseno2,casetype,miles,@po
-			                    ,cast(@seq as nvarchar)+'_'+@field,''
+			                    ,cast(@seq as nvarchar)+'_'+@field,@t_ordeno
 		                    from #tranvcce_tranvcces""
-		                    execute sp_executesql @cmd,N'@seq int,@field nvarchar(20),@po nvarchar(50)',@seq=@seq,@field=@field,@po=@po
+		                    execute sp_executesql @cmd,N'@seq int,@field nvarchar(20),@po nvarchar(50),@t_ordeno nvarchar(20)'
+		                    	,@seq=@seq,@field=@field,@po=@po,@t_ordeno=@t_ordeno
 	                    end
 	                    drop table #tranvcce_tranvcces";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
