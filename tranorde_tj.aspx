@@ -78,6 +78,10 @@
                 	q_box("tranquat_at_b.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + t_where, 'quat_orde_at', "95%", "95%", q_getMsg('popTranquat'));
                 });
                 
+                $('#btnOrdevcce').click(function(e){
+                	q_box("z_tranordep_tj.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'workv', "95%", "95%", m_print);
+                });
+                
                 /*$('#txtMount').change(function(e){
                 	var t_count = q_float('txtMount');
                 	switch($('#cmbStype').val()){
@@ -317,6 +321,7 @@
                     $('#txtDldate').datepicker('destroy');
                     $('#txtEf').datepicker('destroy');
                     $('#btnImport').attr('disabled','disabled');
+                    $('#btnOrdevcce').removeAttr('disabled');
                 } else {	
                     $('#txtDatea').datepicker();
                     $('#txtEtc').datepicker();
@@ -327,6 +332,7 @@
                     $('#txtDldate').datepicker();
                     $('#txtEf').datepicker();
                     $('#btnImport').removeAttr('disabled');
+                    $('#btnOrdevcce').attr('disabled','disabled');
                 }
             }
 
@@ -701,8 +707,9 @@
 							<input id="txtComp"  type="text" style="width:75%;float:left;"/>
 							<input id="txtNick"  type="text" style="display:none;"/>
 						</td>
-						<td></td>
+						<td> </td>
 						<td><input id="btnImport" type="button" value="報價匯入" /></td>
+						<td><input id="btnOrdevcce" type="button" value="訂單派車明細表" /></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblTel" class="lbl"> </a></td>

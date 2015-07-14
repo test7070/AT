@@ -24,7 +24,7 @@
 			var q_readonly = [];
 			var q_readonlys = ['txtDriverprice6'];
 			var bbmNum = [];
-			var bbsNum = [['txtCustprice', 10, 3], ['txtDriverprice', 10, 3], ['txtDriverprice2', 10, 3], ['txtDriverprice3', 10, 3], ['txtDriverprice4', 10, 3], ['txtDriverprice5', 10, 3], ['txtDriverprice6', 10, 3]];
+			var bbsNum = [['txtCustprice', 10, 3], ['txtDriverprice', 10, 3], ['txtDriverprice2', 10, 3], ['txtDriverprice3', 10, 3], ['txtDriverprice4', 10, 3], ['txtDriverprice5', 10, 3], ['txtDriverprice6', 10, 3], ['txtCommission', 10, 3]];
 			var bbmMask = [];
 			var bbsMask = [];
 			q_sqlCount = 6;
@@ -355,7 +355,7 @@
                 font-size: medium;
             }
             .dbbs {
-                width: 950px;
+                width: 1050px;
             }
             .tbbs a {
                 font-size: medium;
@@ -456,6 +456,7 @@
                     <td align="center" style="width:80px;"><a>交</a></td>
                     <td align="center" style="width:80px;"><a>移</a></td>
                     <td align="center" style="width:80px;"><a>小計</a></td>
+                    <td align="center" style="width:80px;"><a>佣金</a></td>
                     <td align="center" style="width:150px;"><a id='lblMemo_s'> </a></td>
                 </tr>
                 <tr  style='background:#cad3ff;'>
@@ -477,6 +478,7 @@
                     <td><input type="text" id="txtDriverprice4.*" style="width:95%;text-align:right;"/></td>
                     <td><input type="text" id="txtDriverprice5.*" style="width:95%;text-align:right;"/></td>
                     <td><input type="text" id="txtDriverprice6.*" style="width:95%;text-align:right;"/></td>
+                    <td><input type="text" id="txtCommission.*" style="width:95%;text-align:right;"/></td>
                     <td><input type="text" id="txtMemo.*" style="width:95%;" /></td>
                 </tr>
             </table>
