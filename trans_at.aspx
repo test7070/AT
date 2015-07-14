@@ -682,6 +682,10 @@
 						<td colspan="2"><input id="txtCustorde" type="text" class="txt c1"/></td>
 					</tr>
 					<tr>
+						<td><span> </span><a id="lblSo" class="lbl"> </a></td>
+						<td colspan="2"><input id="txtSo"  type="text" class="txt c1"/></td>
+					</tr>
+					<tr>
 						<td><span> </span><a id="lblCaseno" class="lbl"> </a></td>
 						<td colspan="3">
 							<input id="txtCaseno"  type="text" style="float:left;width:50%;"/>

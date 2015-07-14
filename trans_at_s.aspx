@@ -57,6 +57,8 @@
                 t_straddr = $('#txtStraddr').val();
                 t_caseno = $('#txtCaseno').val();
                 t_ordeno = $('#txtOrdeno').val();
+                t_po = $('#txtPo').val();
+                t_so = $('#txtSo').val();
 
                 var t_where = " 1=1 " + q_sqlPara2("noa", t_noa) 
                 	+ q_sqlPara2("datea", t_bdate, t_edate)
@@ -74,7 +76,11 @@
                 }
                 if (t_ordeno.length>0)
                     t_where += " and charindex('" + t_ordeno + "',ordeno)>0";
-                     
+                if (t_po.length>0)
+                    t_where += " and charindex('" + t_po + "',po)>0";
+                if (t_so.length>0)
+                    t_where += " and charindex('" + t_so + "',so)>0";
+                             
                 t_where = ' where=^^' + t_where + '^^ ';
                 return t_where;
             }
@@ -159,6 +165,18 @@
 					<td class='seek'  style="width:20%;"><a id='lblOrdeno'></a></td>
 					<td>
 					<input class="txt" id="txtOrdeno" type="text" style="width:215px; font-size:medium;" />
+					</td>
+				</tr>
+				<tr class='seek_tr'>
+					<td class='seek'  style="width:20%;"><a id='lblPo'></a></td>
+					<td>
+					<input class="txt" id="txtPo" type="text" style="width:215px; font-size:medium;" />
+					</td>
+				</tr>
+				<tr class='seek_tr'>
+					<td class='seek'  style="width:20%;"><a id='lblSo'></a></td>
+					<td>
+					<input class="txt" id="txtSo" type="text" style="width:215px; font-size:medium;" />
 					</td>
 				</tr>
 			</table>
