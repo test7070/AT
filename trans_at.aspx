@@ -91,6 +91,10 @@
 				q_mask(bbmMask);
 				q_cmbParse("cmbCstype",' ,領,送,收,交,移,整趟');
 				
+				if(q_getPara('sys.comp').substring(0,2)=='集鑫'){
+					$('#lblPo').text('工程案號');
+				}
+				
 				var t_carteam= '';
 				for(var i=0;i<z_carteam.length;i++){
 					t_carteam += (t_carteam.length>0?',':'') + z_carteam[i].noa + '@'+ z_carteam[i].team ;

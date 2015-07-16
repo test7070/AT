@@ -41,6 +41,10 @@
 				$('#txtBtrandate').datepicker();
 				$('#txtEtrandate').datepicker(); 
                 $('#txtNoa').focus();
+                
+                if(q_getPara('sys.comp').substring(0,2)=='集鑫'){
+					$('#lblPo').text('工程案號');
+				}
             }
 
             function q_seekStr() {
