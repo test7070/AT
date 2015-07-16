@@ -118,6 +118,34 @@
 				}).blur(function() {
 					sum();
 				});
+				$("#cmbCalctype").focus(function() {
+					var len = $("#cmbCalctype").children().length > 0 ? $("#cmbCalctype").children().length : 1;
+					$("#cmbCalctype").attr('size', len + "");
+					$(this).data('curValue',$(this).val());
+				}).blur(function() {
+					$("#cmbCalctype").attr('size', '1');
+				}).change(function(e){
+					$('#txtDiscount').val('0');
+					for(var i=0;i<z_calctypes.length;i++){
+						if($(this).val()==z_calctypes[i].noa+z_calctypes[i].noq){
+							$('#txtDiscount').val(z_calctypes[i].discount);
+							break;								
+						}
+					}
+					sum();
+				}).click(function(e){
+					if($(this).data('curValue')!=$(this).val()){
+						$('#txtDiscount').val('0');
+						for(var i=0;i<z_calctypes.length;i++){
+							if($(this).val()==z_calctypes[i].noa+z_calctypes[i].noq){
+								$('#txtDiscount').val(z_calctypes[i].discount);
+								break;								
+							}
+						}
+						sum();
+					}
+					$(this).data('curValue',$(this).val());
+				});
 				
 				$("#cmbCstype").focus(function() {
 					var t_addrno = $.trim($('#txtStraddrno').val());
@@ -199,7 +227,6 @@
 
 			function q_gtPost(t_name) {
 				switch (t_name) {
-                	
 					case 'transInit_1':
 						var as = _q_appendData("carteam", "", true);
 						z_carteam = new Array();
