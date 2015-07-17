@@ -93,6 +93,8 @@
 				
 				if(q_getPara('sys.comp').substring(0,2)=='集鑫'){
 					$('#lblPo').text('工程案號');
+					$('#lblCstype').hide();
+					$('#cmbCstype').hide();
 				}
 				
 				var t_carteam= '';
@@ -629,7 +631,7 @@
 							<input id="txtComp"  type="text" style="float:left;width:70%;"/>
 							<input id="txtNick" type="text" style="display:none;"/>
 						</td>
-						<td><span> </span><a class="lbl">作業</a></td>
+						<td><span> </span><a id="lblCstype" class="lbl">作業</a></td>
 						<td><select id="cmbCstype" class="txt c1"></select></td>
 					</tr>
 					<tr>
