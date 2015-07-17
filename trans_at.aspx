@@ -50,6 +50,12 @@
 						break;
 					}
 				}
+				if(t_isoutside){
+					$('#txtPrice2').val(0);
+				}else{
+					$('#txtPrice3').val(0);
+				}
+				
 				if(q_float('txtOverw')!=0 && q_float('txtOverh')!=0)
 				   $('#txtDiscount').val(round((1-q_float('txtOverw')/100)*q_float('txtOverh')/100,3));
 				
@@ -305,6 +311,15 @@
 				$('#txtDatea').val(q_date());
 				$('#txtTrandate').val(q_date());
 				$('#txtDatea').focus();
+				
+				$('#txtDiscount').val('0');
+				for(var i=0;i<z_calctypes.length;i++){
+					if($('#cmbCalctype').val()==z_calctypes[i].noa+z_calctypes[i].noq){
+						$('#txtDiscount').val(z_calctypes[i].discount);
+						break;								
+					}
+				}
+				sum();
 			}
 			function btnModi() {
 				if (emp($('#txtNoa').val()))
