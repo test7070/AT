@@ -101,7 +101,10 @@
 					$('#lblPo').text('工程案號');
 					$('#lblCstype').hide();
 					$('#cmbCstype').hide();
+					$('#lblPton2').text('司機補津貼');
+					
 				}
+				
 				
 				var t_carteam= '';
 				for(var i=0;i<z_carteam.length;i++){
