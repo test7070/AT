@@ -264,15 +264,21 @@
 						var t_price = 0;
 						var t_price2 = 0;
 						var t_price3 = 0;
+						var t_custmount = 0
 						var as = _q_appendData("addrs", "", true);
 						if(as[0]!=undefined){
 							t_price = as[0].custprice;
 						 	t_price2 = as[0].driverprice;
 							t_price3 = as[0].driverprice2;
+							t_custmount = as[0].custmount;
 						}
 						$('#txtPrice').val(t_price);
 						$('#txtPrice2').val(t_price2);
 						$('#txtPrice3').val(t_price3);
+						if(q_getPara('sys.comp').substring(0,2)=='集鑫' && t_custmount!=0){
+							$('#txtInmount').val(0);
+							$('#txtPton').val(t_custmount);
+						}
 						sum();
 						break;
 					case q_name:
