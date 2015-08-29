@@ -39,7 +39,7 @@
 			
 			z_calctypes = new Array()
 			z_carteam = new Array();
-			
+			z_curCustmount = 0;//當前地點的補噸數
 			function sum() {
 				if(q_cur!=1 && q_cur!=2)
 					return;
@@ -50,6 +50,15 @@
 						break;
 					}
 				}
+				//補噸計算
+				if(z_curCustmount>0){
+					if(q_float('txtInmount')>=z_curCustmount){
+						$('#txtPton').val(0);
+					}else{
+						$('#txtPton').val(q_add(z_curCustmount,-1*q_float('txtInmount')));
+					}
+				}
+					
 				if(t_isoutside){
 					$('#txtPrice2').val(0);
 				}else{
@@ -143,7 +152,10 @@
 							break;								
 						}
 					}
-					sum();
+					var t_addrno = $.trim($('#txtStraddrno').val());
+					var t_date = $.trim($('#txtTrandate').val());
+					var t_saction = $.trim($('#cmbCstype').val());
+					q_gt('addrs', "where=^^ noa='"+t_addrno+"' and custunit='"+t_saction+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
 				}).click(function(e){
 					if($(this).data('curValue')!=$(this).val()){
 						$('#txtDiscount').val('0');
@@ -153,7 +165,10 @@
 								break;								
 							}
 						}
-						sum();
+						var t_addrno = $.trim($('#txtStraddrno').val());
+						var t_date = $.trim($('#txtTrandate').val());
+						var t_saction = $.trim($('#cmbCstype').val());
+						q_gt('addrs', "where=^^ noa='"+t_addrno+"' and custunit='"+t_saction+"' and datea<='"+t_date+"' ^^", 0, 0, 0, 'getPrice');
 					}
 					$(this).data('curValue',$(this).val());
 				});
@@ -181,7 +196,20 @@
 				});
 				
 				$('#txtInmount').change(function(){
-					$('#txtOutmount').val($('#txtInmount').val());
+					//集鑫 公司車都用趟次計算
+					t_isoutside = false;
+					for(var i=0;i<z_calctypes.length;i++){
+						if($('#cmbCalctype').val()==z_calctypes[i].noa+z_calctypes[i].noq){
+							t_isoutside = z_calctypes[i].isoutside=="true"?true:false;
+							break;
+						}
+					}
+					if(q_getPara('sys.comp').substring(0,2)=='集鑫'){
+						if(t_isoutside)
+							$('#txtOutmount').val($('#txtInmount').val());
+					}else{
+						$('#txtOutmount').val($('#txtInmount').val());
+					}
 					sum();
 				});
 				$('#txtPton').change(function(){
@@ -276,8 +304,9 @@
 						$('#txtPrice2').val(t_price2);
 						$('#txtPrice3').val(t_price3);
 						if(q_getPara('sys.comp').substring(0,2)=='集鑫' && t_custmount!=0){
-							$('#txtInmount').val(0);
-							$('#txtPton').val(t_custmount);
+							z_curCustmount = t_custmount;
+							//$('#txtInmount').val(0);
+							//$('#txtPton').val(t_custmount);
 						}
 						sum();
 						break;
@@ -315,6 +344,8 @@
 
 			function btnIns() {
 				_btnIns();
+				z_curCustmount = 0;
+				
 				$('#txtNoa').val('AUTO');
 				$('#txtNoq').val('001');
 				$('#txtDatea').val(q_date());
@@ -334,6 +365,7 @@
 				if (emp($('#txtNoa').val()))
 					return;
 				_btnModi();
+				z_curCustmount = 0;
 				$('#txtDatea').focus();
 			}
 			function btnPrint() {
