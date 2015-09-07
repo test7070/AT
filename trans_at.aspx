@@ -343,13 +343,16 @@
 			}
 
 			function btnIns() {
+				var t_datea = $('#txtDatea').val();
+				var t_trandate = $('#txtTrandate').val();
+				
 				_btnIns();
 				z_curCustmount = 0;
 				
 				$('#txtNoa').val('AUTO');
 				$('#txtNoq').val('001');
-				$('#txtDatea').val(q_date());
-				$('#txtTrandate').val(q_date());
+				$('#txtDatea').val(t_datea.length=0?q_date():t_datea);
+				$('#txtTrandate').val(t_trandate.length=0?q_date():t_trandate);
 				$('#txtDatea').focus();
 				
 				$('#txtDiscount').val('0');
