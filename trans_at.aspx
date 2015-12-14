@@ -37,7 +37,7 @@
 			,['txtStraddrno', 'lblStraddr', 'addr', 'noa,addr,productno,product', 'txtStraddrno,txtStraddr,txtUccno,txtProduct,txtStraddr', 'addr_b.aspx'] 
 			);
 			
-			z_calctypes = new Array()
+			z_calctypes = new Array();
 			z_carteam = new Array();
 			z_curCustmount = 0;//當前地點的補噸數
 			function sum() {
@@ -64,9 +64,10 @@
 				}else{
 					$('#txtPrice3').val(0);
 				}
-				
+				if(q_float('txtDiscount')==0)
+					$('#txtDiscount').val(1);
 				if(q_float('txtOverw')!=0 && q_float('txtOverh')!=0)
-				   $('#txtDiscount').val(round((1-q_float('txtOverw')/100)*q_float('txtOverh')/100,3));
+			    	$('#txtDiscount').val(round((1-q_float('txtOverw')/100)*q_float('txtOverh')/100,3));
 				
 				t_mount = q_float('txtInmount')+q_float('txtPton');
 				t_mount2 = q_float('txtOutmount')+q_float('txtPton2');
