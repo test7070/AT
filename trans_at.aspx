@@ -304,7 +304,7 @@
 						$('#txtPrice').val(t_price);
 						$('#txtPrice2').val(t_price2);
 						$('#txtPrice3').val(t_price3);
-						if(q_getPara('sys.comp').substring(0,2)=='集鑫' && t_custmount!=0){
+						if(q_getPara('sys.comp').substring(0,2)=='集鑫' ){
 							z_curCustmount = t_custmount;
 							//$('#txtInmount').val(0);
 							//$('#txtPton').val(t_custmount);
