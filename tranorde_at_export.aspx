@@ -370,7 +370,7 @@
             }
             .dbbm {
                 float: left;
-                width: 900px;
+                width: 1200px;
                 /*margin: -1px;
                  border: 1px black solid;*/
                 border-radius: 5px;
@@ -498,7 +498,7 @@
 	ondrop="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"
 	>
 		<!--#include file="../inc/toolbar.inc"-->
-		<div id='dmain' style="overflow:visible;width: 1200px;">
+		<div id='dmain' style="overflow:visible;width: 1500px;">
 			<div class="dview" id="dview" >
 				<table class="tview" id="tview" >
 					<tr>
