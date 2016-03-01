@@ -606,7 +606,7 @@
 			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:2790px;width: 2790px;overflow-y:scroll;">
+		<div style="min-width:2890px;width: 2890px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -615,7 +615,8 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>貨主</a></td>
 					<td align="center" style="width:190px; max-width:190px;color:black;"><a>起迄地點</a></td>
 					<td align="center" style="width:130px; max-width:130px;color:black;"><a title="Place of Receipt">領櫃地</a><br><a title="Place of Delivery">交櫃地</a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a>追蹤</a><br><a>船公司</a></td>		
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a>追蹤</a><br><a>S/O</a></td>		
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a>船公司</a></td>	
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>品名</a><br><a>規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>封條</a></td>
@@ -641,7 +642,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:2790px;width: 2790px;overflow-y:scroll;">
+		<div style="display:none;min-width:2890px;width: 2890px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -650,7 +651,8 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCust" class="readonly"></a></td>
 					<td align="center" style="width:190px; max-width:190px;color:black;"><a id="txtStraddrno" style="display:block;width:100%;height:20px;"></a><a id="txtStraddr" style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:130px; max-width:130px;color:black;"><a id="txtPor" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtPod" class="readonly"style="display:block;width:100%;height:20px;"class="field2"></a></td>
-					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtVr" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
+					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtProduct" class="readonly"style="display:block;width:100%;height:20px;"></a><a id="txtCasetype"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1"style="display:block;width:100%;height:20px;"></a><a id="txtContainerno2"style="display:block;width:100%;height:20px;" class="field2"></a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtSeal1"style="display:block;width:100%;height:20px;"></a><a id="txtSeal2"style="display:block;width:100%;height:20px;" class="field2"></a></td>
@@ -676,7 +678,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:2790px;width: 2790px;height:800px;overflow-y:scroll;">
+		<div style="min-width:2890px;width: 2890px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>
