@@ -1,0 +1,142 @@
+z_tranquatp_at01:--z_tranquatp_at01	
+	declare @t_noa nvarchar(20) = case when '#non'=[1] then '' else [1] end
+	
+	declare @tmp table(
+		gno nvarchar(20),
+		pno nvarchar(10),
+		recno int,
+		datea nvarchar(10),
+		noa nvarchar(20),
+		stype nvarchar(20),
+		[contract] nvarchar(40),
+		
+		cno nvarchar(20),
+		acomp nvarchar(50),
+		conn_acomp nvarchar(20),
+		conn_acomp_tel nvarchar(50),
+		assistant nvarchar(20),
+		assistanttel nvarchar(50),
+		car_conn nvarchar(20),
+		tela nvarchar(20),
+		disatcher nvarchar(20),
+		telb nvarchar(50),
+		
+		custno nvarchar(20),
+		comp nvarchar(50),
+		nick nvarchar(20),
+		tel_cust nvarchar(50),
+		fax_cust nvarchar(50),
+		conn_cust nvarchar(20),
+		conn_cust_tel nvarchar(50),
+		
+		oil1 float,
+		oil2 float,
+		thirdprice float,
+		
+		memo nvarchar(max),
+		
+		productno nvarchar(20),
+		product nvarchar(50),
+		straddrno nvarchar(20),
+		straddr nvarchar(50),
+		val01 nvarchar(20),
+		val02 nvarchar(20),
+		val03 nvarchar(20),
+		val04 nvarchar(20),
+		val05 nvarchar(20),
+		val06 nvarchar(20),
+		val07 nvarchar(20),
+		val08 nvarchar(20),
+		val09 nvarchar(20),
+		val10 nvarchar(20),
+		price float,
+		
+		memos nvarchar(max)
+	)
+	insert into @tmp(gno,pno,recno
+		,datea,noa,stype,[contract]
+		,cno,acomp,conn_acomp,conn_acomp_tel
+		,assistant,assistanttel,car_conn,tela,disatcher,telb
+		,custno,comp,nick,tel_cust,fax_cust,conn_cust,conn_cust_tel
+		,oil1,oil2,thirdprice,memo
+		,productno,product,straddrno,straddr
+		,val01,val02,val03,val04,val05,val06,val07,val08,val09,val10,price)
+	select '1','1',ROW_NUMBER()over(PARTITION by a.noa order by b.noq)
+		,a.datea,a.noa,a.stype,a.[contract]
+		,a.cno,acomp,a.conn_acomp,a.conn_acomp_tel
+		,a.assistant,a.assistanttel,a.car_conn,a.tela,a.disatcher,a.telb
+		,a.custno,a.comp,a.nick,a.tel_cust,a.fax_cust,a.conn_cust,a.conn_cust_tel
+		,a.oil1,a.oil2,a.thirdprice,a.memo
+		,b.productno,b.product,b.straddrno,b.straddr
+		,b.val01,b.val02,b.val03,b.val04,b.val05,b.val06,b.val07,b.val08,b.val09,b.val10,b.price
+	from tranquat a
+	left join tranquats b on a.noa=b.noa
+	where (len(@t_noa)=0 or a.noa=@t_noa)
+	----------------------------------------------------------------------------------------------------
+	declare @noa nvarchar(20)
+	declare @memo nvarchar(max)
+	declare @n int
+	
+	declare cursor_table cursor for
+	select noa,memo from @tmp group by noa,memo
+	open cursor_table
+	fetch next from cursor_table
+	into @noa,@memo
+	while(@@FETCH_STATUS <> -1)
+	begin
+		set @n = 3
+		while CHARINDEX('chr(10)',@memo)>0
+		begin
+			insert into @tmp(gno,pno,noa,memo)
+			values(CAST(@n as nvarchar),'3',@noa,LEFT(@memo,CHARINDEX('chr(10)',@memo)-1))
+			set @memo = SUBSTRING(@memo,CHARINDEX('chr(10)',@memo)+7,LEN(@memo))
+			set @n = @n + 1
+		end
+		if LEN(@memo)>0
+		begin
+			insert into @tmp(gno,pno,noa,memo)
+			values(CAST(@n as nvarchar),'3',@noa,@memo)
+			set @n = @n + 1
+		end
+		while CAST(@n as nvarchar)	<=7
+		begin
+			insert into @tmp(gno,pno,noa,memo)
+			values(CAST(@n as nvarchar),'3',@noa,'')
+			set @n = @n + 1
+		end
+		
+		fetch next from cursor_table
+		into @noa,@memo
+	end
+	close cursor_table
+	deallocate cursor_table
+	
+	select recno rr 
+		,'報價單號：'+isnull(noa,'') b01
+		,'客　　戶：'+isnull(comp,'') b02
+		,'電　　話：'+isnull(tel_cust,'') b03
+		,'傳　　真：'+isnull(fax_cust,'') b04
+		
+		,'報價日期：'+isnull(datea,'') b05
+		,'聯絡人員：'+isnull(conn_cust,'') b06
+		,'電　　話：'+isnull(conn_cust_tel,'') b07
+		,'油價區間：'+CAST(oil1 as nvarchar) + ' ～ '+CAST(oil2 as nvarchar) b08
+		
+		,'類　　別：'+isnull(stype,'') b09
+		,'報價人員：'+ISNULL(conn_acomp,'') b10
+		,'電　　話：'+ISNULL(conn_acomp_tel,'') b11
+		,'第三處加價：'+dbo.getComma(thirdprice,0) b12
+		,product a01
+		,straddr a02
+		,val01 a03
+		,val02 a04
+		,val03 a05
+		,val04 a06
+		,val05 a07
+		,val06 a08
+		,val07 a09
+		,val08 a10
+		,price a11
+		,* 
+	from @tmp 
+	order by noa,pno,recno;

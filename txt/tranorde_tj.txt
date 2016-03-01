@@ -1,0 +1,123 @@
+tranorde_tranvcce:--tj   tranorde_tranvcce
+	SET QUOTED_IDENTIFIER OFF
+	declare @cmd nvarchar(max)
+	declare @t_noa nvarchar(20) = [1]
+	---------------------------------------------------------------------------------
+	declare @tmp table(
+		ordeaccy nvarchar(10),
+		ordeno nvarchar(20),
+		ordenoq nvarchar(10),
+		strdate nvarchar(20),
+		custno nvarchar(20),
+		cust nvarchar(50),
+		straddrno nvarchar(20),
+		straddr nvarchar(50),
+		vocc nvarchar(50),
+		casetype nvarchar(20),
+		containerno1 nvarchar(20),
+		containerno2 nvarchar(20),
+		stype nvarchar(20),
+		ucr nvarchar(50),
+		por nvarchar(20),
+		pod nvarchar(20),
+		product nvarchar(50),
+		etc nvarchar(20), --結關日
+		freetime nvarchar(20), --FREE TIME
+		mount float,
+		memo nvarchar(max),
+		ef nvarchar(20)
+	)
+	insert into @tmp(ordeaccy,ordeno,ordenoq,strdate,custno,cust
+		,straddrno,straddr,vocc,casetype,containerno1,containerno2
+		,stype,ucr,por,pod,product,etc,freetime,mount,memo,ef)
+	select a.accy,a.noa,a.noq,isnull(b.strdate,''),b.custno,b.comp
+		,a.straddrno,a.straddr,b.vocc,b.casetype,a.containerno1,a.containerno2
+		,b.stype,b.trackno,b.port2,b.empdock2,b.product,b.etc,b.freetime
+		,a.mount,b.memo,b.ef
+	from view_tranordet a 
+	left join view_tranorde b on a.accy=b.accy and a.noa=b.noa
+	where a.noa = @t_noa
+	----------------------------------------------------------------------------------
+	
+	declare @ordeaccy nvarchar(10)
+	declare @ordeno nvarchar(20)
+	declare @ordenoq nvarchar(10)
+	declare @strdate nvarchar(10)
+	declare @custno nvarchar(20)
+	declare @cust nvarchar(50)
+	declare @straddrno nvarchar(20)
+	declare @straddr nvarchar(50)
+	declare @vocc nvarchar(50)
+	declare @casetype nvarchar(20)
+	declare @containerno1 nvarchar(20)
+	declare @containerno2 nvarchar(20)
+	declare @stype nvarchar(20)
+	declare @ucr nvarchar(50)
+	declare @por nvarchar(20)
+	declare @pod nvarchar(20)
+	declare @product nvarchar(50)
+	declare @etc nvarchar(20)
+	declare @freetime nvarchar(20)
+	declare @mount float
+	declare @memo nvarchar(max)
+	declare @ef nvarchar(20)
+	
+	declare cursor_table cursor for
+	select ordeaccy,ordeno,ordenoq,strdate,custno,cust
+		,straddrno,straddr,vocc,casetype,containerno1,containerno2
+		,stype,ucr,por,pod,product,etc,freetime,mount,memo
+		,ef
+	from @tmp
+	open cursor_table
+	fetch next from cursor_table
+	into @ordeaccy,@ordeno,@ordenoq,@strdate,@custno,@cust
+		,@straddrno,@straddr,@vocc,@casetype,@containerno1,@containerno2
+		,@stype,@ucr,@por,@pod,@product,@etc,@freetime,@mount,@memo
+		,@ef
+	while(@@FETCH_STATUS <> -1)
+	begin
+		if exists(select seq from tranvcce where ordeaccy=@ordeaccy and ordeno=@ordeno and ordenoq=@ordenoq)
+		begin
+			--tranvcce未修改過的才會更新資料
+			update tranvcce	set datea = case when @stype='進口' then @ef else @etc end
+				,custno=@custno
+				,cust=@cust
+				,straddrno = @straddrno
+				,straddr = @straddr
+				,vocc = @vocc
+				,casetype = @casetype
+				,containerno1 = @containerno1
+				,containerno2 = @containerno2
+				,stype=@stype
+				,ucr=@ucr
+				,por=@por
+				,pod=@pod
+				,product=@product
+				,mount=@mount
+				,memo=@memo
+			where ISNULL(isdel,0)=0 and edittime is null and ordeaccy=@ordeaccy and ordeno=@ordeno and ordenoq=@ordenoq
+		end 
+		else
+		begin
+			insert into tranvcce(ordeaccy,ordeno,ordenoq,datea,custno,cust
+				,straddrno,straddr,vocc,casetype,containerno1,containerno2
+				,stype,ucr,por,pod,product,mount,memo)		
+			select @ordeaccy,@ordeno,@ordenoq,case when @stype='進口' then @ef else @etc end
+				,@custno,@cust
+				,@straddrno,@straddr,@vocc,@casetype,@containerno1,@containerno2
+				,@stype,@ucr,@por,@pod,@product,@mount,@memo
+		end
+
+		fetch next from cursor_table
+		into @ordeaccy,@ordeno,@ordenoq,@strdate,@custno,@cust
+		,@straddrno,@straddr,@vocc,@casetype,@containerno1,@containerno2
+		,@stype,@ucr,@por,@pod,@product,@etc,@freetime,@mount,@memo,@ef
+	end
+	close cursor_table
+	deallocate cursor_table
+
+	--tranorde已刪除,tranvcce未修改過的也一併刷除
+	delete tranvcce
+	from tranvcce a
+	left join view_tranordet b on a.ordeaccy=b.accy and a.ordeno=b.noa and a.ordenoq=b.noq
+	where a.ordeno=@t_noa and ISNULL(isdel,0)=0 and a.edittime is null and b.noa is null;

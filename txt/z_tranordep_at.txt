@@ -1,0 +1,115 @@
+z_tranordep_at01:--z_tranordep_at01
+	SET QUOTED_IDENTIFIER OFF
+	
+	declare @t_bstrdate nvarchar(20) = case when '#non'=[1] then '' else [1] end
+	declare @t_estrdate nvarchar(20) = case when '#non'=[2] then char(255) else [2] end
+	declare @t_bdldate nvarchar(20) = case when '#non'=[3] then '' else [3] end
+	declare @t_edldate nvarchar(20) = case when '#non'=[4] then char(255) else [4] end
+	declare @t_bcustno nvarchar(20) = case when '#non'=[5] then '' else [5] end
+	declare @t_ecustno nvarchar(20) = case when '#non'=[6] then char(255) else [6] end
+	declare @t_contract nvarchar(20) = case when '#non'=[7] then '' else [7] end
+	declare @t_stype nvarchar(max) = case when '#non'=[8] then '' else [8] end
+	declare @t_enda nvarchar(max) = case when '#non'=[9] then '' else [9] end
+	---------------------------------------------------------------------
+	IF OBJECT_ID('tempdb..#z_tranordep_at01')is not null
+	BEGIN
+		drop table #z_tranordep_at01
+	END
+	create  table #z_tranordep_at01(
+		gno nvarchar(10),
+		pno int identity(1,1),
+		recno int,
+		noa nvarchar(20),
+		custno nvarchar(20),
+		cust nvarchar(50),
+		nick nvarchar(20),
+		[contract] nvarchar(50),
+		strdate nvarchar(20),
+		dldate nvarchar(20),
+		productno nvarchar(20),
+		product nvarchar(50),	
+		addr nvarchar(max),
+		enda nvarchar(20),
+		mount float,
+		gmount float
+	)
+	create index noa on #z_tranordep_at01(noa)
+	
+	insert into #z_tranordep_at01(gno,noa,custno,cust,nick,[contract],strdate,dldate,productno,product,enda,mount,gmount)
+	select '1',a.noa,a.custno,a.comp,a.nick,a.[contract],a.strdate,a.dldate,a.productno,a.product
+		,case when isnull(a.enda,0)=0 then '' else '*' end,isnull(a.mount,0),isnull(b.mount,0)
+	from view_tranorde a
+	left join (select ordeno,SUM(ISNULL(mount,0)) mount from view_transvcce group by ordeno) b on a.noa=b.ordeno
+	where a.strdate between @t_bstrdate and @t_estrdate
+	and a.dldate between @t_bdldate and @t_edldate
+	and a.custno between @t_bcustno and @t_ecustno
+	and (len(@t_contract)=0 or a.[contract] = @t_contract)
+	and (len(@t_stype)=0 or CHARINDEX(','+a.stype+',', ','+@t_stype+',')>0)
+	and (len(@t_enda)=0 or @t_enda=case ISNULL(a.enda,0) when 1 then 'Y' else 'N' end )
+	
+	if @t_enda='Y'
+		delete #z_tranordep_at01 where mount-gmount>0
+	if @t_enda='N'
+		delete #z_tranordep_at01 where mount-gmount<=0
+		
+	/*if len(@t_enda)>0
+	begin
+		delete @tmp
+		from @tmp a
+		left join (select ordeno,SUM(ISNULL(mount,0)) mount from view_transvcce group by ordeno) b on a.noa=b.ordeno
+	--	outer apply (select SUM(ISNULL(mount,0)) mount from view_transvcce where ordeno=a.noa) b
+		where @t_enda = case when (a.mount-b.mount)>0 then 'Y' else 'N' end
+	end*/
+	declare @noa nvarchar(20)
+	declare @addr nvarchar(max)
+	declare @t_addr nvarchar(max)
+	
+	declare cursor_table cursor for
+	select noa from #z_tranordep_at01 group by noa
+	open cursor_table
+	fetch next from cursor_table
+	into @noa
+	while(@@FETCH_STATUS <> -1)
+	begin
+		set @t_addr = ''
+		declare cursor_table2 cursor for
+		select straddr from view_tranordet where noa=@noa and len(isnull(straddr,''))>0
+		open cursor_table2
+		fetch next from cursor_table2
+		into @addr
+		while(@@FETCH_STATUS <> -1)
+		begin
+			set @t_addr = @t_addr + case when LEN(@t_addr)>0 then '<BR>' else '' end + @addr
+			
+			fetch next from cursor_table2
+			into @addr
+		end
+		close cursor_table2
+		deallocate cursor_table2
+		
+		update #z_tranordep_at01 set addr = @t_addr where noa=@noa
+		fetch next from cursor_table
+		into @noa
+	end
+	close cursor_table
+	deallocate cursor_table
+	
+	update #z_tranordep_at01 set recno=b.recno
+	from #z_tranordep_at01 a
+	left join (select pno,ROW_NUMBER()over(order by strdate,dldate,noa) recno from #z_tranordep_at01 ) b on a.pno=b.pno
+	
+	select recno rr
+		,"tranorde_at?noa=\'"+noa+"\' and "+cast(recno as nvarchar)+"=$rr?"+SUBSTRING(noa,3,3) ghref 
+		,nick a01
+		,[contract] a02
+		,strdate a03
+		,dldate a04
+		,product a05
+		,addr a06
+		,mount a07
+		,gmount a08
+		,enda a09
+		,* 
+	from #z_tranordep_at01 
+	order by recno
+	drop table #z_tranordep_at01;
