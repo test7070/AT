@@ -44,13 +44,18 @@
                 t_edate = $('#txtEdate').val();
                 t_custno = $('#txtCustno').val();
                 t_comp = $('#txtComp').val();
-                t_contract = $('#txtContract').val();
+                t_so = $('#txtSo').val();
+                t_caseno = $('#txtCaseno').val();
 
-                var t_where = " stype='出口' " + q_sqlPara2("noa", t_noa) + q_sqlPara2("datea", t_bdate, t_edate) + q_sqlPara2("custno", t_custno) ;
+                var t_where = " stype='出口' " 
+                	+ q_sqlPara2("noa", t_noa) 
+                	+ q_sqlPara2("datea", t_bdate, t_edate) 
+                	+ q_sqlPara2("custno", t_custno)
+                	+ q_sqlPara2("so", t_so) ;
 				if (t_comp.length>0)
                     t_where += " and charindex('" + t_comp + "',comp)>0";
-                if (t_contract.length>0)
-                    t_where += " and charindex('" + t_contract + "',contract)>0";
+                if (t_caseno.length>0)
+                    t_where += " and exists(select view_tranorde"+r_accy+".noa from view_tranordes"+r_accy+" where view_tranordes"+r_accy+".noa=view_tranorde"+r_accy+".noa and  (charindex('"+t_caseno+"',view_tranordes"+r_accy+".containerno1)>0 or charindex('"+t_caseno+"',view_tranordes"+r_accy+".containerno2)>0))";
                      
                 t_where = ' where=^^' + t_where + '^^ ';
                 return t_where;
@@ -95,11 +100,18 @@
 					</td>
 				</tr>
 				<tr class='seek_tr'>
-					<td class='seek'  style="width:20%;"><a id='lblContract'></a></td>
+					<td class='seek'  style="width:20%;"><a id='lblSo'>S/O</a></td>
 					<td>
-					<input class="txt" id="txtContract" type="text" style="width:215px; font-size:medium;" />
+					<input class="txt" id="txtSo" type="text" style="width:215px; font-size:medium;" />
 					</td>
 				</tr>
+				<tr class='seek_tr'>
+					<td class='seek'  style="width:20%;"><a id='lblCaseno'>櫃號</a></td>
+					<td>
+					<input class="txt" id="txtCaseno" type="text" style="width:215px; font-size:medium;" />
+					</td>
+				</tr>
+				
 			</table>
 			<!--#include file="../inc/seek_ctrl.inc"-->
 		</div>

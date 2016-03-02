@@ -37,7 +37,7 @@
 
             aPop = new Array(['txtProductno', 'btnProduct', 'ucc', 'noa,product', 'txtProductno,txtProduct', 'ucc_b.aspx']
             , ['txtAddrno_', 'btnAddr_', 'addr', 'noa,addr', 'txtAddrno_,txtAddr_', 'addr_b2.aspx']
-            , ['txtCustno', 'lblCust', 'cust', 'noa,nick,nick', 'txtCustno,txtComp,txtNick', 'cust_b.aspx']);
+            , ['txtCustno', 'lblCust', 'cust', 'noa,nick', 'txtCustno,txtComp', 'cust_b.aspx']);
 			
 			var z_mech = new Array();
             $(document).ready(function() {
@@ -104,7 +104,10 @@
                 }
             }
 			function q_popPost(id) {
-                switch (id) {         
+                switch (id) { 
+                	case 'txtCustno':
+                		$('#txtNick').val($('#txtComp').val());
+                		break;        
                     default:
                         break;
                 }
