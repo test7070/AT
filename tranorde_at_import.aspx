@@ -59,7 +59,7 @@
 
             function mainPost() {
                 q_mask(bbmMask);
-                
+                document.title='訂單作業(進口)';
                 $('#btnImport').click(function(e){
                 	t_noa = $.trim($('#txtNoa').val());
                 	t_custno = $.trim($('#txtCustno').val());
@@ -190,7 +190,7 @@
             function _btnSeek() {
                 if (q_cur > 0 && q_cur < 4)
                     return;
-                q_box('tranorde_at_s.aspx', q_name + '_s', "550px", "440px", q_getMsg("popSeek"));
+                q_box('tranorde_at_import_s.aspx', q_name + '_s', "550px", "440px", q_getMsg("popSeek"));
             }
 
             function btnIns() {
