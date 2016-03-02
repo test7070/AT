@@ -112,9 +112,10 @@
 					$('#lblCstype').hide();
 					$('#cmbCstype').hide();
 					$('#lblPton2').text('司機補津貼');
-					
 				}
-				
+				if(q_getPara('sys.project').toUpperCase()=='AT'){
+					$('#btnImport').show();
+				}
 				
 				var t_carteam= '';
 				for(var i=0;i<z_carteam.length;i++){
@@ -254,8 +255,67 @@
 		            }
 				});
 				q_xchgForm();
-			}
+				//-----------------------------------------------
+                $('#divImport').mousedown(function(e) {
+                    if (e.button == 2) {
+                        $(this).data('xtop', parseInt($(this).css('top')) - e.clientY);
+                        $(this).data('xleft', parseInt($(this).css('left')) - e.clientX);
+                    }
+                }).mousemove(function(e) {
+                    if (e.button == 2 && e.target.nodeName != 'INPUT') {
+                        $(this).css('top', $(this).data('xtop') + e.clientY);
+                        $(this).css('left', $(this).data('xleft') + e.clientX);
+                    }
+                }).bind('contextmenu', function(e) {
+                    if (e.target.nodeName != 'INPUT')
+                        e.preventDefault();
+                });
 
+                $('#btnImport').click(function() {
+                    $('#divImport').toggle();
+                    $('#txtBdate_import').focus();
+                });
+                $('#btnCancel_import').click(function() {
+                    $('#divImport').toggle();
+                });
+                $('#btnImport_trans').click(function() {
+                   if(q_cur != 1 && q_cur != 2){
+						var t_bdate = $.trim($('#txtBdate_import').val());
+						var t_edate = $.trim($('#txtEdate_import').val());
+						var t_custno = $.trim($('#txtCustno_import').val());
+						if(t_bdate.length>0 && t_edate.length>0){
+							Lock(1,{opacity:0});
+							q_func('qtxt.query.tranvcce_trans_at', 'trans_at.txt,tranvcce_trans_at,'+t_bdate+';'+t_edate+';'+t_custno); 
+						}
+						else{
+							alert('請輸入日期!');
+						}
+                	}
+                });
+                $('#txtBdate_import').keydown(function(e) {
+                    if (e.which == 13)
+                        $('#txtEdate_import').focus();
+                });
+                $('#txtEdate_import').keydown(function(e) {
+                    if (e.which == 13)
+                        $('#txtCustno_import').focus();
+                });
+                $('#txtBdate_import').datepicker();
+                $('#txtEdate_import').datepicker();
+			}
+			function q_funcPost(t_func, result) {
+                switch(t_func) {
+                	case 'qtxt.query.tranvcce_trans_at':
+                		var as = _q_appendData("tmp0", "", true);
+                        if (as[0] != undefined) {
+                        }else{}
+                        Unlock(1);
+                        location.reload();
+                		break;
+                    default:
+                    	break;
+                }
+            }
 			function q_boxClose(s2) {
 				var ret;
 				switch (b_pop) {
@@ -432,6 +492,12 @@
 
 			function readonly(t_para, empty) {
 				_readonly(t_para, empty);
+				if (q_cur == 1 || q_cur == 2) {
+                    $('#btnImport').attr('disabled','disabled');
+                	$('#divImport').hide();
+                } else {
+                    $('#btnImport').removeAttr('disabled');
+                }
 			}
 
 			function btnMinus(id) {
@@ -602,6 +668,42 @@
 	ondrop="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"
 	>
 		<!--#include file="../inc/toolbar.inc"-->
+		<div id="divImport" style="position:absolute; top:400px; left:600px; display:none; width:400px; height:200px; background-color: #cad3ff; border: 5px solid gray;">
+			<table style="width:100%;">
+				<tr style="height:1px;">
+					<td style="width:150px;"></td>
+					<td style="width:80px;"></td>
+					<td style="width:80px;"></td>
+					<td style="width:80px;"></td>
+					<td style="width:80px;"></td>
+				</tr>
+				<tr style="height:35px;">
+					<td><span> </span><a id="lblDate_import" style="float:right; color: blue; font-size: medium;">日期</a></td>
+					<td colspan="4">
+					<input id="txtBdate_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
+					<span style="float:left; display:block; width:25px;"><a>～</a></span>
+					<input id="txtEdate_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
+					</td>
+				</tr>
+				<tr style="height:35px;">
+					<td><span> </span><a id="lblCustno_impor" style="float:right; color: blue; font-size: medium;">客戶編號</a></td>
+					<td colspan="4">
+					<input id="txtCustno_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
+					</td>
+				</tr>
+				<tr style="height:35px;">
+					<td> </td>
+					<td>
+					<input id="btnImport_trans" type="button" value="匯入"/>
+					</td>
+					<td></td>
+					<td></td>
+					<td>
+					<input id="btnCancel_import" type="button" value="關閉"/>
+					</td>
+				</tr>
+			</table>
+		</div>
 		<div id="dmain">
 			<div class="dview" id="dview">
 				<table class="tview" id="tview">
@@ -693,6 +795,8 @@
 						</td>
 						<td><span> </span><a id="lblCstype" class="lbl">作業</a></td>
 						<td><select id="cmbCstype" class="txt c1"></select></td>
+						<td> </td>
+						<td><input id="btnImport" type="button" value="派車匯入" style="display:none;"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblStraddr" class="lbl btn"> </a></td>

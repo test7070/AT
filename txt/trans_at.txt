@@ -1,4 +1,4 @@
-tranvcce_trans_at:--tranvcce_trans_at	
+tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	SET QUOTED_IDENTIFIER OFF
 	declare @cmd nvarchar(max)
 	declare @t_bdate nvarchar(20) = [1]
@@ -279,7 +279,7 @@ tranvcce_trans_at:--tranvcce_trans_at
 	close cursor_table
 	deallocate cursor_table
 	drop table #tranvcce_trans
-	
+	 
 	IF @chk <> 0 BEGIN -- 若是新增資料發生錯誤
 		Rollback Transaction [Trans_Name] -- 復原所有操作所造成的變更
 	END
