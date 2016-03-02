@@ -1,0 +1,295 @@
+tranvcce_trans_at:--tranvcce_trans_at	
+	SET QUOTED_IDENTIFIER OFF
+	declare @cmd nvarchar(max)
+	declare @t_bdate nvarchar(20) = [1]
+	declare @t_edate nvarchar(20) = [2]
+	declare @t_custno nvarchar(max) = [3]
+	-----------------------------------------------------------------------
+	declare @tmp table(
+		sel int identity(1,1)
+		,stype nvarchar(20)
+		,ordeaccy nvarchar(10)
+		,ordeno nvarchar(20)
+		,ordenoq nvarchar(10)
+		
+		,datea nvarchar(20)
+		,custno nvarchar(20)
+		,cust nvarchar(20)
+		,straddrno nvarchar(20)
+		,straddr nvarchar(20)
+		
+		,productno nvarchar(20)
+		,product nvarchar(50)
+		,caseno nvarchar(20)
+		,caseno2 nvarchar(20)
+		
+		,carno1 nvarchar(20)
+		,cardno1 nvarchar(20)
+		,carno2 nvarchar(20)
+		,cardno2 nvarchar(20)
+		,carno3 nvarchar(20)
+		,cardno3 nvarchar(20)
+		,carno4 nvarchar(20)
+		,cardno4 nvarchar(20)
+	)
+	insert into @tmp (stype,ordeaccy,ordeno,ordenoq
+		,datea,custno,cust,straddrno,straddr
+		,productno,product,caseno,caseno2
+		,carno1,cardno1
+		,carno2,cardno2
+		,carno3,cardno3
+		,carno4,cardno4)
+	select b.stype,a.ordeaccy,a.ordeno,a.ordenoq
+		,a.datea
+		,a.custno,a.cust,a.straddrno,a.straddr
+		,b.productno,a.product
+		,a.containerno1,a.containerno2
+		,ltrim(rtrim(isnull(a.carno1,''))),a.cardno1
+		,ltrim(rtrim(isnull(a.carno2,''))),a.cardno2
+		,ltrim(rtrim(isnull(a.carno3,''))),a.cardno3
+		,ltrim(rtrim(isnull(a.carno4,''))),a.cardno4
+	from tranvcce a
+	left join view_tranorde b on a.ordeno=b.noa
+	where a.datea between @t_bdate and @t_edate
+	and (len(@t_custno)=0 or a.custno=@t_custno)
+	
+	--------------------------------------------------------------------------------------------
+	IF OBJECT_ID('tempdb..#tranvcce_trans')is not null
+	BEGIN
+		drop table #tranvcce_trans
+	END
+	create table #tranvcce_trans(
+		sel int identity(1,1)
+		,accy nvarchar(20)
+		,noa nvarchar(20)
+		,datea nvarchar(20)
+		,trandate nvarchar(20)
+		,custno nvarchar(20)
+		,cust nvarchar(50)
+		,straddrno nvarchar(20)
+		,straddr nvarchar(20)
+		,productno nvarchar(20)
+		,product nvarchar(20)
+		,carno nvarchar(20)
+		,cardno nvarchar(20)
+		
+		,inmount float
+		,pton float
+		,mount float
+		,price float
+		,total float
+		
+		,outmount float
+		,pton2 float
+		,mount2 float
+		,price2 float
+		,price3 float
+		,discount float
+		,total2 float
+		
+		,caseno nvarchar(20)
+		,caseno2 nvarchar(20)
+		,ordeno nvarchar(20)
+		,cstype nvarchar(20)
+		,calctype nvarchar(20)
+		,carteamno nvarchar(20)
+		,stype nvarchar(20)
+	)
+	declare @sel int
+	declare @carno1 nvarchar(20)
+	declare @carno2 nvarchar(20)
+	declare @carno3 nvarchar(20)
+	declare @carno4 nvarchar(20)
+	
+	declare cursor_table cursor for
+	select sel,carno1,carno2,carno3,carno4 from @tmp
+	open cursor_table
+	fetch next from cursor_table
+	into @sel,@carno1,@carno2,@carno3,@carno4
+	while(@@FETCH_STATUS <> -1)
+	begin
+		--領
+		if len(@carno1)>0
+		begin
+			insert into #tranvcce_trans(cstype,datea,trandate,custno,cust
+				,straddrno,straddr,productno,product,carno,cardno
+				,inmount,pton,mount,price,total
+				,outmount,pton2,mount2,price2,price3,discount,total2
+				,caseno,caseno2,ordeno
+				,calctype,carteamno,stype)
+			select '領',datea,datea,custno,cust
+				,straddrno,straddr,productno,product,carno1,cardno1
+				,0,0,0,0,0
+				,0,0,0,0,0,0,0
+				,caseno,caseno2,ordeno+'-'+ordenoq+'-領'
+				,case when stype='進口' then 'A01' else 'B01' end,'01',stype
+			from @tmp
+			where sel=@sel
+		end
+		--送
+		if len(@carno2)>0
+		begin
+			insert into #tranvcce_trans(cstype,datea,trandate,custno,cust
+				,straddrno,straddr,productno,product,carno,cardno
+				,inmount,pton,mount,price,total
+				,outmount,pton2,mount2,price2,price3,discount,total2
+				,caseno,caseno2,ordeno
+				,calctype,carteamno,stype)
+			select '送',datea,datea,custno,cust
+				,straddrno,straddr,productno,product,carno2,cardno2
+				,0,0,0,0,0
+				,0,0,0,0,0,0,0
+				,caseno,caseno2,ordeno+'-'+ordenoq+'-送'
+				,case when stype='進口' then 'A01' else 'B01' end,'01',stype
+			from @tmp
+			where sel=@sel
+		end
+		--收
+		if len(@carno3)>0
+		begin
+			insert into #tranvcce_trans(cstype,datea,trandate,custno,cust
+				,straddrno,straddr,productno,product,carno,cardno
+				,inmount,pton,mount,price,total
+				,outmount,pton2,mount2,price2,price3,discount,total2
+				,caseno,caseno2,ordeno
+				,calctype,carteamno,stype)
+			select '收',datea,datea,custno,cust
+				,straddrno,straddr,productno,product,carno3,cardno3
+				,0,0,0,0,0
+				,0,0,0,0,0,0,0
+				,caseno,caseno2,ordeno+'-'+ordenoq+'-收'
+				,case when stype='進口' then 'A01' else 'B01' end,'01',stype
+			from @tmp
+			where sel=@sel
+		end
+		--交
+		if len(@carno4)>0
+		begin
+			insert into #tranvcce_trans(cstype,datea,trandate,custno,cust
+				,straddrno,straddr,productno,product,carno,cardno
+				,inmount,pton,mount,price,total
+				,outmount,pton2,mount2,price2,price3,discount,total2
+				,caseno,caseno2,ordeno
+				,calctype,carteamno,stype)
+			select '交',datea,datea,custno,cust
+				,straddrno,straddr,productno,product,carno4,cardno4
+				,0,0,0,0,0
+				,0,0,0,0,0,0,0
+				,caseno,caseno2,ordeno+'-'+ordenoq+'-交'
+				,case when stype='進口' then 'A01' else 'B01' end,'01',stype
+			from @tmp
+			where sel=@sel
+		end
+		
+		fetch next from cursor_table
+		into @sel,@carno1,@carno2,@carno3,@carno4
+	end
+	close cursor_table
+	deallocate cursor_table
+	----------------------------------------------------------------------------------
+	declare @datea nvarchar(20)
+	declare @ordeno nvarchar(20)
+	declare @accy nvarchar(20)
+	declare @noa nvarchar(20)
+	declare @noa1 nvarchar(20)
+	declare @noa2 nvarchar(20)
+	declare @sign nvarchar(max) = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	declare @num int
+	
+	declare cursor_table cursor for
+	select sel,datea,ordeno from #tranvcce_trans where len(ordeno)>0
+	open cursor_table
+	fetch next from cursor_table
+	into @sel,@datea,@ordeno
+	while(@@FETCH_STATUS <> -1)
+	begin
+		select @accy='',@noa=''
+		
+		select @accy=accy,@noa=noa from view_trans where ordeno=@ordeno
+		
+		if len(ISNULL(@noa,''))=0
+		begin
+			select @noa1 = '', @noa2 = ''
+			select @noa1=max(noa) from view_trans where noa like 'BA'+REPLACE(@datea,'/','')+'[0-9,A-Z][0-9][0-9]'
+			select @noa2=MAX(noa) from #tranvcce_trans where noa like 'BA'+REPLACE(@datea,'/','')+'[0-9,A-Z][0-9][0-9]'
+			set @noa = 'BA'+REPLACE(@datea,'/','')+'000'
+			set @noa = case when ISNULL(@noa1,'')>@noa then @noa1 else @noa end
+			set @noa = case when ISNULL(@noa2,'')>@noa then @noa2 else @noa end
+			set @num = (charindex(left(RIGHT(@noa,3),1),@sign)-1)*100 + cast(RIGHT(@noa,2) as int) + 1
+			set @noa = 'BA'+REPLACE(@datea,'/','') + substring(@sign,CAST(ceiling(@num/100) as nvarchar)+1,1)+ right('00'+cast(@num%100 as nvarchar),2)
+			set @accy = left(@datea,3)
+		end
+		update #tranvcce_trans set accy=@accy,noa=@noa where sel=@sel
+		
+		fetch next from cursor_table
+		into @sel,@datea,@ordeno
+	end
+	close cursor_table
+	deallocate cursor_table
+	
+	----------------------------------------------------------------------------------
+	--save
+	DECLARE @chk tinyint = 0
+	Begin Transaction [Trans_Name]
+	
+	declare cursor_table cursor for
+	select accy from #tranvcce_trans group by accy
+	open cursor_table
+	fetch next from cursor_table
+	into @accy
+	while(@@FETCH_STATUS <> -1)
+	begin
+		set @cmd="update trans"+@accy+" set cstype=b.cstype,datea=b.datea,trandate=b.datea
+			,custno=b.custno,comp=b.cust,nick=b.cust
+			,straddrno=b.straddrno,straddr=b.straddr
+			,Uccno=b.productno,product=b.product
+			,carno=b.carno,cardno=b.cardno
+			,inmount=b.inmount,pton=b.pton,mount=b.mount,price=b.price
+			,outmount=b.outmount,pton2=b.pton2,mount2=b.mount2,price2=b.price2,price3=b.price3
+			,discount=b.discount,total2=b.total2
+			,caseno=b.caseno,caseno2=b.caseno2
+			,calctype=b.calctype,carteamno=b.carteamno,memo=b.stype
+		from trans"+@accy+" a
+		left join #tranvcce_trans b on a.noa=b.noa
+		where b.accy=@accy
+		and b.noa is not null
+		and exists(select * from trans"+@accy+" where noa=a.noa )"
+		execute sp_executesql @cmd,N'@accy nvarchar(20)',@accy=@accy
+		IF @@Error <> 0 BEGIN SET @chk = 1 END
+		
+		set @cmd="insert into trans"+@accy+"(noa,cstype,datea,trandate,custno,comp,nick,straddrno,straddr
+			,uccno,product,carno,cardno
+			,inmount,pton,mount,price,total
+			,outmount,pton2,mount2,price2,price3,discount,total2
+			,caseno,caseno2,ordeno,calctype,carteamno,memo)
+		select noa,cstype,datea,trandate,custno,cust,cust,straddrno,straddr
+			,productno,product,carno,cardno
+			,inmount,pton,mount,price,total
+			,outmount,pton2,mount2,price2,price3,discount,total2
+			,caseno,caseno2,ordeno,calctype,carteamno,stype
+		from #tranvcce_trans a
+		where accy=@accy 
+			and not exists(select * from trans"+@accy+" where noa=a.noa )"
+		execute sp_executesql @cmd,N'@accy nvarchar(20)',@accy=@accy
+		IF @@Error <> 0 BEGIN SET @chk = 1 END
+		
+		fetch next from cursor_table
+		into @accy
+	end
+	close cursor_table
+	deallocate cursor_table
+	drop table #tranvcce_trans
+	
+	IF @chk <> 0 BEGIN -- 若是新增資料發生錯誤
+		Rollback Transaction [Trans_Name] -- 復原所有操作所造成的變更
+	END
+	ELSE BEGIN
+		Commit Transaction [Trans_Name] -- 提交所有操作所造成的變更
+	END
+	
+	declare @tmpb table(
+		msg nvarchar(max)
+	)
+	insert into @tmpb(msg)values('done')
+	select * from @tmpb;
+	
