@@ -13,7 +13,6 @@
 		<script src="css/jquery/ui/jquery.ui.core.js"></script>
 		<script src="css/jquery/ui/jquery.ui.widget.js"></script>
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"></script>
-		<script src="http://59.125.143.170/html2canvas.js"></script>
 		<script type="text/javascript">
 			var q_name = 'tranvcce';
 			var _pageCount = 16; //一頁幾筆資料
@@ -52,6 +51,31 @@
 				$('#btnAuthority').click(function () {
                     btnAuthority(q_name);
                 });
+                
+                $('#txtBdate-input').datepicker({
+				    onClose: function(dateText, inst) {
+				        // When the date is selected, copy the value in the content editable div.
+				        // If you don't need to do anything on the blur or focus event of the content editable div, you don't need to trigger them as I do in the line below.
+				        $('#txtBdate').focus().html(dateText).blur();
+				    }
+				});
+				// Shows the datepicker when clicking on the content editable div
+				$('#txtBdate').click(function() {
+				    // Triggering the focus event of the hidden input, the datepicker will come up.
+				    $('#txtBdate-input').focus();
+				});
+				$('#txtEdate-input').datepicker({
+				    onClose: function(dateText, inst) {
+				        // When the date is selected, copy the value in the content editable div.
+				        // If you don't need to do anything on the blur or focus event of the content editable div, you don't need to trigger them as I do in the line below.
+				        $('#txtEdate').focus().html(dateText).blur();
+				    }
+				});
+				// Shows the datepicker when clicking on the content editable div
+				$('#txtEdate').click(function() {
+				    // Triggering the focus event of the hidden input, the datepicker will come up.
+				    $('#txtEdate-input').focus();
+				});
             });
             function q_gfPost() {
                 q_langShow();
@@ -599,8 +623,10 @@
 			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
 			<span style="display:block;width:50px;float:left;text-align: center;">日期：</span>
 			<a id="txtBdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
+			<input id="txtBdate-input" style="display:none;" />
 			<span style="display:block;width:30px;float:left;text-align: center;">~</span>
 			<a id="txtEdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
+			<input id="txtEdate-input" style="display:none;" />
 			<span style="display:block;width:30px;float:left;text-align: center;">&nbsp;</span>
 			<input type="button" id="btnRefresh" value="資料刷新" style="float:left;width:100px;"/>
 			<input type="button" id="btnPrev" value="上一頁" style="float:left;width:100px;"/>
