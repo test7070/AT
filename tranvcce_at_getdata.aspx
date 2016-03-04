@@ -1,12 +1,14 @@
 <%@ Page Language="C#" Debug="true"%>
     <script language="c#" runat="server">
-        
+        //tranvcce_at_getcount 和 tranvcce_at_getdata 要一起改
+        //tranvcce_at_getdata 和 tranvcce_at_update 要一起改
         public class ParaIn
         {
             public int nstr;
             public int nend;
             public string stype;
             public string cust;
+            public string so;
             public string bdate;
             public string edate;
         }
@@ -77,6 +79,7 @@
 	                where ISNULL(isdel,0)=0
 	                and (len(@stype)=0 or isnull(stype,'')=@stype)
 	                and (len(@cust)=0 or charindex(@cust,cust)>0)
+	                and (len(@so)=0 or charindex(@so,ucr)>0 or charindex(@so,vr)>0)
 	                and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
 	                and (len(@edate)=0 or isnull(datea,'')<=@edate)
                 )a
@@ -89,6 +92,7 @@
                 cmd.Parameters.AddWithValue("@nend", itemIn.nend);
                 cmd.Parameters.AddWithValue("@stype", itemIn.stype);
                 cmd.Parameters.AddWithValue("@cust", itemIn.cust);
+                cmd.Parameters.AddWithValue("@so", itemIn.so);
                 cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
                 cmd.Parameters.AddWithValue("@edate", itemIn.edate);
                 adapter.SelectCommand = cmd;

@@ -226,10 +226,11 @@
 					}
 					var stype = $.trim($('#cmbStype').val());
 					var cust = $.trim($('#textCust').text());
+					var so = $.trim($('#textSo').text());//追蹤 OR S/O
 					var bdate = $.trim($('#txtBdate').text());
 					var edate = $.trim($('#txtEdate').text());
 					Lock(1,{opacity:0});
-					loadCount(stype,cust,bdate,edate);
+					loadCount(stype,cust,so,bdate,edate);
 				});
 				$('#txtCurpage').change(function(e){
 					$('#btnRefresh').click();
@@ -388,23 +389,26 @@
 					//$('#btnSel_'+i).next().text(_curData[i].edittime.length>0?'*':'');
 				}
 			}
-			function loadCount(stype,cust,bdate,edate){
+			function loadCount(stype,cust,so,bdate,edate){
 				$.ajax({
 					stype:stype,
 					cust:cust,
+					so:so,
 					bdate:bdate,
 					edate:edate,
 					totCount : 0,
                     url: 'tranvcce_at_getcount.aspx',
                     headers: { 'database': q_db },
                     type: 'POST',
-                    data: JSON.stringify({stype:stype,cust:cust,bdate:bdate,edate:edate}),
+                    data: JSON.stringify({stype:stype,cust:cust,so:so,bdate:bdate,edate:edate}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
                     	try{
                     		tmp = JSON.parse(data);
                     		this.totCount = tmp.count;
+                    		console.log('tranvcce_at_getcount');
+                        	console.log(tmp.version);
                     	}catch(e){
                     	}
                     },
@@ -417,7 +421,7 @@
 						$('#txtCurpage').val(curPage);
 						var nstr = (curPage-1) * _pageCount + 1;
 						var nend = curPage * _pageCount;
-                    	loadData(nstr,nend,this.stype,this.cust,this.bdate,this.edate);                  
+                    	loadData(nstr,nend,this.stype,this.cust,this.so,this.bdate,this.edate);                  
                     },
                     error: function(jqXHR, exception) {
                         var errmsg = this.url+'資料讀取異常。\n';
@@ -439,12 +443,12 @@
                     }
                 });	
 			}
-			function loadData(nstr,nend,stype,cust,bdate,edate){
+			function loadData(nstr,nend,stype,cust,so,bdate,edate){
 				$.ajax({
                     url: 'tranvcce_at_getdata.aspx',
                     headers: { 'database': q_db },
                     type: 'POST',
-                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,cust:cust,bdate:bdate,edate:edate}),
+                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,cust:cust,so:so,bdate:bdate,edate:edate}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -589,6 +593,9 @@
 			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
 			<span style="display:block;width:50px;float:left;text-align: center;">貨主：</span>
 			<a id="textCust" style="float:left;width:100px;text-align: center;background-color: #EEFFEE;" contenteditable="true"></a>
+			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
+			<span style="display:block;width:100px;float:left;text-align: center;">追蹤、S/O</span>
+			<a id="textSo" style="float:left;width:150px;text-align: center;background-color: #EEFFEE;" contenteditable="true"></a>
 			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
 			<span style="display:block;width:50px;float:left;text-align: center;">日期：</span>
 			<a id="txtBdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
