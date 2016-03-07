@@ -620,7 +620,7 @@
 					<td style="width:20px;"> </td>
 					<td style="width:300px;"><a id='lblAddr'>起迄地點</a></td>
 					<td style="width:200px;"><a id='lblContainerno1'>櫃號一</a></td>
-					<td style="width:200px;"><a id='lblContainerno2'>櫃號一</a></td>
+					<td style="width:200px;"><a id='lblContainerno2'>櫃號二</a></td>
 				</tr>
 				<tr  style='background:#cad3ff;'>
 					<td align="center">
