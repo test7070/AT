@@ -9,6 +9,8 @@
             public string stype;
             public string cust;
             public string so;
+            public string containerno;
+        	public string ordeno;
             public string bdate;
             public string edate;
         }
@@ -80,6 +82,9 @@
 	                and (len(@stype)=0 or isnull(stype,'')=@stype)
 	                and (len(@cust)=0 or charindex(@cust,cust)>0)
 	                and (len(@so)=0 or charindex(@so,ucr)>0 or charindex(@so,vr)>0)
+	                and (len(@so)=0 or charindex(@so,ucr)>0 or charindex(@so,vr)>0)
+	                and (len(@containerno)=0 or charindex(@containerno,containerno1)>0 or charindex(@containerno,containerno2)>0)
+	                and (len(@ordeno)=0 or charindex(@ordeno,ordeno)>0)
 	                and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
 	                and (len(@edate)=0 or isnull(datea,'')<=@edate)
                 )a
@@ -93,6 +98,8 @@
                 cmd.Parameters.AddWithValue("@stype", itemIn.stype);
                 cmd.Parameters.AddWithValue("@cust", itemIn.cust);
                 cmd.Parameters.AddWithValue("@so", itemIn.so);
+                cmd.Parameters.AddWithValue("@containerno", itemIn.containerno);
+                cmd.Parameters.AddWithValue("@ordeno", itemIn.ordeno);
                 cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
                 cmd.Parameters.AddWithValue("@edate", itemIn.edate);
                 adapter.SelectCommand = cmd;

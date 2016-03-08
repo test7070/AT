@@ -251,10 +251,12 @@
 					var stype = $.trim($('#cmbStype').val());
 					var cust = $.trim($('#textCust').text());
 					var so = $.trim($('#textSo').text());//追蹤 OR S/O
+					var containerno = $.trim($('#textContainerno').text());
+					var ordeno = $.trim($('#textOrdeno').text());
 					var bdate = $.trim($('#txtBdate').text());
 					var edate = $.trim($('#txtEdate').text());
 					Lock(1,{opacity:0});
-					loadCount(stype,cust,so,bdate,edate);
+					loadCount(stype,cust,so,containerno,ordeno,bdate,edate);
 				});
 				$('#txtCurpage').change(function(e){
 					$('#btnRefresh').click();
@@ -413,18 +415,20 @@
 					//$('#btnSel_'+i).next().text(_curData[i].edittime.length>0?'*':'');
 				}
 			}
-			function loadCount(stype,cust,so,bdate,edate){
+			function loadCount(stype,cust,so,containerno,ordeno,bdate,edate){
 				$.ajax({
 					stype:stype,
 					cust:cust,
 					so:so,
+					containerno:containerno,
+					ordeno:ordeno,
 					bdate:bdate,
 					edate:edate,
 					totCount : 0,
                     url: 'tranvcce_at_getcount.aspx',
                     headers: { 'database': q_db },
                     type: 'POST',
-                    data: JSON.stringify({stype:stype,cust:cust,so:so,bdate:bdate,edate:edate}),
+                    data: JSON.stringify({stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -445,7 +449,7 @@
 						$('#txtCurpage').val(curPage);
 						var nstr = (curPage-1) * _pageCount + 1;
 						var nend = curPage * _pageCount;
-                    	loadData(nstr,nend,this.stype,this.cust,this.so,this.bdate,this.edate);                  
+                    	loadData(nstr,nend,this.stype,this.cust,this.so,this.containerno,this.ordeno,this.bdate,this.edate);                  
                     },
                     error: function(jqXHR, exception) {
                         var errmsg = this.url+'資料讀取異常。\n';
@@ -467,12 +471,12 @@
                     }
                 });	
 			}
-			function loadData(nstr,nend,stype,cust,so,bdate,edate){
+			function loadData(nstr,nend,stype,cust,so,containerno,ordeno,bdate,edate){
 				$.ajax({
                     url: 'tranvcce_at_getdata.aspx',
                     headers: { 'database': q_db },
                     type: 'POST',
-                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,cust:cust,so:so,bdate:bdate,edate:edate}),
+                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -606,7 +610,7 @@
 		</style>
 	</head>
 	<body>
-		<div style="min-width:1500px;width: 1500px;height:40px;float:none;">
+		<div style="min-width:2000px;width: 2000px;height:40px;float:none;">
 			<div id='q_menu'></div>
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
 			<select id="cmbStype" style="float:left;width:80px;text-align: center;">
@@ -620,6 +624,12 @@
 			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
 			<span style="display:block;width:100px;float:left;text-align: center;">追蹤、S/O</span>
 			<a id="textSo" style="float:left;width:150px;text-align: center;background-color: #EEFFEE;" contenteditable="true"></a>
+			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
+			<span style="display:block;width:100px;float:left;text-align: center;">櫃號</span>
+			<a id="textContainerno" style="float:left;width:150px;text-align: center;background-color: #EEFFEE;" contenteditable="true"></a>
+			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
+			<span style="display:block;width:100px;float:left;text-align: center;">訂單號碼</span>
+			<a id="textOrdeno" style="float:left;width:150px;text-align: center;background-color: #EEFFEE;" contenteditable="true"></a>
 			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
 			<span style="display:block;width:50px;float:left;text-align: center;">日期：</span>
 			<a id="txtBdate" style="float:left;width:80px;text-align: center;background-color: #99FF99;" contenteditable="true"></a>
