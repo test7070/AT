@@ -269,7 +269,7 @@
                     message += " 領櫃場："+ item.por;
                     message += " 狀態："+(item.isassign?"指定":"任一");
                     message += " 提單號碼："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[13]) ? "" : (System.String)orde.Rows[0].ItemArray[13]);
-                    message += " 領櫃號碼："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[14]) ? "" : (System.String)orde.Rows[0].ItemArray[14]);
+                    message += " 領櫃號碼："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[15]) ? "" : (System.String)orde.Rows[0].ItemArray[15]);
                     message += " 追蹤號碼："+ item.ucr;
                     message += " 代表櫃號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[18]) ? "" : (System.String)orde.Rows[0].ItemArray[18]);              
                     message += " 掛號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[17]) ? "" : (System.String)orde.Rows[0].ItemArray[17]);
