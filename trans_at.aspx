@@ -27,6 +27,7 @@
 			brwKey = 'noa';
 			q_desc = 1;
             q_xchg = 1;
+            q_copy = 1;
             brwCount2 = 15;
             //不能彈出瀏覽視窗
             aPop = new Array(['txtCarno', 'lblCarno', 'car2', 'a.noa,driverno,driver', '0txtCarno,txtDriverno,txtDriver', 'car2_b.aspx']
@@ -409,7 +410,7 @@
 				
 				_btnIns();
 				z_curCustmount = 0;
-				
+				$('#txtOrdeno').val('');//複製時排除
 				$('#txtNoa').val('AUTO');
 				$('#txtNoq').val('001');
 				$('#txtDatea').val(t_datea.length=0?q_date():t_datea);
