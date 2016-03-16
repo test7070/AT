@@ -235,7 +235,7 @@
             queryString = @"select stype,comp,vocc,casetype,0 mount
                 ,so,do1,vessel,voyage,port
                 ,port2,etc,freetime,do2,option01
-                ,trackno,vr,manifest,casepresent
+                ,trackno,vr,manifest,casepresent,takeno
                  from view_tranorde where accy=@accy and noa=@noa ";
             cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
             cmd.Parameters.AddWithValue("@noa", item.ordeno);
@@ -269,8 +269,8 @@
                     message += " 領櫃場："+ item.por;
                     message += " 狀態："+(item.isassign?"指定":"任一");
                     message += " 提單號碼："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[13]) ? "" : (System.String)orde.Rows[0].ItemArray[13]);
-                    message += " 領櫃號碼："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[15]) ? "" : (System.String)orde.Rows[0].ItemArray[15]);
-                    message += " 追蹤號碼："+ item.ucr;
+                    message += " 領櫃號碼：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[19]) ? "" : (System.String)orde.Rows[0].ItemArray[19]);
+                    message += " 追蹤號碼：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[15]) ? "" : (System.String)orde.Rows[0].ItemArray[15]);
                     message += " 代表櫃號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[18]) ? "" : (System.String)orde.Rows[0].ItemArray[18]);              
                     message += " 掛號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[17]) ? "" : (System.String)orde.Rows[0].ItemArray[17]);
                     message += " 艙號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[16]) ? "" : (System.String)orde.Rows[0].ItemArray[16]);
