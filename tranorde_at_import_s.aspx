@@ -31,10 +31,12 @@
                 q_getFormat();
                 q_langShow();
 
-                bbmMask = [['txtBdate', r_picd], ['txtEdate', r_picd]];
+                bbmMask = [['txtBdate', r_picd], ['txtEdate', r_picd],['txtBdate2', r_picd], ['txtEdate2', r_picd]];
                 q_mask(bbmMask);
 				$('#txtBdate').datepicker();
-				$('#txtEdate').datepicker(); 
+				$('#txtEdate').datepicker();
+				$('#txtBdate2').datepicker();
+				$('#txtEdate2').datepicker(); 
                 $('#txtNoa').focus();
             }
 
@@ -46,10 +48,13 @@
                 t_comp = $('#txtComp').val();
                 t_trackno = $('#txtTrackno').val();
                 t_caseno = $('#txtCaseno').val();
-
+				t_bdate2 = $('#txtBdate2').val();
+                t_edate2 = $('#txtEdate2').val();
+                
                 var t_where = " stype='進口' " 
                 	+ q_sqlPara2("noa", t_noa) 
                 	+ q_sqlPara2("datea", t_bdate, t_edate) 
+                	+ q_sqlPara2("ef", t_bdate2, t_edate2) 
                 	+ q_sqlPara2("custno", t_custno)
                 	+ q_sqlPara2("trackno", t_trackno) ;
 				if (t_comp.length>0)
@@ -79,6 +84,14 @@
 					<input class="txt" id="txtBdate" type="text" style="width:90px; font-size:medium;" />
 					<span style="display:inline-block; vertical-align:middle">&sim;</span>
 					<input class="txt" id="txtEdate" type="text" style="width:93px; font-size:medium;" />
+					</td>
+				</tr>
+				<tr class='seek_tr'>
+					<td   style="width:35%;" ><a id='lblDate2'>重櫃期限</a></td>
+					<td style="width:65%;  ">
+					<input class="txt" id="txtBdate2" type="text" style="width:90px; font-size:medium;" />
+					<span style="display:inline-block; vertical-align:middle">&sim;</span>
+					<input class="txt" id="txtEdate2" type="text" style="width:93px; font-size:medium;" />
 					</td>
 				</tr>
 				<tr class='seek_tr'>
