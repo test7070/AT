@@ -1,3 +1,102 @@
+z_transp_at02:--z_transp_at02
+	SET QUOTED_IDENTIFIER OFF
+	
+	declare @t_bdate nvarchar(20) = case when '#non'=[1] then '' else [1] end
+	declare @t_edate nvarchar(20) = case when '#non'=[2] then char(255) else [2] end
+	declare @t_btrandate nvarchar(20) = case when '#non'=[3] then '' else [3] end
+	declare @t_etrandate nvarchar(20) = case when '#non'=[4] then char(255) else [4] end
+	declare @t_bcustno nvarchar(20) = case when '#non'=[5] then '' else [5] end
+	declare @t_ecustno nvarchar(20) = case when '#non'=[6] then char(255) else [6] end
+	declare @t_bdriverno nvarchar(20) = case when '#non'=[7] then '' else [7] end
+	declare @t_edriverno nvarchar(20) = case when '#non'=[8] then char(255) else [8] end
+	declare @t_carno nvarchar(max)  = case when '#non'=[9] then '' else [9] end
+	declare @t_cardno nvarchar(max)  = case when '#non'=[10] then '' else [10] end
+	declare @t_carteam nvarchar(max)  = case when '#non'=[11] then '' else [11] end
+	declare @t_calctype nvarchar(max)  = case when '#non'=[12] then '' else [12] end
+	declare @t_baddrno nvarchar(20) = case when '#non'=[13] then '' else [13] end
+	declare @t_eaddrno nvarchar(20) = case when '#non'=[14] then char(255) else [14] end
+	declare @t_caseno nvarchar(max)  = case when '#non'=[15] then '' else [15] end
+----------------------------------------------------------------------------------------------------
+	declare @tmp table(
+		sel int identity(1,1)
+		,gno nvarchar(10)
+		,pno int
+		,ordeaccy nvarchar(10)
+		,ordeno nvarchar(20)
+		,ordenoq nvarchar(10)
+		,datea nvarchar(10)
+		,custno nvarchar(20)
+		,cust nvarchar(50)
+		,straddrno nvarchar(20)
+		,straddr nvarchar(50)
+		,por nvarchar(20) --領櫃地
+		,pod nvarchar(20) --交櫃地
+		,ucr nvarchar(20)--追蹤  
+		,vr nvarchar(20)--S/O   
+		,vocc nvarchar(20)--船公司
+		,product nvarchar(50)
+		,casetype nvarchar(20)
+		,mount float
+		,containerno1 nvarchar(20)
+		,containerno2 nvarchar(20)
+		--領
+		,carno1 nvarchar(20)
+		,cardno1 nvarchar(20)
+		--送
+		,carno2 nvarchar(20)
+		,cardno2 nvarchar(20)
+		--收
+		,carno3 nvarchar(20)
+		,cardno3 nvarchar(20)
+		--交
+		,carno4 nvarchar(20)
+		,cardno4 nvarchar(20)
+		,memo nvarchar(max)
+	)
+	
+	insert into @tmp(gno,pno,ordeaccy,ordeno,ordenoq
+		,datea,custno,cust,straddrno,straddr,por,pod,ucr,vr,vocc,product,casetype,mount
+		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo)
+	select '1',ROW_NUMBER()over(order by a.ordeaccy desc,a.ordeno desc,a.ordenoq),a.ordeaccy,a.ordeno,a.ordenoq
+		,a.datea,a.custno,a.cust,a.straddrno,a.straddr,a.por,a.pod,a.ucr,a.vr,a.vocc,a.product,a.casetype,a.mount
+		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo
+	from tranvcce a
+	outer apply(select * from calctypes where typea=a.stype ) b
+	where isnull(a.isdel,0)=0
+	and (len(@t_caseno)=0 or CHARINDEX(@t_caseno,containerno1)>0 or CHARINDEX(@t_caseno,containerno2)>0 )
+	and isnull(a.straddrno,'') between @t_baddrno and @t_eaddrno
+	and (len(@t_carno)=0 or CHARINDEX(@t_carno,a.carno1)>0or CHARINDEX(@t_carno,a.carno2)>0or CHARINDEX(@t_carno,a.carno3)>0or CHARINDEX(@t_carno,a.carno4)>0)
+	and (len(@t_cardno)=0 or CHARINDEX(@t_cardno,a.cardno1)>0or CHARINDEX(@t_cardno,a.cardno2)>0or CHARINDEX(@t_cardno,a.cardno3)>0or CHARINDEX(@t_cardno,a.cardno4)>0)
+	and ISNULL(a.custno,'') between @t_bcustno and @t_ecustno
+	and (len(@t_calctype)=0 or @t_calctype=b.noa+b.noq)
+	and ISNULL(a.datea,'') between @t_btrandate and @t_etrandate
+	
+	select gno
+		,pno rr
+		,datea a01
+		,cust a02
+		,straddr a03
+		,por a04
+		,pod a05
+		,ucr a06
+		,vr a07
+		,vocc a08
+		,product a09
+		,casetype a10
+		,mount a11
+		,containerno1 a12
+		,containerno2 a13
+		,carno1 a14
+		,cardno1 a15
+		,carno2 a16
+		,cardno2 a17
+		,carno3 a18
+		,cardno3 a19
+		,carno4 a20
+		,cardno4 a21
+		,memo a22
+	from @tmp order by pno;
+
 z_transp_at01:--z_transp_at01
 	SET QUOTED_IDENTIFIER OFF
 	
