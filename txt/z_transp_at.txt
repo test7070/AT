@@ -42,24 +42,32 @@ z_transp_at02:--z_transp_at02
 		--領
 		,carno1 nvarchar(20)
 		,cardno1 nvarchar(20)
+		,date1 nvarchar(20)
 		--送
 		,carno2 nvarchar(20)
 		,cardno2 nvarchar(20)
+		,date2 nvarchar(20)
 		--收
 		,carno3 nvarchar(20)
 		,cardno3 nvarchar(20)
+		,date3 nvarchar(20)
 		--交
 		,carno4 nvarchar(20)
 		,cardno4 nvarchar(20)
+		,date4 nvarchar(20)
+		
+		,xdate nvarchar(20)
 		,memo nvarchar(max)
 	)
 	
 	insert into @tmp(gno,pno,ordeaccy,ordeno,ordenoq
 		,datea,custno,cust,straddrno,straddr,por,pod,ucr,vr,vocc,product,casetype,mount
-		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo)
+		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo
+		,date1,date2,date3,date4)
 	select '1',ROW_NUMBER()over(order by a.ordeaccy desc,a.ordeno desc,a.ordenoq),a.ordeaccy,a.ordeno,a.ordenoq
 		,a.datea,a.custno,a.cust,a.straddrno,a.straddr,a.por,a.pod,a.ucr,a.vr,a.vocc,a.product,a.casetype,a.mount
 		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo
+		,isnull(a.date1,''),isnull(a.date2,''),isnull(a.date3,''),isnull(a.date4,'')
 	from tranvcce a
 	outer apply(select * from calctypes where typea=a.stype ) b
 	where isnull(a.isdel,0)=0
@@ -69,11 +77,19 @@ z_transp_at02:--z_transp_at02
 	and (len(@t_cardno)=0 or CHARINDEX(@t_cardno,a.cardno1)>0or CHARINDEX(@t_cardno,a.cardno2)>0or CHARINDEX(@t_cardno,a.cardno3)>0or CHARINDEX(@t_cardno,a.cardno4)>0)
 	and ISNULL(a.custno,'') between @t_bcustno and @t_ecustno
 	and (len(@t_calctype)=0 or @t_calctype=b.noa+b.noq)
-	and ISNULL(a.datea,'') between @t_btrandate and @t_etrandate
+	--and ISNULL(a.datea,'') between @t_btrandate and @t_etrandate
+	--以最後一個為主
+	update @tmp set xdate = case when len(date4)>0 then date4 
+		when len(date3)>0 then date3
+		when len(date2)>0 then date2
+		when len(date1)>0 then date1
+		else datea end 
+	
+	delete @tmp where not( ISNULL(xdate,'') between @t_btrandate and @t_etrandate)
 	
 	select gno
 		,pno rr
-		,datea a01
+		,xdate a01
 		,cust a02
 		,straddr a03
 		,por a04
