@@ -278,8 +278,8 @@
                     message += " 領櫃號碼：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[19]) ? "" : (System.String)orde.Rows[0].ItemArray[19]);
                     message += " 追蹤號碼：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[15]) ? "" : (System.String)orde.Rows[0].ItemArray[15]);
                     message += " 代表櫃號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[18]) ? "" : (System.String)orde.Rows[0].ItemArray[18]);              
-                    message += " 掛號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[17]) ? "" : (System.String)orde.Rows[0].ItemArray[17]);
-                    message += " 艙號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[16]) ? "" : (System.String)orde.Rows[0].ItemArray[16]);
+                    message += " 掛號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[16]) ? "" : (System.String)orde.Rows[0].ItemArray[16]);
+                    message += " 艙號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[17]) ? "" : (System.String)orde.Rows[0].ItemArray[17]);
                 }
             }
             message+=" 注意事項："+memo;
