@@ -38,6 +38,7 @@
             public string seal1,seal2;
             public string yard1,yard2,yard3,yard4;
             public string vr;
+            public string date1,date2,date3,date4;
         }
         public void Page_Load()
         {   
@@ -74,6 +75,7 @@
                     ,isassign,mount,seal1,seal2
                     ,yard1,yard2,yard3,yard4
                     ,vr
+                    ,date1,date2,date3,date4
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -157,6 +159,10 @@
                 tmp.yard3 = System.DBNull.Value.Equals(r.ItemArray[42]) ? "" : (System.String)r.ItemArray[42];
                 tmp.yard4 = System.DBNull.Value.Equals(r.ItemArray[43]) ? "" : (System.String)r.ItemArray[43];
                 tmp.vr = System.DBNull.Value.Equals(r.ItemArray[44]) ? "" : (System.String)r.ItemArray[44];
+                tmp.date1 = System.DBNull.Value.Equals(r.ItemArray[45]) ? "" : (System.String)r.ItemArray[45];
+                tmp.date2 = System.DBNull.Value.Equals(r.ItemArray[46]) ? "" : (System.String)r.ItemArray[46];
+                tmp.date3 = System.DBNull.Value.Equals(r.ItemArray[47]) ? "" : (System.String)r.ItemArray[47];
+                tmp.date4 = System.DBNull.Value.Equals(r.ItemArray[48]) ? "" : (System.String)r.ItemArray[48];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));

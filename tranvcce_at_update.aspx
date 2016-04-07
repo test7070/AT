@@ -24,6 +24,7 @@
             public string seal1,seal2;
             public string yard1,yard2,yard3,yard4;
             public string vr;
+            public string date1,date2,date3,date4;
         }
         public class SendCommand
         { 
@@ -137,6 +138,7 @@
 	                    ,mount=@mount,seal1=@seal1,seal2=@seal2
 	                    ,yard1=@yard1,yard2=@yard2,yard3=@yard3,yard4=@yard4
 	                    ,vr=@vr
+	                    ,date1=@date1,date2=@date2,date3=@date3,date4=@date4
 	                     where seq=@seq and isnull(isdel,0)=0";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
@@ -171,6 +173,10 @@
                     cmd.Parameters.AddWithValue("@yard3", itemIn.yard3);
                     cmd.Parameters.AddWithValue("@yard4", itemIn.yard4);
                     cmd.Parameters.AddWithValue("@vr", itemIn.vr);
+                    cmd.Parameters.AddWithValue("@date1", itemIn.date1);
+                    cmd.Parameters.AddWithValue("@date2", itemIn.date2);
+                    cmd.Parameters.AddWithValue("@date3", itemIn.date3);
+                    cmd.Parameters.AddWithValue("@date4", itemIn.date4);
                     cmd.ExecuteNonQuery();
                     //--------------------------送資料給長輝--------------------------------------
                     bool isdelay = false;

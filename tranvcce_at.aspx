@@ -88,11 +88,74 @@
 					q_box('z_tranvcce_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'transvcce', "95%", "95%", m_print);
 				});
 				
+				
 				for(var i=0;i<tCount;i++){
 					$('.tData').append($('.tSchema').find('tr').eq(0).clone().data('key',i).data('data',''));	
 					for(var j=0;j<$('.tData').find('tr').eq(i).find('td').length;j++){
-						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="button"]').eq(0);
+						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('.date-input').eq(0);
 						obj.attr('id',obj.attr('id')+'_'+i).attr('value',i+1);
+						
+						obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="button"]').eq(0);
+						obj.attr('id',obj.attr('id')+'_'+i).attr('value',i+1);
+						
+						
+						$('#txtDate1_'+i).click(function() {
+							var n = $(this).attr('id').replace('txtDate1_','');
+							var position = $(this).offset();
+							$('#txtDate-input').datepicker('destroy');
+							$('#txtDate-input').show().width(1).height(1);
+							$('#txtDate-input').offset({top:position.top+5,left:position.left});
+							$('#txtDate-input').datepicker({n:n
+							    ,onClose: function(dateText, inst) {
+							        $('#txtDate1_'+n).focus().html(dateText).blur();
+							        $('#txtDate-input').hide();
+							    }
+							});
+						    $('#txtDate-input').focus();
+						});
+						$('#txtDate2_'+i).click(function() {
+							var n = $(this).attr('id').replace('txtDate2_','');
+							var position = $(this).offset();
+							$('#txtDate-input').datepicker('destroy');
+							$('#txtDate-input').show().width(1).height(1);
+							$('#txtDate-input').offset({top:position.top+5,left:position.left});
+							$('#txtDate-input').datepicker({n:n
+							    ,onClose: function(dateText, inst) {
+							        $('#txtDate2_'+n).focus().html(dateText).blur();
+							        $('#txtDate-input').hide();
+							    }
+							});
+						    $('#txtDate-input').focus();
+						});
+						$('#txtDate3_'+i).click(function() {
+							var n = $(this).attr('id').replace('txtDate3_','');
+							var position = $(this).offset();
+							$('#txtDate-input').datepicker('destroy');
+							$('#txtDate-input').show().width(1).height(1);
+							$('#txtDate-input').offset({top:position.top+5,left:position.left});
+							$('#txtDate-input').datepicker({n:n
+							    ,onClose: function(dateText, inst) {
+							        $('#txtDate3_'+n).focus().html(dateText).blur();
+							        $('#txtDate-input').hide();
+							    }
+							});
+						    $('#txtDate-input').focus();
+						});
+						$('#txtDate4_'+i).click(function() {
+							var n = $(this).attr('id').replace('txtDate4_','');
+							var position = $(this).offset();
+							$('#txtDate-input').datepicker('destroy');
+							$('#txtDate-input').show().width(1).height(1);
+							$('#txtDate-input').offset({top:position.top+5,left:position.left});
+							$('#txtDate-input').datepicker({n:n
+							    ,onClose: function(dateText, inst) {
+							        $('#txtDate4_'+n).focus().html(dateText).blur();
+							        $('#txtDate-input').hide();
+							    }
+							});
+						    $('#txtDate-input').focus();
+						});
+						
 						obj.click(function(e){	
 							var n = parseInt($(this).attr('id').replace(/^.*_(\d+)$/,'$1'));
 							if($(this).parent().parent().data('data').length == 0)
@@ -227,16 +290,20 @@
 				goNextItem('txtMount','txtCarno1');
 				goNextItem('txtCarno1','txtCardno1');
 				goNextItem('txtCardno1','txtYard1');
-				goNextItem('txtYard1','txtCarno2');
+				goNextItem('txtYard1','txtDate1');
+				goNextItem('txtDate1','txtCarno2');
 				goNextItem('txtCarno2','txtCardno2');
 				goNextItem('txtCardno2','txtYard2');
-				goNextItem('txtYard2','txtCarno3');
+				goNextItem('txtYard2','txtDate2');
+				goNextItem('txtDate2','txtCarno3');
 				goNextItem('txtCarno3','txtCardno3');
 				goNextItem('txtCardno3','txtYard3');
-				goNextItem('txtYard3','txtCarno4');
+				goNextItem('txtYard3','txtDate3');
+				goNextItem('txtDate3','txtCarno4');
 				goNextItem('txtCarno4','txtCardno4');
 				goNextItem('txtCardno4','txtYard4');
-				goNextItem('txtYard4','txtMsg1');
+				goNextItem('txtYard4','txtDate4');
+				goNextItem('txtDate4','txtMsg1');
 				goNextItem('txtMsg1','txtMsg2');
 				goNextItem('txtMsg2','txtMsg3');
 				goNextItem('txtMsg3','txtMsg4');
@@ -536,7 +603,7 @@
                     timeout: 10000,
                     success: function(data){
                         if(data.length>0){
-                        	alert(data)
+                        	alert(data);
                         }
                     },
                     complete: function(){ 
@@ -649,7 +716,8 @@
 			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:2890px;width: 2890px;overflow-y:scroll;">
+		<input id="txtDate-input" style="display:none;position: absolute;" />
+		<div style="min-width:3200px;width: 3200px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -667,12 +735,16 @@
 					<td align="center" style="width:40px; max-width:40px;color:black;"><a>指定</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車場)</a><br></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(日期)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車場)</a><br></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(日期)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車場)</a><br></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(日期)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車場)</a><br></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(日期)</a><br></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><a>領</a></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a>備註(領)</a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><a>送</a></td>
@@ -685,7 +757,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:2890px;width: 2890px;overflow-y:scroll;">
+		<div style="display:none;min-width:3200px;width: 3200px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -703,12 +775,16 @@
 					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"style="display:block;width:100%;height:20px;"></a><a id="txtCardno1"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard1"style="display:block;width:100%;"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate1"style="display:block;width:100%;float:left;"></a><input id="txtDate1-input" style="float:left;display:none;" class="date-input"/></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno2"style="display:block;width:100%;height:20px;"></a><a id="txtCardno2"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard2"style="display:block;width:100%;"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate2"style="display:block;width:100%;"></a><input id="txtDate2-input" style="display:none;" class="date-input"/></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno3"style="display:block;width:100%;height:20px;"></a><a id="txtCardno3"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard3"style="display:block;width:100%;"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate3"style="display:block;width:100%;"></a><input id="txtDate3-input" style="display:none;" class="date-input"/></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno4"style="display:block;width:100%;height:20px;"></a><a id="txtCardno4"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard4"style="display:block;width:100%;"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate4"style="display:block;width:100%;"></a><input id="txtDate4-input" style="display:none;" class="date-input"/></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend1" /></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg1"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend2" /></td>
@@ -721,7 +797,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:2890px;width: 2890px;height:800px;overflow-y:scroll;">
+		<div style="min-width:3200px;width: 3200px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>
