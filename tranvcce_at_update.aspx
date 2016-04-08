@@ -242,6 +242,7 @@
                 ,so,do1,vessel,voyage,port
                 ,port2,etc,freetime,do2,option01
                 ,trackno,vr,manifest,casepresent,takeno
+                ,memo
                  from view_tranorde where accy=@accy and noa=@noa ";
             cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
             cmd.Parameters.AddWithValue("@noa", item.ordeno);
@@ -250,36 +251,55 @@
             adapter.Fill(orde);
             string stype = "";
             if(orde.Rows.Count>0){
-                //出口
+                
                 if (item.stype == "出口")
                 {
+                    //出口
+                    //貨主：    船公司： 櫃型： 櫃數：   SO： 
+                    //領櫃代號：船名：   航次： 卸貨港： 領櫃場： 
+                    //結關日：  注意事項：
                     message += " 貨主：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
                     message += " 船公司：" + item.vocc;
                     message += " 櫃型：" + item.casetype;
-                    //message += " 櫃數：" + item.mount.ToString();
+                    message += " 櫃數：" + item.mount.ToString();
                     message += " SO：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[5]) ? "" : (System.String)orde.Rows[0].ItemArray[5]);
+                    
                     message += " 領櫃代號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[6]) ? "" : (System.String)orde.Rows[0].ItemArray[6]);
                     message += " 船名：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[7]) ? "" : (System.String)orde.Rows[0].ItemArray[7]);
                     message += " 航次：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[8]) ? "" : (System.String)orde.Rows[0].ItemArray[8]);
                     message += " 卸貨港：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[9]) ? "" : (System.String)orde.Rows[0].ItemArray[9]);
                     message += " 領櫃場：" + item.por;
+                    
                     message += " 結關日：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[11]) ? "" : (System.String)orde.Rows[0].ItemArray[11]);
+                    message += " 注意事項：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[20]) ? "" : (System.String)orde.Rows[0].ItemArray[20]);
                 }
-                else { 
-                    message += " 貨主："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
+                else {
+                    //進口
+                    //貨櫃號碼：  銷艙編號： 船公司： 櫃型：     櫃數： 
+                    //FREETIME：  領櫃場：   狀態：   提單號碼： 領櫃號碼：
+                    //追蹤號碼：  掛號：     艙號：   連絡電話： 送櫃地址：  
+                    //注意事項：
+                   // message += " 貨主："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
                     message += " 貨櫃號碼："+item.containerno1+(item.containerno2.Length>0?".":item.containerno2);
+                    message += " 銷艙編號：";
                     message += " 船公司：" + item.vocc;
                     message += " 櫃型：" + item.casetype;
-                    //message += " 櫃數：" + item.mount.ToString();
+                    message += " 櫃數：" + item.mount.ToString();
+                    
                     message += " FREETIME："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[12]) ? "" : (System.String)orde.Rows[0].ItemArray[12]);
                     message += " 領櫃場："+ item.por;
                     message += " 狀態："+(item.isassign?"指定":"任一");
                     message += " 提單號碼："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[13]) ? "" : (System.String)orde.Rows[0].ItemArray[13]);
                     message += " 領櫃號碼：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[19]) ? "" : (System.String)orde.Rows[0].ItemArray[19]);
+                    
                     message += " 追蹤號碼：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[15]) ? "" : (System.String)orde.Rows[0].ItemArray[15]);
-                    message += " 代表櫃號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[18]) ? "" : (System.String)orde.Rows[0].ItemArray[18]);              
+                    //message += " 代表櫃號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[18]) ? "" : (System.String)orde.Rows[0].ItemArray[18]);              
                     message += " 掛號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[16]) ? "" : (System.String)orde.Rows[0].ItemArray[16]);
                     message += " 艙號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[17]) ? "" : (System.String)orde.Rows[0].ItemArray[17]);
+                    message += " 連絡電話：";
+                    message += " 送櫃地址：";
+                    
+                    message += " 注意事項：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[20]) ? "" : (System.String)orde.Rows[0].ItemArray[20]);
                 }
             }
             message+=" 注意事項："+memo;
