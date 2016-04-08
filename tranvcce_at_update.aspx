@@ -242,7 +242,6 @@
                 ,so,do1,vessel,voyage,port
                 ,port2,etc,freetime,do2,option01
                 ,trackno,vr,manifest,casepresent,takeno
-                ,memo
                  from view_tranorde where accy=@accy and noa=@noa ";
             cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
             cmd.Parameters.AddWithValue("@noa", item.ordeno);
@@ -271,7 +270,6 @@
                     message += " 領櫃場：" + item.por;
                     
                     message += " 結關日：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[11]) ? "" : (System.String)orde.Rows[0].ItemArray[11]);
-                    message += " 注意事項：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[20]) ? "" : (System.String)orde.Rows[0].ItemArray[20]);
                 }
                 else {
                     //進口
@@ -281,7 +279,7 @@
                     //注意事項：
                    // message += " 貨主："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
                     message += " 貨櫃號碼："+item.containerno1+(item.containerno2.Length>0?".":item.containerno2);
-                    message += " 銷艙編號：";
+                    //message += " 銷艙編號：";
                     message += " 船公司：" + item.vocc;
                     message += " 櫃型：" + item.casetype;
                     message += " 櫃數：" + item.mount.ToString();
@@ -296,10 +294,8 @@
                     //message += " 代表櫃號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[18]) ? "" : (System.String)orde.Rows[0].ItemArray[18]);              
                     message += " 掛號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[16]) ? "" : (System.String)orde.Rows[0].ItemArray[16]);
                     message += " 艙號：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[17]) ? "" : (System.String)orde.Rows[0].ItemArray[17]);
-                    message += " 連絡電話：";
-                    message += " 送櫃地址：";
-                    
-                    message += " 注意事項：" + (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[20]) ? "" : (System.String)orde.Rows[0].ItemArray[20]);
+                    //message += " 連絡電話：";
+                    //message += " 送櫃地址：";
                 }
             }
             message+=" 注意事項："+memo;
