@@ -100,6 +100,8 @@
 						
 						
 						$('#txtDate1_'+i).click(function() {
+							if(!$(this).hasClass('edit'))
+								return;
 							var n = $(this).attr('id').replace('txtDate1_','');
 							var position = $(this).offset();
 							$('#txtDate1-input_'+n).show().width(1).height(1);
@@ -112,6 +114,8 @@
 						    $('#txtDate1-input_'+n).datepicker('show');
 						});
 						$('#txtDate2_'+i).click(function() {
+							if(!$(this).hasClass('edit'))
+								return;
 							var n = $(this).attr('id').replace('txtDate2_','');
 							var position = $(this).offset();
 							$('#txtDate2-input_'+n).show().width(1).height(1);
@@ -124,6 +128,8 @@
 						    $('#txtDate2-input_'+n).datepicker('show');
 						});
 						$('#txtDate3_'+i).click(function() {
+							if(!$(this).hasClass('edit'))
+								return;
 							var n = $(this).attr('id').replace('txtDate3_','');
 							var position = $(this).offset();
 							$('#txtDate3-input_'+n).show().width(1).height(1);
@@ -136,6 +142,8 @@
 						    $('#txtDate3-input_'+n).datepicker('show');
 						});
 						$('#txtDate4_'+i).click(function() {
+							if(!$(this).hasClass('edit'))
+								return;
 							var n = $(this).attr('id').replace('txtDate4_','');
 							var position = $(this).offset();
 							$('#txtDate4-input_'+n).show().width(1).height(1);

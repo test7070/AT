@@ -60,11 +60,11 @@ z_transp_at02:--z_transp_at02
 		,memo nvarchar(max)
 	)
 	
-	insert into @tmp(gno,pno,ordeaccy,ordeno,ordenoq
+	insert into @tmp(gno,ordeaccy,ordeno,ordenoq
 		,datea,custno,cust,straddrno,straddr,por,pod,ucr,vr,vocc,product,casetype,mount
 		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo
 		,date1,date2,date3,date4)
-	select '1',ROW_NUMBER()over(order by a.ordeaccy desc,a.ordeno desc,a.ordenoq),a.ordeaccy,a.ordeno,a.ordenoq
+	select '1',a.ordeaccy,a.ordeno,a.ordenoq
 		,a.datea,a.custno,a.cust,a.straddrno,a.straddr,a.por,a.pod,a.ucr,a.vr,a.vocc,a.product,a.casetype,a.mount
 		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo
 		,isnull(a.date1,''),isnull(a.date2,''),isnull(a.date3,''),isnull(a.date4,'')
@@ -77,15 +77,21 @@ z_transp_at02:--z_transp_at02
 	and (len(@t_cardno)=0 or CHARINDEX(@t_cardno,a.cardno1)>0or CHARINDEX(@t_cardno,a.cardno2)>0or CHARINDEX(@t_cardno,a.cardno3)>0or CHARINDEX(@t_cardno,a.cardno4)>0)
 	and ISNULL(a.custno,'') between @t_bcustno and @t_ecustno
 	and (len(@t_calctype)=0 or @t_calctype=b.noa+b.noq)
+	order by a.ordeaccy desc,a.ordeno desc,a.ordenoq
 	--and ISNULL(a.datea,'') between @t_btrandate and @t_etrandate
 	--以最後一個為主
 	update @tmp set xdate = case when len(date4)>0 then date4 
 		when len(date3)>0 then date3
 		when len(date2)>0 then date2
 		when len(date1)>0 then date1
-		else datea end 
-	
+		else '' end 
+		--else datea end 
+		
 	delete @tmp where not( ISNULL(xdate,'') between @t_btrandate and @t_etrandate)
+	
+	update @tmp set pno=b.recno
+	from @tmp a
+	left join (select sel,ROW_NUMBER()over(order by sel) recno from @tmp) b on a.sel=b.sel
 	
 	select gno
 		,pno rr
@@ -102,13 +108,13 @@ z_transp_at02:--z_transp_at02
 		,mount a11
 		,containerno1 a12
 		,containerno2 a13
-		,carno1 a14
+		,'<a title="'+date1+'">'+carno1+'</a>' a14
 		,cardno1 a15
-		,carno2 a16
+		,'<a title="'+date2+'">'+carno2+'</a>' a16
 		,cardno2 a17
-		,carno3 a18
+		,'<a title="'+date3+'">'+carno3+'</a>' a18
 		,cardno3 a19
-		,carno4 a20
+		,'<a title="'+date4+'">'+carno4+'</a>' a20
 		,cardno4 a21
 		,memo a22
 	from @tmp order by pno;
