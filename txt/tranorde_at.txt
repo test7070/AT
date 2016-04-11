@@ -99,7 +99,7 @@ tranorde_tranvcce:--tranorde_tranvcce
 				,mount=@mount
 				,memo=@memo
 			where ISNULL(isdel,0)=0 and edittime is null and ordeaccy=@ordeaccy and ordeno=@ordeno and ordenoq=@ordenoq
-			--tranvcce修改過的只更新  客戶、日期、起迄地點、櫃號
+			--tranvcce修改過的只更新  客戶、日期、起迄地點、櫃號、追蹤
 			update tranvcce	set custno=@custno
 				,cust=@cust
 				,datea = case when @stype='進口' then @ef else @etc end
@@ -107,6 +107,8 @@ tranorde_tranvcce:--tranorde_tranvcce
 				,straddr = @straddr
 				,containerno1 = case when len(containerno1)>0 then containerno1 else @containerno1 end --櫃號以派車單上優先
 				,containerno2 = case when len(containerno2)>0 then containerno2 else @containerno2 end
+				,ucr = @ucr
+				,vr = @vr
 			where ISNULL(isdel,0)=0 and len(isnull(edittime,''))>0 and ordeaccy=@ordeaccy and ordeno=@ordeno and ordenoq=@ordenoq
 		end 
 		else
