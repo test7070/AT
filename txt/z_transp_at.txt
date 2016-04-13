@@ -95,7 +95,7 @@ z_transp_at02:--z_transp_at02
 	
 	select gno
 		,pno rr
-		,xdate a01
+		,datea a01
 		,cust a02
 		,straddr a03
 		,por a04
@@ -108,15 +108,19 @@ z_transp_at02:--z_transp_at02
 		,mount a11
 		,containerno1 a12
 		,containerno2 a13
-		,'<a title="'+date1+'">'+carno1+'</a>' a14
+		,carno1 a14
 		,cardno1 a15
-		,'<a title="'+date2+'">'+carno2+'</a>' a16
-		,cardno2 a17
-		,'<a title="'+date3+'">'+carno3+'</a>' a18
-		,cardno3 a19
-		,'<a title="'+date4+'">'+carno4+'</a>' a20
-		,cardno4 a21
-		,memo a22
+		,date1 a16
+		,carno2 a17
+		,cardno2 a18
+		,date2 a19
+		,carno3 a20
+		,cardno3 a21
+		,date3 a22
+		,carno4 a23
+		,cardno4 a24
+		,date4 a25
+		,memo a26
 	from @tmp order by pno;
 
 z_transp_at01:--z_transp_at01
