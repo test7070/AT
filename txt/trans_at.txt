@@ -62,32 +62,41 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	update @tmp set price=b.custprice
 	from @tmp a
 	outer apply(select top 1 x.* from addrs x left join addr y on x.noa=y.noa 
-		where x.custunit='整趟' and y.noa=a.straddrno and y.productno=a.productno and a.datea>=x.datea order by x.datea desc) b
+		where x.custunit='整趟' and y.noa=a.straddrno 
+		--and y.productno=a.productno 
+		and a.datea>=x.datea order by x.datea desc) b
 	--現階段都只考慮公司車
 	update @tmp set price1=b.driverprice
 	from @tmp a
 	outer apply(select top 1 x.* from addrs x left join addr y on x.noa=y.noa 
-		where x.custunit='領' and y.noa=a.straddrno and y.productno=a.productno and a.datea>=x.datea order by x.datea desc) b
+		where x.custunit='領' and y.noa=a.straddrno 
+		--and y.productno=a.productno 
+		and a.datea>=x.datea order by x.datea desc) b
 	where len(ISNULL(a.carno1,''))>0
 	
 	update @tmp set price2=b.driverprice
 	from @tmp a
 	outer apply(select top 1 x.* from addrs x left join addr y on x.noa=y.noa 
-		where x.custunit='送' and y.noa=a.straddrno and y.productno=a.productno and a.datea>=x.datea order by x.datea desc) b
+		where x.custunit='送' and y.noa=a.straddrno 
+		--and y.productno=a.productno 
+		and a.datea>=x.datea order by x.datea desc) b
 	where len(ISNULL(a.carno2,''))>0
 	
 	update @tmp set price3=b.driverprice
 	from @tmp a
 	outer apply(select top 1 x.* from addrs x left join addr y on x.noa=y.noa 
-		where x.custunit='收' and y.noa=a.straddrno and y.productno=a.productno and a.datea>=x.datea order by x.datea desc) b
+		where x.custunit='收' and y.noa=a.straddrno 
+		--and y.productno=a.productno 
+		and a.datea>=x.datea order by x.datea desc) b
 	where len(ISNULL(a.carno3,''))>0
 	
 	update @tmp set price4=b.driverprice
 	from @tmp a
 	outer apply(select top 1 x.* from addrs x left join addr y on x.noa=y.noa 
-		where x.custunit='交' and y.noa=a.straddrno and y.productno=a.productno and a.datea>=x.datea order by x.datea desc) b
+		where x.custunit='交' and y.noa=a.straddrno 
+		--and y.productno=a.productno 
+		and a.datea>=x.datea order by x.datea desc) b
 	where len(ISNULL(a.carno4,''))>0
-
 	--------------------------------------------------------------------------------------------
 	IF OBJECT_ID('tempdb..#tranvcce_trans')is not null
 	BEGIN
@@ -135,7 +144,7 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	declare @carno2 nvarchar(20)
 	declare @carno3 nvarchar(20)
 	declare @carno4 nvarchar(20)
-		
+			
 	declare cursor_table cursor for
 	select sel,carno1,carno2,carno3,carno4 from @tmp
 	open cursor_table
@@ -143,7 +152,7 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	into @sel,@carno1,@carno2,@carno3,@carno4
 	while(@@FETCH_STATUS <> -1)
 	begin
-		--領
+		--整趟
 		if len(@carno1)>0
 		begin
 			insert into #tranvcce_trans(cstype,datea,trandate,custno,cust
@@ -239,6 +248,8 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	end
 	close cursor_table
 	deallocate cursor_table
+	
+
 	----------------------------------------------------------------------------------
 	declare @datea nvarchar(20)
 	declare @ordeno nvarchar(20)
@@ -279,7 +290,6 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	end
 	close cursor_table
 	deallocate cursor_table
-	
 	----------------------------------------------------------------------------------
 	--save
 	DECLARE @chk tinyint = 0
@@ -297,7 +307,7 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 			,straddrno=b.straddrno,straddr=b.straddr
 			,Uccno=b.productno,product=b.product
 			,carno=b.carno,cardno=b.cardno
-			,inmount=b.inmount,pton=b.pton,mount=b.mount,price=b.price
+			,inmount=b.inmount,pton=b.pton,mount=b.mount,price=b.price,total=b.total
 			,outmount=b.outmount,pton2=b.pton2,mount2=b.mount2,price2=b.price2,price3=b.price3
 			,discount=b.discount,total2=b.total2
 			,caseno=b.caseno,caseno2=b.caseno2
