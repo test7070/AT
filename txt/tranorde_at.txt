@@ -109,6 +109,7 @@ tranorde_tranvcce:--tranorde_tranvcce
 				,containerno2 = case when len(containerno2)>0 then containerno2 else @containerno2 end
 				,ucr = @ucr
 				,vr = @vr
+				,vocc = @vocc
 			where ISNULL(isdel,0)=0 and len(isnull(edittime,''))>0 and ordeaccy=@ordeaccy and ordeno=@ordeno and ordenoq=@ordenoq
 		end 
 		else
