@@ -94,7 +94,7 @@ z_transp_at02:--z_transp_at02
 	
 	update @tmp set pno=b.recno
 	from @tmp a
-	left join (select sel,ROW_NUMBER()over(order by sel) recno from @tmp) b on a.sel=b.sel
+	left join (select sel,ROW_NUMBER()over(order by custno,xdate,sel) recno from @tmp) b on a.sel=b.sel
 	--應收、應付去出車單抓
 	update @tmp set total=b.total,total2=b.total2
 	from @tmp a
