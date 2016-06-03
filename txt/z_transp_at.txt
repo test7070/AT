@@ -20,6 +20,7 @@ z_transp_at03:--z_transp_at03
 	--車牌	貨主	貨櫃號碼	進出口	起迄地點	領	送	收	交	應付總金額
 	declare @tmpa table(
 		sel int identity(1,1)
+		,trandate nvarchar(20)
 		,carno nvarchar(20)
 		,custno nvarchar(20)
 		,cust nvarchar(50)
@@ -37,9 +38,9 @@ z_transp_at03:--z_transp_at03
 		,t4 int
 	)
 		
-	insert into @tmpa(carno,custno,cust,caseno,calctype,straddrno,straddr,total,ordeno,cstype
+	insert into @tmpa(trandate,carno,custno,cust,caseno,calctype,straddrno,straddr,total,ordeno,cstype
 		,t1,t2,t3,t4)
-	select a.carno,a.custno,a.nick,a.caseno,a.calctype,a.straddrno,a.straddr,a.total2,a.ordeno,a.cstype
+	select a.trandate,a.carno,a.custno,a.nick,a.caseno,a.calctype,a.straddrno,a.straddr,a.total2,a.ordeno,a.cstype
 		,case when a.cstype='領' then 1 else 0 end
 		,case when a.cstype='送' then 1 else 0 end
 		,case when a.cstype='收' then 1 else 0 end
@@ -63,6 +64,7 @@ z_transp_at03:--z_transp_at03
 		,gno nvarchar(10)
 		,carno nvarchar(20)
 		,custno nvarchar(20)
+		,datea nvarchar(20)
 		,cust nvarchar(50)
 		,caseno nvarchar(20)
 		,calctype nvarchar(20)
@@ -77,9 +79,9 @@ z_transp_at03:--z_transp_at03
 		,t3 int
 		,t4 int
 	)
-	insert into @tmp(gno,carno,custno,cust,caseno,calctype,straddrno,straddr,ordeno
+	insert into @tmp(gno,carno,datea,custno,cust,caseno,calctype,straddrno,straddr,ordeno
 		,total,t1,t2,t3,t4)
-	select '1',carno,custno,cust,caseno,calctype,straddrno,straddr,ordeno
+	select '1',carno,MAX(trandate),custno,cust,caseno,calctype,straddrno,straddr,ordeno
 		,SUM(ISNULL(total,0)),SUM(ISNULL(t1,0)),SUM(ISNULL(t2,0)),SUM(ISNULL(t3,0)),SUM(ISNULL(t4,0))
 	from @tmpa
 	group by carno,custno,cust,caseno,calctype,straddrno,straddr,ordeno
@@ -103,6 +105,7 @@ z_transp_at03:--z_transp_at03
 		,case when t3>0 then N'✓' else '' end a08
 		,case when t4>0 then N'✓' else '' end a09
 		,dbo.getComma(total,-1) a10
+		,datea a11
 	from @tmp a 
 	order by sel;
 
