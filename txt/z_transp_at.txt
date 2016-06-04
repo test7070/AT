@@ -100,10 +100,14 @@ z_transp_at03:--z_transp_at03
 		,caseno a03
 		,calctype a04
 		,straddr a05
-		,case when t1>0 then N'✓' else '' end a06
-		,case when t2>0 then N'✓' else '' end a07
-		,case when t3>0 then N'✓' else '' end a08
-		,case when t4>0 then N'✓' else '' end a09
+		--,case when t1>0 then N'✓' else '' end a06
+		--,case when t2>0 then N'✓' else '' end a07
+		--,case when t3>0 then N'✓' else '' end a08
+		--,case when t4>0 then N'✓' else '' end a09
+		,case when t1>0 then N'V' else '' end a06
+		,case when t2>0 then N'V' else '' end a07
+		,case when t3>0 then N'V' else '' end a08
+		,case when t4>0 then N'V' else '' end a09
 		,dbo.getComma(total,-1) a10
 		,datea a11
 	from @tmp a 
