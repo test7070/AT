@@ -90,11 +90,11 @@ z_transp_at03:--z_transp_at03
 	from @tmp a
 	left join calctypes b on a.calctype=b.noa+b.noq
 
-	insert into @tmp(gno,total)
-	select '2',SUM(ISNULL(total,0)) from @tmp
+	insert into @tmp(gno,datea,total)
+	select '2',char(255),SUM(ISNULL(total,0)) from @tmp
 	
 	select gno
-		,sel rr
+		,row_number()over(order by datea,sel) rr
 		,carno a01
 		,cust a02
 		,caseno a03
@@ -111,7 +111,7 @@ z_transp_at03:--z_transp_at03
 		,dbo.getComma(total,-1) a10
 		,datea a11
 	from @tmp a 
-	order by sel;
+	order by datea,sel;
 
 z_transp_at02:--z_transp_at02
 	SET QUOTED_IDENTIFIER OFF
