@@ -110,6 +110,8 @@ tranorde_tranvcce:--tranorde_tranvcce
 				,ucr = @ucr
 				,vr = @vr
 				,vocc = @vocc
+				,por=@por
+				,pod=@pod
 			where ISNULL(isdel,0)=0 and len(isnull(edittime,''))>0 and ordeaccy=@ordeaccy and ordeno=@ordeno and ordenoq=@ordenoq
 		end 
 		else
