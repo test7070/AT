@@ -777,7 +777,7 @@
 			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:3200px;width: 3200px;overflow-y:scroll;">
+		<div style="min-width:3280px;width: 3280px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -818,7 +818,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:3200px;width: 3200px;overflow-y:scroll;">
+		<div style="display:none;min-width:3280px;width: 3280px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -859,7 +859,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:3200px;width: 3200px;height:800px;overflow-y:scroll;">
+		<div style="min-width:3280px;width: 3280px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>
