@@ -36,7 +36,7 @@
                     connSource.Open();
                     
                     //更新資料
-                    string queryString = @"insert into transtatus(typea,noa,qtime,memo)values('del',@user,getdate(),'刪除資料')";
+                    string queryString = @"insert into transtatus(typea,noa,qtime,memo)values('del',@user,getdate(),cast(@seq as nvarchar))";
                     queryString += @"update tranvcce set isdel=1 where seq=@seq";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
