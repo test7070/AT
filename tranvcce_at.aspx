@@ -87,18 +87,12 @@
 				$('#btnPrint').click(function(e){
 					q_box('z_tranvcce_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($('#txtNoa').val())}) + ";" + r_accy + "_" + r_cno, 'transvcce', "95%", "95%", m_print);
 				});
-				
-				
 				for(var i=0;i<tCount;i++){
 					$('.tData').append($('.tSchema').find('tr').eq(0).clone().data('key',i).data('data',''));	
 					for(var j=0;j<$('.tData').find('tr').eq(i).find('td').length;j++){
 						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('.date-input').eq(0);
 						obj.attr('id',obj.attr('id')+'_'+i).attr('value',i+1);
-						
-						obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="button"]').eq(0);
-						obj.attr('id',obj.attr('id')+'_'+i).attr('value',i+1);
-						
-						
+
 						$('#txtDate1_'+i).click(function() {
 							if(!$(this).hasClass('edit'))
 								return;
@@ -155,7 +149,15 @@
 							});
 						    $('#txtDate4-input_'+n).datepicker('show');
 						});
+						obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="button"].btnDelete').eq(0);
+						obj.attr('id',obj.attr('id')+'_'+i);
+						obj.click(function(e){	
+							var n = parseInt($(this).attr('id').replace(/^.*_(\d+)$/,'$1'));
+							deleteData(n);	
+						});
 						
+						obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="button"].btnSel').eq(0);
+						obj.attr('id',obj.attr('id')+'_'+i).attr('value',i+1);
 						obj.click(function(e){	
 							var n = parseInt($(this).attr('id').replace(/^.*_(\d+)$/,'$1'));
 							if($(this).parent().parent().data('data').length == 0)
@@ -179,11 +181,15 @@
 									$(this).css('background-color','');
 									$(this).removeClass('edit').attr("contenteditable","false").css('color','black').attr('disabled','disabled');
 								});
+								$('.btnDelete').attr('disabled','disabled').css('color','black');
 								$('.btnSel').attr('disabled','disabled');
 								for(var i=0;i<_curData.length;i++){
 									$('#btnSel_'+i).removeAttr('disabled');
 								}
-								updateData(n);
+								if($(this).data('isDelete')){
+									$(this).data('isDelete',false);
+								}
+								else{updateData(n);}
 							}else{
 								$('#btnRefresh').addClass('edit');
 								$('#chkIssend1_'+n).removeAttr('disabled');
@@ -208,6 +214,8 @@
 								$(this).parent().nextAll().addClass('edit');
 								$('.btnSel').attr('disabled','disabled');
 								$(this).removeAttr('disabled');
+								$('.btnDelete').attr('disabled','disabled').css('color','black');
+								$('#btnDelete_'+n).removeAttr('disabled').css('color','red');
 								$(this).css('color','red');
 								$(this).parent().parent().find('a,input[type="checkbox"]').each(function(e){
 									if($(this).attr('id').substring(0,3)=='chk'){
@@ -476,10 +484,9 @@
 					}
 				}
 				$('.btnSel').attr('disabled','disabled');
-				//$('.btnSel').next().text('');
+				$('.btnDelete').attr('disabled','disabled').css('color','black');
 				for(var i=0;i<_curData.length;i++){
 					$('#btnSel_'+i).removeAttr('disabled');
-					//$('#btnSel_'+i).next().text(_curData[i].edittime.length>0?'*':'');
 				}
 			}
 			function loadCount(stype,cust,so,containerno,ordeno,bdate,edate){
@@ -637,6 +644,60 @@
                     }
                 });	
 			}
+			function deleteData(n){
+				if(n<0 || n>=_curData.length){
+					alert('資料異常:'+n);
+					return;
+				}
+				if ( confirm ("刪除資料?") ){
+					//YES
+				}else{
+					return;
+				}
+				Lock(1,{opacity:0});
+				var data = {seq:_curData[n].seq,user:r_name};
+
+				console.log(JSON.stringify(data));
+				$.ajax({
+					n:n,
+					seq: _curData[n].seq,
+                    url: 'tranvcce_at_delete.aspx',
+                    headers: { 'database': q_db },
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    dataType: 'text',
+                    timeout: 10000,
+                    success: function(data){
+                        if(data.length>0){
+                        	alert(data);
+                        }
+                        $('#btnSel_'+n).data('isDelete',true);
+                        $('#btnSel_'+n).click();
+                        $('#btnRefresh').click();
+                    },
+                    complete: function(){ 
+                    	Unlock(1);                
+                    },
+                    error: function(jqXHR, exception) {
+                        var errmsg = this.url+'資料寫入異常 SEQ:'+this.seq+'。\n';
+                        if (jqXHR.status === 0) {
+                            alert(errmsg+'Not connect.\n Verify Network.');
+                        } else if (jqXHR.status == 404) {
+                            alert(errmsg+'Requested page not found. [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert(errmsg+'Internal Server Error [500].');
+                        } else if (exception === 'parsererror') {
+                            alert(errmsg+'Requested JSON parse failed.');
+                        } else if (exception === 'timeout') {
+                            alert(errmsg+'Time out error.');
+                        } else if (exception === 'abort') {
+                            alert(errmsg+'Ajax request aborted.');
+                        } else {
+                            alert(errmsg+'Uncaught Error.\n' + jqXHR.responseText);
+                        }
+                    }
+                });	
+			}
 		</script>
 		<style type="text/css">
             .tHeader {
@@ -753,6 +814,7 @@
 					<td align="center" style="width:50px; max-width:50px;color:black;"><a>交</a></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a>備註(交)</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>備註</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a style="color:red;">資料刪除</a></td>
 				</tr>
 			</table>
 		</div>
@@ -793,6 +855,7 @@
 					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend4" /></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg4"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtMemo"style="display:block;width:100%;height:20px;"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><input id="btnDelete" type="button" class="btnDelete" value="X"/></td>
 				</tr>
 			</table>
 		</div>
