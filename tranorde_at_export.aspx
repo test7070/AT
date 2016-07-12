@@ -598,6 +598,10 @@
 						<td><input type="text" id="txtEtd" class="txt c1" title="ESTIMATED TIME OF DELIVERY"/></td>
 					</tr>
 					<tr>
+						<td><span> </span><a id="" class="lbl">承攬公司</a></td>
+						<td colspan="3"><input type="text" id="txtMemo2" class="txt c1"/></td>
+					</tr>
+					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>
 						<td colspan="7" rowspan="2"><textarea id="txtMemo" class="txt c1" rows="3"></textarea></td>
 					</tr>
