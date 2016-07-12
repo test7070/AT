@@ -1,0 +1,49 @@
+z_tranvcce_at01:--z_tranvcce_at01
+	SET QUOTED_IDENTIFIER OFF	
+	declare @t_ordeno nvarchar(max) = case when '#non'=[1] then '' else [1] end
+	-----------------------------------------------------------------
+	--訂單量 、已派、未派 、歷史總記錄
+	declare @tmp table(
+		sel int identity(1,1)
+		,gno nvarchar(20)
+		,ordeno nvarchar(20)
+		,ordeno2 nvarchar(10)
+		,custno nvarchar(20)
+		,cust nvarchar(50)
+		,straddrno nvarchar(20)
+		,straddr nvarchar(50)
+		,containerno1 nvarchar(20)
+		,carno1 nvarchar(20)
+		,carno2 nvarchar(20)
+		,carno3 nvarchar(20)
+		,carno4 nvarchar(20)
+		,date1 nvarchar(20)
+		,date2 nvarchar(20)
+		,date3 nvarchar(20)
+		,date4 nvarchar(20)
+		,mount float
+	)
+	insert into @tmp(ordeno,ordeno2,custno,cust,straddrno,straddr,containerno1,carno1,carno2,carno3,carno4,date1,date2,date3,date4,mount)
+	select ordeno,ordenoq,custno,cust,straddrno,straddr,containerno1,carno1,carno2,carno3,carno4,date1,date2,date3,date4,mount
+	from tranvcce
+	where isnull(isdel,0)=0
+	and ordeno=@t_ordeno
+	order by ordeno,ordenoq
+	
+	update @tmp set gno=case when sel=1 then '1' else '2' end
+
+	select gno
+		,sel rr
+		,cust a01
+		,ordeno a02
+		,straddr a03
+		,containerno1 a04
+		,carno1 a05
+		,date1 a06
+		,carno2 a07
+		,date2 a08
+		,carno3 a09
+		,date3 a10
+		,carno4 a11
+		,date4 a12
+	from @tmp;

@@ -15,23 +15,20 @@
 		<script src="css/jquery/ui/jquery.ui.widget.js"> </script>
 		<script src="css/jquery/ui/jquery.ui.datepicker_tw.js"> </script>
 		<script type="text/javascript">
-            aPop = new Array(['txtCarno', 'lblCarno', 'car2', 'a.noa,driverno,driver', 'txtCarno', 'car2_b.aspx']
-            , ['txtXaddr', 'lblXaddr', 'addr', 'noa,addr', 'txtXaddr', 'addr_b.aspx']);
+            aPop = new Array();
             $(document).ready(function() {
             	q_getId();
-                LoadFinish();
+                q_gf('', 'z_tranvcce_at');       
             });
 
             function q_gfPost() {
-            	q_cmbParse("cmbStype", q_getMsg('stype').replace(/\^/g,','));
-            	q_gt('carteam', '', 0, 0, 0, "load_1");
+            	LoadFinish();
             }
 			function q_boxClose(s2) {
             	
 			}
 			function q_gtPost(t_name) {
                 switch (t_name) {
-                    d
                     default:
                         break;
                 }
@@ -40,44 +37,21 @@
             function LoadFinish(){
             	$('#q_report').q_report({
 					fileName : 'z_tranvcce_at',
-					options : [{/*1-[1],[2]*/
-                        type : '1',
-                        name : 'datea'
-                    }, {/*2-[3],[4]*/
-                        type : '2',
-                        name : 'cust',
-                        dbf : 'cust',
-                        index : 'noa,comp',
-                        src : 'cust_b.aspx'
-                    }, {/*3 [5]*/
+					options : [{
                         type : '6',
-                        name : 'carno'
-                    }, {/*4 [6]*/
-                        type : '6',
-                        name : 'cardno'
-                    }, {/*5-[7],[8]-起迄地點*/
-                        type : '2',
-                        name : 'addr',
-                        dbf : 'addr',
-                        index : 'noa,addr',
-                        src : 'addr_b.aspx'
-                    }, {/*6 [9]*/
-                        type : '6',
-                        name : 'caseno'
+                        name : 'ordeno'
                     }]
 				});
 				q_popAssign();
+				q_langShow();
 	            var t_para = new Array();
 	            try{
 	            	t_para = JSON.parse(q_getId()[3]);
-	            	$('#txtNoa').val(t_para.noa);
+	            	$('#txtOrdeno').val(t_para.noa);
 	            }catch(e){
 	            	
-	            }    
-	            $('#txtDatea1').mask('999/99/99');
-                $('#txtDatea1').datepicker();
-                $('#txtDatea2').mask('999/99/99');
-                $('#txtDatea2').datepicker();
+	            }  
+	            $('#btnOk').click();  
             }
 		</script>
 	</head>
