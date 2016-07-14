@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
 	<head>
-		<title></title>
+		<title> </title>
 		<script src="../script/jquery.min.js" type="text/javascript"></script>
 		<script src='../script/qj2.js' type="text/javascript"></script>
 		<script src='qset.js' type="text/javascript"></script>
@@ -256,7 +256,7 @@
             }
 
             function bbsSave(as) {
-                if (!as['addrno'] && !as['addr']) {
+                if (!as['addrno'] && !as['addr'] && !as['containerno1']) {
                     as[bbsKey[1]] = '';
                     return;
                 }
