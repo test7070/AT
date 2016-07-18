@@ -320,12 +320,12 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 		execute sp_executesql @cmd,N'@accy nvarchar(20)',@accy=@accy
 		IF @@Error <> 0 BEGIN SET @chk = 1 END
 		
-		set @cmd="insert into trans"+@accy+"(noa,cstype,datea,trandate,custno,comp,nick,straddrno,straddr
+		set @cmd="insert into trans"+@accy+"(noa,noq,cstype,datea,trandate,custno,comp,nick,straddrno,straddr
 			,uccno,product,carno,cardno
 			,inmount,pton,mount,price,total
 			,outmount,pton2,mount2,price2,price3,discount,total2
 			,caseno,caseno2,ordeno,calctype,carteamno,memo)
-		select noa,cstype,datea,trandate,custno,cust,cust,straddrno,straddr
+		select noa,'001',cstype,datea,trandate,custno,cust,cust,straddrno,straddr
 			,productno,product,carno,cardno
 			,inmount,pton,mount,price,total
 			,outmount,pton2,mount2,price2,price3,discount,total2
