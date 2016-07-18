@@ -114,7 +114,7 @@
 					$('#cmbCstype').hide();
 					$('#lblPton2').text('司機補津貼');
 				}
-				if(q_getPara('sys.project').toUpperCase()=='AT'){
+				if(q_getPara('sys.project').toUpperCase()=='AT' || q_getPara('sys.project').toUpperCase()=='YP'){
 					$('#btnImport').show();
 				}
 				

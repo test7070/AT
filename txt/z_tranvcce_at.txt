@@ -21,16 +21,30 @@ z_tranvcce_at01:--z_tranvcce_at01
 		,date2 nvarchar(20)
 		,date3 nvarchar(20)
 		,date4 nvarchar(20)
-		,mount float
+		,count1 float
+		,count2 float
+		,count3 float
+		,count4 float
 	)
-	insert into @tmp(ordeno,ordeno2,custno,cust,straddrno,straddr,containerno1,carno1,carno2,carno3,carno4,date1,date2,date3,date4,mount)
-	select ordeno,ordenoq,custno,cust,straddrno,straddr,containerno1,carno1,carno2,carno3,carno4,date1,date2,date3,date4,mount
+	insert into @tmp(ordeno,ordeno2,custno,cust,straddrno,straddr,containerno1,carno1,carno2,carno3,carno4,date1,date2,date3,date4)
+	select ordeno,ordenoq,custno,cust,straddrno,straddr,containerno1
+		,isnull(carno1,''),isnull(carno2,''),isnull(carno3,''),isnull(carno4,'')
+		,date1,date2,date3,date4
 	from tranvcce
 	where isnull(isdel,0)=0
 	and ordeno=@t_ordeno
 	order by ordeno,ordenoq
 	
 	update @tmp set gno=case when sel=1 then '1' else '2' end
+
+	--合計未領送收交的
+	insert into @tmp(gno,count1,count2,count3,count4)
+	select '3'
+		,SUM(case when len(carno1)>0 then 0 else 1 end)
+		,SUM(case when len(carno2)>0 then 0 else 1 end)
+		,SUM(case when len(carno3)>0 then 0 else 1 end)
+		,SUM(case when len(carno4)>0 then 0 else 1 end)
+	from @tmp
 
 	select gno
 		,sel rr
@@ -46,4 +60,9 @@ z_tranvcce_at01:--z_tranvcce_at01
 		,date3 a10
 		,carno4 a11
 		,date4 a12
-	from @tmp;
+		,count1 b01
+		,count2 b02
+		,count3 b03
+		,count4 b04
+	from @tmp
+	order by sel;
