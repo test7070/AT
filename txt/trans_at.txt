@@ -32,6 +32,11 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 		,carno4 nvarchar(20)
 		,cardno4 nvarchar(20)
 		
+		,date1 nvarchar(20)
+		,date2 nvarchar(20)
+		,date3 nvarchar(20)
+		,date4 nvarchar(20)
+		
 		,price float --客戶單價
 		,price1 float
 		,price2 float
@@ -41,19 +46,19 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	insert into @tmp (stype,ordeaccy,ordeno,ordenoq
 		,datea,custno,cust,straddrno,straddr
 		,productno,product,caseno,caseno2
-		,carno1,cardno1
-		,carno2,cardno2
-		,carno3,cardno3
-		,carno4,cardno4)
+		,carno1,cardno1,date1
+		,carno2,cardno2,date2
+		,carno3,cardno3,date3
+		,carno4,cardno4,date4)
 	select b.stype,a.ordeaccy,a.ordeno,a.ordenoq
 		,a.datea
 		,a.custno,a.cust,a.straddrno,a.straddr
 		,b.productno,a.product
 		,a.containerno1,a.containerno2
-		,ltrim(rtrim(isnull(a.carno1,''))),a.cardno1
-		,ltrim(rtrim(isnull(a.carno2,''))),a.cardno2
-		,ltrim(rtrim(isnull(a.carno3,''))),a.cardno3
-		,ltrim(rtrim(isnull(a.carno4,''))),a.cardno4
+		,ltrim(rtrim(isnull(a.carno1,''))),a.cardno1,a.date1
+		,ltrim(rtrim(isnull(a.carno2,''))),a.cardno2,a.date2
+		,ltrim(rtrim(isnull(a.carno3,''))),a.cardno3,a.date3
+		,ltrim(rtrim(isnull(a.carno4,''))),a.cardno4,a.date4
 	from tranvcce a
 	left join view_tranorde b on a.ordeno=b.noa
 	where a.datea between @t_bdate and @t_edate
@@ -179,7 +184,7 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 				,outmount,pton2,mount2,price2,price3,discount,total2
 				,caseno,caseno2,ordeno
 				,calctype,carteamno,stype)
-			select '領',datea,datea,custno,cust
+			select '領',date1,date1,custno,cust
 				,straddrno,straddr,productno,product,carno1,cardno1
 				,0,0,0,0,0
 				,1,0,1,price1,0,0,price1
@@ -197,7 +202,7 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 				,outmount,pton2,mount2,price2,price3,discount,total2
 				,caseno,caseno2,ordeno
 				,calctype,carteamno,stype)
-			select '送',datea,datea,custno,cust
+			select '送',date2,date2,custno,cust
 				,straddrno,straddr,productno,product,carno2,cardno2
 				,0,0,0,0,0
 				,1,0,1,price2,0,0,price2
@@ -215,7 +220,7 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 				,outmount,pton2,mount2,price2,price3,discount,total2
 				,caseno,caseno2,ordeno
 				,calctype,carteamno,stype)
-			select '收',datea,datea,custno,cust
+			select '收',date3,date3,custno,cust
 				,straddrno,straddr,productno,product,carno3,cardno3
 				,0,0,0,0,0
 				,1,0,1,price3,0,0,price3
@@ -233,7 +238,7 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 				,outmount,pton2,mount2,price2,price3,discount,total2
 				,caseno,caseno2,ordeno
 				,calctype,carteamno,stype)
-			select '交',datea,datea,custno,cust
+			select '交',date4,date4,custno,cust
 				,straddrno,straddr,productno,product,carno4,cardno4
 				,0,0,0,0,0
 				,1,0,1,price4,0,0,price4
@@ -248,8 +253,6 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	end
 	close cursor_table
 	deallocate cursor_table
-	
-
 	----------------------------------------------------------------------------------
 	declare @datea nvarchar(20)
 	declare @ordeno nvarchar(20)
