@@ -120,7 +120,18 @@
                 switch (id) {
                 	case 'txtCustno':
                 		$('#txtNick').val($('#txtComp').val());
-                		break;         
+                		break; 
+                	case 'txtAddrno_':
+                		var t_addrno=$.trim($('#txtAddrno_'+b_seq).val());
+                		var t_addr=$.trim($('#txtAddr_'+b_seq).val());
+                		
+                		for(var i=0;i<q_bbsCount;i++){
+                			if($('#txtAddrno_'+i).val().length==0 && ($('#txtAddr_'+i).val()=='_' || $('#txtAddr_'+i).val().length==0)){
+                				$('#txtAddrno_'+i).val(t_addrno);
+                				$('#txtAddr_'+i).val(t_addr);
+                			}	
+                		}
+                		break;        
                     default:
                         break;
                 }
@@ -287,15 +298,16 @@
             function bbsAssign() {
                 for (var i = 0; i < q_bbsCount; i++) {
                     $('#lblNo_' + i).text(i + 1);
-                    if (!$('#btnMinus_' + i).hasClass('isAssign')) {
-                    	$('#txtAddrno_' + i).bind('contextmenu', function(e) {
-                            /*滑鼠右鍵*/
-                            e.preventDefault();
-                            var n = $(this).attr('id').replace('txtAddrno_', '');
-                            $('#btnAddr_'+n).click();
-                        });
-                    }
+                    if ($('#btnMinus_' + i).hasClass('isAssign')) 
+                    	continue;
+                	$('#txtAddrno_' + i).bind('contextmenu', function(e) {
+                        /*滑鼠右鍵*/
+                        e.preventDefault();
+                        var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
+                        $('#btnAddr_'+n).click();
+                    });
                 }
+                
                 _bbsAssign();
             }
 			
