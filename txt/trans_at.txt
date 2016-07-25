@@ -103,6 +103,8 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 		and a.datea>=x.datea order by x.datea desc) b
 	where len(ISNULL(a.carno4,''))>0
 	--------------------------------------------------------------------------------------------
+
+
 	IF OBJECT_ID('tempdb..#tranvcce_trans')is not null
 	BEGIN
 		drop table #tranvcce_trans
@@ -184,7 +186,10 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 				,outmount,pton2,mount2,price2,price3,discount,total2
 				,caseno,caseno2,ordeno
 				,calctype,carteamno,stype)
-			select '領',date1,date1,custno,cust
+			select '領'
+				,case when len(date1)>0 then date1 else datea end
+				,case when len(date1)>0 then date1 else datea end
+				,custno,cust
 				,straddrno,straddr,productno,product,carno1,cardno1
 				,0,0,0,0,0
 				,1,0,1,price1,0,0,price1
@@ -202,7 +207,10 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 				,outmount,pton2,mount2,price2,price3,discount,total2
 				,caseno,caseno2,ordeno
 				,calctype,carteamno,stype)
-			select '送',date2,date2,custno,cust
+			select '送'
+				,case when len(date2)>0 then date2 else datea end
+				,case when len(date2)>0 then date2 else datea end
+				,custno,cust
 				,straddrno,straddr,productno,product,carno2,cardno2
 				,0,0,0,0,0
 				,1,0,1,price2,0,0,price2
@@ -220,7 +228,10 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 				,outmount,pton2,mount2,price2,price3,discount,total2
 				,caseno,caseno2,ordeno
 				,calctype,carteamno,stype)
-			select '收',date3,date3,custno,cust
+			select '收'
+				,case when len(date3)>0 then date3 else datea end
+				,case when len(date3)>0 then date3 else datea end
+				,custno,cust
 				,straddrno,straddr,productno,product,carno3,cardno3
 				,0,0,0,0,0
 				,1,0,1,price3,0,0,price3
@@ -238,7 +249,10 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 				,outmount,pton2,mount2,price2,price3,discount,total2
 				,caseno,caseno2,ordeno
 				,calctype,carteamno,stype)
-			select '交',date4,date4,custno,cust
+			select '交'
+				,case when len(date4)>0 then date4 else datea end
+				,case when len(date4)>0 then date4 else datea end
+				,custno,cust
 				,straddrno,straddr,productno,product,carno4,cardno4
 				,0,0,0,0,0
 				,1,0,1,price4,0,0,price4
@@ -262,6 +276,7 @@ tranvcce_trans_at:--tranvcce_trans_at	trans_at.txt
 	declare @noa2 nvarchar(20)
 	declare @sign nvarchar(max) = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	declare @num int
+	
 	
 	declare cursor_table cursor for
 	select sel,datea,ordeno from #tranvcce_trans where len(ordeno)>0
