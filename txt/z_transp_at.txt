@@ -104,8 +104,8 @@ z_transp_at04:--z_transp_at04
 	from @tmp a
 	left join calctypes b on a.calctype=b.noa+b.noq
 
-	insert into @tmp(gno,datea,total)
-	select '2',char(255),SUM(ISNULL(total,0)) from @tmp
+	insert into @tmp(gno,datea,total,total2)
+	select '2',char(255),SUM(ISNULL(total,0)),SUM(ISNULL(total2,0)) from @tmp
 	
 	select gno
 		,row_number()over(order by datea,sel) rr
