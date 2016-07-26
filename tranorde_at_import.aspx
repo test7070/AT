@@ -122,14 +122,16 @@
                 		$('#txtNick').val($('#txtComp').val());
                 		break; 
                 	case 'txtAddrno_':
-                		var t_addrno=$.trim($('#txtAddrno_'+b_seq).val());
-                		var t_addr=$.trim($('#txtAddr_'+b_seq).val());
-                		
-                		for(var i=0;i<q_bbsCount;i++){
-                			if($('#txtAddrno_'+i).val().length==0 && ($('#txtAddr_'+i).val()=='_' || $('#txtAddr_'+i).val().length==0)){
-                				$('#txtAddrno_'+i).val(t_addrno);
-                				$('#txtAddr_'+i).val(t_addr);
-                			}	
+                		if(q_getPara('sys.project').toUpperCase()!='AT'){
+                			var t_addrno=$.trim($('#txtAddrno_'+b_seq).val());
+	                		var t_addr=$.trim($('#txtAddr_'+b_seq).val());
+	                		
+	                		for(var i=0;i<q_float('txtMount');i++){
+	                			if($('#txtAddrno_'+i).val().length==0 && ($('#txtAddr_'+i).val()=='_' || $('#txtAddr_'+i).val().length==0)){
+	                				$('#txtAddrno_'+i).val(t_addrno);
+	                				$('#txtAddr_'+i).val(t_addr);
+	                			}	
+	                		}
                 		}
                 		break;        
                     default:
