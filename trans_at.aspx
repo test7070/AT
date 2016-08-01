@@ -19,7 +19,7 @@
 			var bbmNum = [['txtCustdiscount',10,0,1],['txtInmount',10,3,1],['txtPton',10,3,1],['txtPrice',10,3,1],['txtTotal',10,0,1]
 			,['txtOutmount',10,3,1],['txtPton2',10,3,1],['txtPrice2',10,3,1],['txtPrice3',10,3,1],['txtDiscount',10,3,1],['txtTotal2',10,0,1]
 			,['txtOverw',10,0,1],['txtOverh',10,0,1]];
-			var bbmMask = [['txtDatea','999/99/99'],['txtTrandate','999/99/99'],['txtMon','999/99'],['txtMon2','999/99'],['txtLtime','99:99'],['txtStime','99:99'],['txtDtime','99:99']];
+			var bbmMask = [['txtMon_import','999/99'],['txtDatea','999/99/99'],['txtTrandate','999/99/99'],['txtMon','999/99'],['txtMon2','999/99'],['txtLtime','99:99'],['txtStime','99:99'],['txtDtime','99:99']];
 			q_sqlCount = 6;
 			brwCount = 6;
 			brwList = [];
@@ -281,8 +281,10 @@
                 });
                 $('#btnImport_trans').click(function() {
                    if(q_cur != 1 && q_cur != 2){
-						var t_bdate = $.trim($('#txtBdate_import').val());
-						var t_edate = $.trim($('#txtEdate_import').val());
+						//var t_bdate = $.trim($('#txtBdate_import').val());
+						//var t_edate = $.trim($('#txtEdate_import').val());
+						var t_bdate = $.trim($('#txtMon_import').val()+'/01');
+						var t_edate = $.trim($('#txtMon_import').val()+'/31');
 						var t_custno = $.trim($('#txtCustno_import').val());
 						if(t_bdate.length>0 && t_edate.length>0){
 							Lock(1,{opacity:0});
@@ -303,6 +305,7 @@
                 });
                 $('#txtBdate_import').datepicker();
                 $('#txtEdate_import').datepicker();
+                
 			}
 			function q_funcPost(t_func, result) {
                 switch(t_func) {
@@ -678,12 +681,18 @@
 					<td style="width:80px;"></td>
 					<td style="width:80px;"></td>
 				</tr>
-				<tr style="height:35px;">
+				<tr style="height:35px;display:none;">
 					<td><span> </span><a id="lblDate_import" style="float:right; color: blue; font-size: medium;">日期</a></td>
 					<td colspan="4">
 					<input id="txtBdate_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
 					<span style="float:left; display:block; width:25px;"><a>～</a></span>
 					<input id="txtEdate_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
+					</td>
+				</tr>
+				<tr style="height:35px;">
+					<td><span> </span><a id="lblMon_import" style="float:right; color: blue; font-size: medium;">月份</a></td>
+					<td colspan="4">
+					<input id="txtMon_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
 					</td>
 				</tr>
 				<tr style="height:35px;">
