@@ -277,7 +277,7 @@
                     //FREETIME：  領櫃場：   狀態：   提單號碼： 領櫃號碼：
                     //追蹤號碼：  掛號：     艙號：   連絡電話： 送櫃地址：  
                     //注意事項：
-                   // message += " 貨主："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
+                    message += " 貨主："+ (System.DBNull.Value.Equals(orde.Rows[0].ItemArray[1]) ? "" : (System.String)orde.Rows[0].ItemArray[1]);
                     message += " 貨櫃號碼："+item.containerno1+(item.containerno2.Length>0?".":item.containerno2);
                     //message += " 銷艙編號：";
                     message += " 船公司：" + item.vocc;
