@@ -446,18 +446,9 @@
             }
 
             function btnPrint() {
-                switch(q_getPara('sys.project').toUpperCase()) {
-                case 'YP':
-                    q_box('z_transp_yp.aspx?' + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({
-                        noa : trim($('#txtNoa').val())
-                    }) + ";" + r_accy + "_" + r_cno, 'trans', "95%", "95%", m_print);
-                    break;
-                default:
-                    q_box('z_transp_at.aspx?' + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({
-                        noa : trim($('#txtNoa').val())
-                    }) + ";" + r_accy + "_" + r_cno, 'trans', "95%", "95%", m_print);
-                    break;
-                }
+                q_box('z_transp_at.aspx?' + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({
+                    noa : trim($('#txtNoa').val())
+                }) + ";" + r_accy + "_" + r_cno, 'trans', "95%", "95%", m_print);
             }
 
             function q_stPost() {
