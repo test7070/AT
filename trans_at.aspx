@@ -299,7 +299,9 @@
                 });
                 $('#txtBdate_import').datepicker();
                 $('#txtEdate_import').datepicker();
-
+				//----------------------------------------------------------
+				if(q_getPara('sys.project').toUpperCase()=='DH'){
+				}
             }
 
             function q_funcPost(t_func, result) {
@@ -362,7 +364,7 @@
                     var t_price = 0;
                     var t_price2 = 0;
                     var t_price3 = 0;
-                    var t_custmount = 0
+                    var t_custmount = 0;
                     var as = _q_appendData("addrs", "", true);
                     if (as[0] != undefined) {
                         t_price = as[0].custprice;
@@ -446,9 +448,9 @@
             }
 
             function btnPrint() {
-                q_box('z_transp_at.aspx?' + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({
-                    noa : trim($('#txtNoa').val())
-                }) + ";" + r_accy + "_" + r_cno, 'trans', "95%", "95%", m_print);
+            	q_box('z_transp_at.aspx?' + r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({
+		                    noa : trim($('#txtNoa').val())
+		                }) + ";" + r_accy + "_" + r_cno, 'trans', "95%", "95%", m_print);
             }
 
             function q_stPost() {
