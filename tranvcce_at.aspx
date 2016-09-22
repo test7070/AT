@@ -295,9 +295,10 @@
 				goNextItem('txtStraddr','txtCasetype');
 				goNextItem('txtCasetype','txtContainerno1');
 				goNextItem('txtContainerno1','txtContainerno2');
-				goNextItem('txtContainerno2','txtSeal1');
-				goNextItem('txtSeal1','txtSeal2');
-				goNextItem('txtSeal2','txtMount');
+				//goNextItem('txtContainerno2','txtSeal1');
+				//goNextItem('txtSeal1','txtSeal2');
+				//goNextItem('txtSeal2','txtMount');
+				goNextItem('txtContainerno2','txtMount');
 				goNextItem('txtMount','txtCarno1');
 				goNextItem('txtCarno1','txtCardno1');
 				goNextItem('txtCardno1','txtYard1');
@@ -793,7 +794,7 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>船公司</a></td>	
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>品名</a><br><a>規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號</a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a>封條</a></td>
+					<!--<td align="center" style="width:120px; max-width:120px;color:black;"><a>封條</a></td>-->
 					<td align="center" style="width:60px; max-width:60px;color:black;"><a>訂單櫃數</a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><a>指定</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a><br><a>　(板台)</a></td>
@@ -834,7 +835,7 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtProduct" class="readonly"style="display:block;width:100%;height:20px;"></a><a id="txtCasetype"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1"style="display:block;width:100%;height:20px;"></a><a id="txtContainerno2"style="display:block;width:100%;height:20px;" class="field2"></a></td>
-					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtSeal1"style="display:block;width:100%;height:20px;"></a><a id="txtSeal2"style="display:block;width:100%;height:20px;" class="field2"></a></td>
+					<!--<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtSeal1"style="display:block;width:100%;height:20px;"></a><a id="txtSeal2"style="display:block;width:100%;height:20px;" class="field2"></a></td>-->
 					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"style="display:block;width:100%;height:20px;"></a><a id="txtCardno1"style="display:block;width:100%;height:20px;"class="field2"></a></td>
