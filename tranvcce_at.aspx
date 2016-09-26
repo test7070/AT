@@ -93,9 +93,13 @@
 						var obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('.date-input').eq(0);
 						obj.attr('id',obj.attr('id')+'_'+i).attr('value',i+1);
 						
-						$('#txtOrdeno_'+i).click(function(e){
-							q_box('z_tranvcce_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($(this).text())}) + ";" + r_accy + "_" + r_cno, 'trans', "95%", "95%", m_print);
-						}).css('color','blue');
+						$('#txtOrdeno_'+i).bind('contextmenu', function(e) {
+                            /*滑鼠右鍵*/
+                            e.preventDefault();
+                            var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
+                            q_box('z_tranvcce_at.aspx?'+ r_userno + ";" + r_name + ";" + q_time + ";" + JSON.stringify({noa:trim($(this).text())}) + ";" + r_accy + "_" + r_cno, 'trans', "95%", "95%", m_print);
+                        }).css('color','blue');
+                        
 						$('#txtDate1_'+i).click(function() {
 							if(!$(this).hasClass('edit'))
 								return;
