@@ -17,6 +17,7 @@
 			var q_name = 'tranvcce';
 			var _pageCount = 16; //一頁幾筆資料
             var _curData = new Array();
+			var isModi = false;
 			
 			function Screenshot(){
 				html2canvas(document.body, {
@@ -78,9 +79,26 @@
 				});
             });
             function q_gfPost() {
-                q_langShow();
-                init(_pageCount);
-				$('#btnRefresh').click();
+            	q_gt('authority', "where=^^a.noa='tranvcce' and a.sssno='" + r_userno + "'^^", 0, 0, 0, "checkAuthority", 1);
+            }
+            function q_gtPost(t_name) {
+                switch (t_name) {
+                    case 'checkAuthority':
+                        var as = _q_appendData('authority', '', true);
+                        if (r_rank>8)
+                        	isModi = true;
+                        else if (as.length > 0 && as[0]["pr_modi"] == "true")
+                            isModi = true;
+                        else
+                            isModi = false;
+                        
+                        q_langShow();
+			            init(_pageCount);
+						$('#btnRefresh').click();
+                        break;
+                    default:
+                        break;
+                } 
             }
 
 			function init(tCount){
@@ -165,7 +183,11 @@
 						
 						obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="button"].btnSel').eq(0);
 						obj.attr('id',obj.attr('id')+'_'+i).attr('value',i+1);
-						obj.click(function(e){	
+						obj.click(function(e){
+							if(!isModi){
+								alert('無修改權限!');
+								return;
+							}
 							var n = parseInt($(this).attr('id').replace(/^.*_(\d+)$/,'$1'));
 							if($(this).parent().parent().data('data').length == 0)
 								return;
