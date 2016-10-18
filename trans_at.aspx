@@ -102,7 +102,7 @@
                 q_mask(bbmMask);
                 q_cmbParse("cmbCstype", ' ,領,送,收,交,移,整趟');
 
-                if (q_getPara('sys.comp').substring(0, 2) == '集鑫') {
+                if (q_getPara('sys.project').toUpperCase()=='VA') {
                     $('#lblPo').text('工程案號');
                     $('#lblCstype').hide();
                     $('#cmbCstype').hide();
@@ -201,7 +201,7 @@
                             break;
                         }
                     }
-                    if (q_getPara('sys.comp').substring(0, 2) == '集鑫') {
+                    if (q_getPara('sys.project').toUpperCase()=='VA') {
                         if (t_isoutside)
                             $('#txtOutmount').val($('#txtInmount').val());
                     } else {
@@ -375,7 +375,7 @@
                     $('#txtPrice').val(t_price);
                     $('#txtPrice2').val(t_price2);
                     $('#txtPrice3').val(t_price3);
-                    if (q_getPara('sys.comp').substring(0, 2) == '集鑫') {
+                    if (q_getPara('sys.project').toUpperCase()=='VA') {
                         z_curCustmount = t_custmount;
                         //$('#txtInmount').val(0);
                         //$('#txtPton').val(t_custmount);

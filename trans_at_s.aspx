@@ -42,7 +42,7 @@
 				$('#txtEtrandate').datepicker(); 
                 $('#txtNoa').focus();
                 
-                if(q_getPara('sys.comp').substring(0,2)=='集鑫'){
+                if(q_getPara('sys.project').toUpperCase()=='VA'){
 					$('#lblPo').text('工程案號');
 				}
             }
