@@ -25,11 +25,22 @@ z_tranvcce_at01:--z_tranvcce_at01
 		,count2 float
 		,count3 float
 		,count4 float
+		
+		,carno5 nvarchar(20)
+		,date5 nvarchar(20)
+		,carno6 nvarchar(20)
+		,date6 nvarchar(20)
+		,carno7 nvarchar(20)
+		,date7 nvarchar(20)
+		,carno8 nvarchar(20)
+		,date8 nvarchar(20)
 	)
-	insert into @tmp(ordeno,ordeno2,custno,cust,straddrno,straddr,containerno1,carno1,carno2,carno3,carno4,date1,date2,date3,date4)
+	insert into @tmp(ordeno,ordeno2,custno,cust,straddrno,straddr,containerno1,carno1,carno2,carno3,carno4,date1,date2,date3,date4
+		,carno5,date5,carno6,date6,carno7,date7,carno8,date8)
 	select ordeno,ordenoq,custno,cust,straddrno,straddr,containerno1
 		,isnull(carno1,''),isnull(carno2,''),isnull(carno3,''),isnull(carno4,'')
 		,date1,date2,date3,date4
+		,carno5,date5,carno6,date6,carno7,date7,carno8,date8
 	from tranvcce
 	where isnull(isdel,0)=0
 	and ordeno=@t_ordeno
@@ -54,12 +65,20 @@ z_tranvcce_at01:--z_tranvcce_at01
 		,containerno1 a04
 		,carno1 a05
 		,date1 a06
-		,carno2 a07
-		,date2 a08
-		,carno3 a09
-		,date3 a10
-		,carno4 a11
-		,date4 a12
+		,carno5 a07
+		,date5 a08
+		,carno2 a09
+		,date2 a10
+		,carno6 a11
+		,date6 a12
+		,carno7 a13
+		,date7 a14
+		,carno3 a15
+		,date3 a16
+		,carno8 a17
+		,date8 a18
+		,carno4 a19
+		,date4 a20
 		,count1 b01
 		,count2 b02
 		,count3 b03

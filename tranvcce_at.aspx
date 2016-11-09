@@ -121,7 +121,7 @@
 						$('#txtDate1_'+i).click(function() {
 							if(!$(this).hasClass('edit'))
 								return;
-							var n = $(this).attr('id').replace('txtDate1_','');
+							var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
 							var position = $(this).offset();
 							$('#txtDate1-input_'+n).show().width(1).height(1);
 							$('#txtDate1-input_'+n).datepicker({n:n
@@ -135,7 +135,7 @@
 						$('#txtDate2_'+i).click(function() {
 							if(!$(this).hasClass('edit'))
 								return;
-							var n = $(this).attr('id').replace('txtDate2_','');
+							var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
 							var position = $(this).offset();
 							$('#txtDate2-input_'+n).show().width(1).height(1);
 							$('#txtDate2-input_'+n).datepicker({n:n
@@ -149,7 +149,7 @@
 						$('#txtDate3_'+i).click(function() {
 							if(!$(this).hasClass('edit'))
 								return;
-							var n = $(this).attr('id').replace('txtDate3_','');
+							var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
 							var position = $(this).offset();
 							$('#txtDate3-input_'+n).show().width(1).height(1);
 							$('#txtDate3-input_'+n).datepicker({n:n
@@ -163,7 +163,7 @@
 						$('#txtDate4_'+i).click(function() {
 							if(!$(this).hasClass('edit'))
 								return;
-							var n = $(this).attr('id').replace('txtDate4_','');
+							var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
 							var position = $(this).offset();
 							$('#txtDate4-input_'+n).show().width(1).height(1);
 							$('#txtDate4-input_'+n).datepicker({n:n
@@ -173,6 +173,62 @@
 							    }
 							});
 						    $('#txtDate4-input_'+n).datepicker('show');
+						});
+						$('#txtDate5_'+i).click(function() {
+							if(!$(this).hasClass('edit'))
+								return;
+							var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
+							var position = $(this).offset();
+							$('#txtDate5-input_'+n).show().width(1).height(1);
+							$('#txtDate5-input_'+n).datepicker({n:n
+							    ,onClose: function(dateText, inst) {
+							        $('#txtDate5_'+n).html(dateText);
+							        $('#txtDate5-input_'+n).hide();
+							    }
+							});
+						    $('#txtDate5-input_'+n).datepicker('show');
+						});
+						$('#txtDate6_'+i).click(function() {
+							if(!$(this).hasClass('edit'))
+								return;
+							var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
+							var position = $(this).offset();
+							$('#txtDate6-input_'+n).show().width(1).height(1);
+							$('#txtDate6-input_'+n).datepicker({n:n
+							    ,onClose: function(dateText, inst) {
+							        $('#txtDate6_'+n).html(dateText);
+							        $('#txtDate6-input_'+n).hide();
+							    }
+							});
+						    $('#txtDate6-input_'+n).datepicker('show');
+						});
+						$('#txtDate7_'+i).click(function() {
+							if(!$(this).hasClass('edit'))
+								return;
+							var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
+							var position = $(this).offset();
+							$('#txtDate7-input_'+n).show().width(1).height(1);
+							$('#txtDate7-input_'+n).datepicker({n:n
+							    ,onClose: function(dateText, inst) {
+							        $('#txtDate7_'+n).html(dateText);
+							        $('#txtDate7-input_'+n).hide();
+							    }
+							});
+						    $('#txtDate7-input_'+n).datepicker('show');
+						});
+						$('#txtDate8_'+i).click(function() {
+							if(!$(this).hasClass('edit'))
+								return;
+							var n = $(this).attr('id').replace(/^(.*)_(\d+)$/,'$2');
+							var position = $(this).offset();
+							$('#txtDate8-input_'+n).show().width(1).height(1);
+							$('#txtDate8-input_'+n).datepicker({n:n
+							    ,onClose: function(dateText, inst) {
+							        $('#txtDate8_'+n).html(dateText);
+							        $('#txtDate8-input_'+n).hide();
+							    }
+							});
+						    $('#txtDate8-input_'+n).datepicker('show');
 						});
 						obj = $('.tData').find('tr').eq(i).find('td').eq(j).find('input[type="button"].btnDelete').eq(0);
 						obj.attr('id',obj.attr('id')+'_'+i);
@@ -329,15 +385,33 @@
 				goNextItem('txtCarno1','txtCardno1');
 				goNextItem('txtCardno1','txtYard1');
 				goNextItem('txtYard1','txtDate1');
-				goNextItem('txtDate1','txtCarno2');
+				goNextItem('txtDate1','txtCarno5');
+				
+				goNextItem('txtCarno5','txtCardno5');
+				goNextItem('txtCardno5','txtDate5');
+				goNextItem('txtDate5','txtCarno2');
+				
 				goNextItem('txtCarno2','txtCardno2');
 				goNextItem('txtCardno2','txtYard2');
 				goNextItem('txtYard2','txtDate2');
-				goNextItem('txtDate2','txtCarno3');
+				goNextItem('txtDate2','txtCarno6');
+				
+				goNextItem('txtCarno6','txtCardno6');
+				goNextItem('txtCardno6','txtDate6');
+				goNextItem('txtDate6','txtCarno7');
+				goNextItem('txtCarno7','txtCardno7');
+				goNextItem('txtCardno7','txtDate7');
+				goNextItem('txtDate7','txtCarno3');
+
 				goNextItem('txtCarno3','txtCardno3');
 				goNextItem('txtCardno3','txtYard3');
 				goNextItem('txtYard3','txtDate3');
-				goNextItem('txtDate3','txtCarno4');
+				goNextItem('txtDate3','txtCarno8');
+				
+				goNextItem('txtCarno8','txtCardno8');
+				goNextItem('txtCardno8','txtDate8');
+				goNextItem('txtDate8','txtCarno4');
+				
 				goNextItem('txtCarno4','txtCardno4');
 				goNextItem('txtCardno4','txtYard4');
 				goNextItem('txtYard4','txtDate4');
@@ -360,8 +434,9 @@
 					var ordeno = $.trim($('#textOrdeno').text());
 					var bdate = $.trim($('#txtBdate').text());
 					var edate = $.trim($('#txtEdate').text());
+					var relay = $.trim($('#cmbRelay').val());
 					Lock(1,{opacity:0});
-					loadCount(stype,cust,so,containerno,ordeno,bdate,edate);
+					loadCount(stype,cust,so,containerno,ordeno,bdate,edate,relay);
 				});
 				$('#txtCurpage').change(function(e){
 					$('#btnRefresh').click();
@@ -519,7 +594,7 @@
 					$('#btnSel_'+i).removeAttr('disabled');
 				}
 			}
-			function loadCount(stype,cust,so,containerno,ordeno,bdate,edate){
+			function loadCount(stype,cust,so,containerno,ordeno,bdate,edate,relay){
 				$.ajax({
 					stype:stype,
 					cust:cust,
@@ -528,11 +603,12 @@
 					ordeno:ordeno,
 					bdate:bdate,
 					edate:edate,
+					relay:relay,
 					totCount : 0,
                     url: 'tranvcce_at_getcount.aspx',
                     headers: { 'database': q_db },
                     type: 'POST',
-                    data: JSON.stringify({stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate}),
+                    data: JSON.stringify({stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate,relay:relay}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -553,7 +629,7 @@
 						$('#txtCurpage').val(curPage);
 						var nstr = (curPage-1) * _pageCount + 1;
 						var nend = curPage * _pageCount;
-                    	loadData(nstr,nend,this.stype,this.cust,this.so,this.containerno,this.ordeno,this.bdate,this.edate);                  
+                    	loadData(nstr,nend,this.stype,this.cust,this.so,this.containerno,this.ordeno,this.bdate,this.edate,this.relay);                  
                     },
                     error: function(jqXHR, exception) {
                         var errmsg = this.url+'資料讀取異常。\n';
@@ -575,12 +651,12 @@
                     }
                 });	
 			}
-			function loadData(nstr,nend,stype,cust,so,containerno,ordeno,bdate,edate){
+			function loadData(nstr,nend,stype,cust,so,containerno,ordeno,bdate,edate,relay){
 				$.ajax({
                     url: 'tranvcce_at_getdata.aspx',
                     headers: { 'database': q_db },
                     type: 'POST',
-                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate}),
+                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate,relay:relay}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -768,14 +844,25 @@
 		</style>
 	</head>
 	<body>
-		<div style="min-width:2000px;width: 2000px;height:40px;float:none;">
+		<div style="min-width:2300px;width: 2300px;height:40px;float:none;">
 			<div id='q_menu'></div>
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
-			<select id="cmbStype" style="float:left;width:80px;text-align: center;">
-				<option value="">全部</option>
-				<option value="進口">進口</option>
-				<option value="出口">出口</option>
-			</select>
+			<div style="display:block;width:160px;float:left;">
+				<span style="display:block;width:80px;float:left;text-align: center;">訂單類別：</span>
+				<select id="cmbStype" style="float:left;width:80px;text-align: center;">
+					<option value="">全部</option>
+					<option value="進口">進口</option>
+					<option value="出口">出口</option>
+				</select>
+			</div>
+			<div style="display:block;width:160px;float:left;">
+				<span style="display:block;width:80px;float:left;text-align: center;">中繼站：</span>
+				<select id="cmbRelay" style="float:left;width:80px;text-align: center;">
+					<option value="">全部</option>
+					<option value="0">無</option>
+					<option value="1">有</option>
+				</select>
+			</div>
 			<span style="display:block;width:10px;float:left;text-align: center;">&nbsp;</span>
 			<span style="display:block;width:50px;float:left;text-align: center;">貨主：</span>
 			<a id="textCust" style="float:left;width:100px;text-align: center;background-color: #EEFFEE;" contenteditable="true"></a>
@@ -807,7 +894,7 @@
 			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:3280px;width: 3280px;overflow-y:scroll;">
+		<div style="min-width:3960px;width: 3960px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -815,23 +902,38 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>日期</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>貨主</a></td>
 					<td align="center" style="width:190px; max-width:190px;color:black;"><a>起迄地點</a></td>
+					<td align="center" style="width:40px; max-width:40px;color:black;"><a>中繼站</a></td>
 					<td align="center" style="width:130px; max-width:130px;color:black;"><a title="Place of Receipt">領櫃地</a><br><a title="Place of Delivery">交櫃地</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>追蹤</a><br><a>S/O</a></td>		
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>船公司</a></td>	
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>品名</a><br><a>規格</a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a>櫃號</a></td>
 					<!--<td align="center" style="width:120px; max-width:120px;color:black;"><a>封條</a></td>-->
-					<td align="center" style="width:60px; max-width:60px;color:black;"><a>訂單櫃數</a></td>
+					<td align="center" style="width:60px; max-width:60px;color:black;"><a><a>訂單</a><br><a>櫃數</a></a></td>
 					<td align="center" style="width:40px; max-width:40px;color:black;"><a>指定</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(日期)</a><br></td>
+					
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(日期)</a><br></td>
+					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(日期)</a><br></td>
+					
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(日期)</a><br></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(日期)</a><br></td>
+					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(日期)</a><br></td>
+					
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(日期)</a><br></td>
+					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(日期)</a><br></td>
@@ -848,7 +950,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:3280px;width: 3280px;overflow-y:scroll;">
+		<div style="display:none;min-width:3960px;width: 3960px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -856,6 +958,7 @@
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtDatea" style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCust" class="readonly"></a></td>
 					<td align="center" style="width:190px; max-width:190px;color:black;"><a id="txtStraddrno" style="display:block;width:100%;height:20px;"></a><a id="txtStraddr" style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsrelay" /></td>
 					<td align="center" style="width:130px; max-width:130px;color:black;"><a id="txtPor" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtPod" class="readonly"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtVr" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
@@ -867,12 +970,26 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"style="display:block;width:100%;height:20px;"></a><a id="txtCardno1"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard1"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate1"style="display:block;width:90%;float:left;"></a><input id="txtDate1-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
+					
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno5"style="display:block;width:100%;height:20px;"></a><a id="txtCardno5"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate5"style="display:block;width:90%;float:left;"></a><input id="txtDate5-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
+					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno2"style="display:block;width:100%;height:20px;"></a><a id="txtCardno2"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard2"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate2"style="display:block;width:90%;float:left;"></a><input id="txtDate2-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
+					
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno6"style="display:block;width:100%;height:20px;"></a><a id="txtCardno6"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate6"style="display:block;width:90%;float:left;"></a><input id="txtDate6-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno7"style="display:block;width:100%;height:20px;"></a><a id="txtCardno7"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate7"style="display:block;width:90%;float:left;"></a><input id="txtDate7-input" style="float:left;display:none;width:1%;" class="date-input"/></td>		
+					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno3"style="display:block;width:100%;height:20px;"></a><a id="txtCardno3"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard3"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate3"style="display:block;width:90%;float:left;"></a><input id="txtDate3-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
+					
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno8"style="display:block;width:100%;height:20px;"></a><a id="txtCardno8"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate8"style="display:block;width:90%;float:left;"></a><input id="txtDate8-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
+					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno4"style="display:block;width:100%;height:20px;"></a><a id="txtCardno4"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard4"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate4"style="display:block;width:90%;float:left;"></a><input id="txtDate4-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
@@ -889,7 +1006,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:3280px;width: 3280px;height:800px;overflow-y:scroll;">
+		<div style="min-width:3960px;width: 3960px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>

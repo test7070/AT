@@ -11,6 +11,7 @@
         	public string ordeno;
             public string bdate;
             public string edate;
+            public string relay;
         }
         public class ParaOut
         {
@@ -44,7 +45,8 @@
                 	and (len(@containerno)=0 or charindex(@containerno,containerno1)>0 or charindex(@containerno,containerno2)>0)
 	                and (len(@ordeno)=0 or charindex(@ordeno,ordeno)>0)
                 	and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
-                	and (len(@edate)=0 or isnull(datea,'')<=@edate)";
+                	and (len(@edate)=0 or isnull(datea,'')<=@edate)
+                	and (len(@relay)=0 or (@relay='0' and isnull(isrelay,0)=0) or (@relay='1' and isnull(isrelay,0)=1))";
                 
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                 cmd.Parameters.AddWithValue("@stype", itemIn.stype);
@@ -54,6 +56,7 @@
                 cmd.Parameters.AddWithValue("@ordeno", itemIn.ordeno);
                 cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
                 cmd.Parameters.AddWithValue("@edate", itemIn.edate);
+                cmd.Parameters.AddWithValue("@relay", itemIn.relay);
                 adapter.SelectCommand = cmd;
                 adapter.Fill(tranvcce);
                 connSource.Close();

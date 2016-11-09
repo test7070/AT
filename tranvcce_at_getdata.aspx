@@ -13,6 +13,7 @@
         	public string ordeno;
             public string bdate;
             public string edate;
+            public string relay;
         }
         public class ParaOut
         {
@@ -39,6 +40,11 @@
             public string yard1,yard2,yard3,yard4;
             public string vr;
             public string date1,date2,date3,date4;
+            public string carno5,cardno5,date5;
+            public string carno6,cardno6,date6;
+            public string carno7,cardno7,date7;
+            public string carno8,cardno8,date8;
+            public bool isrelay;
         }
         public void Page_Load()
         {   
@@ -76,6 +82,11 @@
                     ,yard1,yard2,yard3,yard4
                     ,vr
                     ,date1,date2,date3,date4
+                    ,carno5,cardno5,date5
+                    ,carno6,cardno6,date6
+                    ,carno7,cardno7,date7
+                    ,carno8,cardno8,date8
+                    ,isrelay
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -89,6 +100,7 @@
 	                and (len(@ordeno)=0 or charindex(@ordeno,ordeno)>0)
 	                and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
 	                and (len(@edate)=0 or isnull(datea,'')<=@edate)
+	                and (len(@relay)=0 or (@relay='0' and isnull(isrelay,0)=0) or (@relay='1' and isnull(isrelay,0)=1))
                 )a
                 where a.recno between @nstr and @nend
                 
@@ -104,6 +116,7 @@
                 cmd.Parameters.AddWithValue("@ordeno", itemIn.ordeno);
                 cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
                 cmd.Parameters.AddWithValue("@edate", itemIn.edate);
+                cmd.Parameters.AddWithValue("@relay", itemIn.relay);
                 adapter.SelectCommand = cmd;
                 adapter.Fill(tranvcce);
                 connSource.Close();
@@ -163,6 +176,20 @@
                 tmp.date2 = System.DBNull.Value.Equals(r.ItemArray[46]) ? "" : (System.String)r.ItemArray[46];
                 tmp.date3 = System.DBNull.Value.Equals(r.ItemArray[47]) ? "" : (System.String)r.ItemArray[47];
                 tmp.date4 = System.DBNull.Value.Equals(r.ItemArray[48]) ? "" : (System.String)r.ItemArray[48];
+                
+                tmp.carno5 = System.DBNull.Value.Equals(r.ItemArray[49]) ? "" : (System.String)r.ItemArray[49];
+                tmp.cardno5 = System.DBNull.Value.Equals(r.ItemArray[50]) ? "" : (System.String)r.ItemArray[50];
+                tmp.date5 = System.DBNull.Value.Equals(r.ItemArray[51]) ? "" : (System.String)r.ItemArray[51];
+                tmp.carno6 = System.DBNull.Value.Equals(r.ItemArray[52]) ? "" : (System.String)r.ItemArray[52];
+                tmp.cardno6 = System.DBNull.Value.Equals(r.ItemArray[53]) ? "" : (System.String)r.ItemArray[53];
+                tmp.date6 = System.DBNull.Value.Equals(r.ItemArray[54]) ? "" : (System.String)r.ItemArray[54];
+                tmp.carno7 = System.DBNull.Value.Equals(r.ItemArray[55]) ? "" : (System.String)r.ItemArray[55];
+                tmp.cardno7 = System.DBNull.Value.Equals(r.ItemArray[56]) ? "" : (System.String)r.ItemArray[56];
+                tmp.date7 = System.DBNull.Value.Equals(r.ItemArray[57]) ? "" : (System.String)r.ItemArray[57];
+                tmp.carno8 = System.DBNull.Value.Equals(r.ItemArray[58]) ? "" : (System.String)r.ItemArray[58];
+                tmp.cardno8 = System.DBNull.Value.Equals(r.ItemArray[59]) ? "" : (System.String)r.ItemArray[59];
+                tmp.date8 = System.DBNull.Value.Equals(r.ItemArray[60]) ? "" : (System.String)r.ItemArray[60];
+                tmp.isrelay = System.DBNull.Value.Equals(r.ItemArray[61]) ? false : (System.Boolean)r.ItemArray[61];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));

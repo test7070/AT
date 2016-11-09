@@ -25,6 +25,11 @@
             public string yard1,yard2,yard3,yard4;
             public string vr;
             public string date1,date2,date3,date4;
+            public string carno5,cardno5,date5;
+            public string carno6,cardno6,date6;
+            public string carno7,cardno7,date7;
+            public string carno8,cardno8,date8;
+            public bool isrelay;
         }
         public class SendCommand
         { 
@@ -139,6 +144,11 @@
 	                    ,yard1=@yard1,yard2=@yard2,yard3=@yard3,yard4=@yard4
 	                    ,vr=@vr
 	                    ,date1=@date1,date2=@date2,date3=@date3,date4=@date4
+	                    ,carno5=@carno5,cardno5=@cardno5,date5=@date5
+	                    ,carno6=@carno6,cardno6=@cardno6,date6=@date6
+	                    ,carno7=@carno7,cardno7=@cardno7,date7=@date7
+	                    ,carno8=@carno8,cardno8=@cardno8,date8=@date8
+	                    ,isrelay=@isrelay
 	                     where seq=@seq and isnull(isdel,0)=0";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
@@ -177,6 +187,20 @@
                     cmd.Parameters.AddWithValue("@date2", itemIn.date2);
                     cmd.Parameters.AddWithValue("@date3", itemIn.date3);
                     cmd.Parameters.AddWithValue("@date4", itemIn.date4);
+                    
+                    cmd.Parameters.AddWithValue("@carno5", itemIn.carno5);
+                    cmd.Parameters.AddWithValue("@cardno5", itemIn.cardno5);
+                    cmd.Parameters.AddWithValue("@date5", itemIn.date5);
+                    cmd.Parameters.AddWithValue("@carno6", itemIn.carno6);
+                    cmd.Parameters.AddWithValue("@cardno6", itemIn.cardno6);
+                    cmd.Parameters.AddWithValue("@date6", itemIn.date6);
+                    cmd.Parameters.AddWithValue("@carno7", itemIn.carno7);
+                    cmd.Parameters.AddWithValue("@cardno7", itemIn.cardno7);
+                    cmd.Parameters.AddWithValue("@date7", itemIn.date7);
+                    cmd.Parameters.AddWithValue("@carno8", itemIn.carno8);
+                    cmd.Parameters.AddWithValue("@cardno8", itemIn.cardno8);
+                    cmd.Parameters.AddWithValue("@date8", itemIn.date8);
+                    cmd.Parameters.AddWithValue("@isrelay", itemIn.isrelay?1:0);
                     cmd.ExecuteNonQuery();
                     //--------------------------送資料給長輝--------------------------------------
                     bool isdelay = false;
