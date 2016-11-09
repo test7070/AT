@@ -60,6 +60,13 @@
             function mainPost() {
                 q_mask(bbmMask);
                 document.title='訂單作業(出口)';
+                q_cmbParse("combCasetype", ' ,20呎,40呎,HQ,冷凍櫃,平板櫃,開頂櫃');
+                $("#combCasetype").change(function(e){
+					if($(this)[0].selectedIndex!=0)
+						$('#txtCasetype').val($("#combCasetype").val());   
+					$(this)[0].selectedIndex = 0;              	
+                });
+                
                 $('#btnImport').click(function(e){
                 	t_noa = $.trim($('#txtNoa').val());
                 	t_custno = $.trim($('#txtCustno').val());
@@ -255,6 +262,7 @@
                     $('#txtStrdate').datepicker('destroy');
                     $('#txtDldate').datepicker('destroy');
                     $('#btnImport').attr('disabled','disabled');
+                    $("#combCasetype").attr('disabled','disabled');
                 } else {	
                     $('#txtDatea').datepicker();
                     $('#txtEtc').datepicker();
@@ -264,6 +272,7 @@
                     $('#txtStrdate').datepicker();
                     $('#txtDldate').datepicker();
                     $('#btnImport').removeAttr('disabled');
+                    $("#combCasetype").removeAttr('disabled');
                 }
             }
 
@@ -596,7 +605,10 @@
 					</tr>		
 					<tr>
 						<td><span> </span><a class="lbl">櫃型</a></td>
-						<td><input type="text" id="txtCasetype" class="txt c1"/></td>
+						<td>
+							<input type="text" id="txtCasetype" class="txt" style="width:88%;"/>
+							<select id="combCasetype" class="txt" style="width:12%;"> </select>
+						</td>
 						<td><span> </span><a class="lbl">櫃數</a></td>
 						<td><input id="txtMount"  type="text" class="txt c1 num"/></td>
 						<td><span> </span><a class="lbl">領櫃地</a></td>
