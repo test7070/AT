@@ -96,6 +96,9 @@
                     }, {/*10 [15]*/
                         type : '6',
                         name : 'caseno'
+                    }, {/*11 [16]*/
+                        type : '6',
+                        name : 'casetype'
                     }]
 				});
 				q_popAssign();

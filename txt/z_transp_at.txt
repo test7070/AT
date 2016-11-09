@@ -282,6 +282,7 @@ z_transp_at02:--z_transp_at02
 	declare @t_baddrno nvarchar(20) = case when '#non'=[13] then '' else [13] end
 	declare @t_eaddrno nvarchar(20) = case when '#non'=[14] then char(255) else [14] end
 	declare @t_caseno nvarchar(max)  = case when '#non'=[15] then '' else [15] end
+	declare @t_casetype nvarchar(max)  = case when '#non'=[16] then '' else [16] end
 ----------------------------------------------------------------------------------------------------
 	declare @tmp table(
 		sel int identity(1,1)
@@ -346,6 +347,7 @@ z_transp_at02:--z_transp_at02
 	and (len(@t_cardno)=0 or CHARINDEX(@t_cardno,a.cardno1)>0or CHARINDEX(@t_cardno,a.cardno2)>0or CHARINDEX(@t_cardno,a.cardno3)>0or CHARINDEX(@t_cardno,a.cardno4)>0)
 	and ISNULL(a.custno,'') between @t_bcustno and @t_ecustno
 	and (len(@t_calctype)=0 or @t_calctype=b.noa+b.noq)
+	and (len(@t_casetype)=0 or a.casetype=@t_casetype)
 	order by a.ordeaccy desc,a.ordeno desc,a.ordenoq
 	--and ISNULL(a.datea,'') between @t_btrandate and @t_etrandate
 	--以最後一個為主
