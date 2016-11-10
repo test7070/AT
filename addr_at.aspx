@@ -50,7 +50,8 @@
 				q_getFormat();
 				q_mask(bbmMask);
 				bbsMask = [['txtDatea', r_picd]];
-				q_cmbParse("cmbCustunit",' ,領,送,收,交,移,整趟','s');
+				//q_cmbParse("cmbCustunit",' ,領,送,收,交,移,整趟','s');
+				q_cmbParse("cmbCustunit",' ,領,轉送,送,移送,移收,收,轉收,交','s');
 				
 				$('#txtNoa').change(function(e) {
 					$(this).val($.trim($(this).val()).toUpperCase());
