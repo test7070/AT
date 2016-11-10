@@ -55,8 +55,9 @@ z_transp_at04:--z_transp_at04
 		,case when a.cstype='收' then a.trandate else '' end
 		,case when a.cstype='交' then a.trandate else '' end
 	from view_trans a
-	where isnull(a.trandate,'') between @t_btrandate and @t_etrandate
-	and isnull(a.datea,'') between @t_bdate and @t_edate
+	where isnull(a.trandate,'')<=@t_etrandate
+	--isnull(a.trandate,'') between @t_btrandate and @t_etrandate
+	--and isnull(a.datea,'') between @t_bdate and @t_edate
 	and isnull(a.custno,'') between @t_bcustno and @t_ecustno
 	and (len(@t_carno)=0 or a.carno=@t_carno)
 	and (len(@t_calctype)=0 or charindex(','+a.calctype+',',','+@t_calctype+',')>0)
@@ -99,6 +100,8 @@ z_transp_at04:--z_transp_at04
 		,MAX(date1),MAX(date2),MAX(date3),MAX(date4)
 	from @tmpa
 	group by custno,cust,straddrno,straddr,ordeno,caseno,calctype
+	
+	delete @tmp where not( isnull(datea,'') between @t_btrandate and @t_etrandate)
 	
 	update @tmp set calctype=ISNULL(b.typea,a.calctype)
 	from @tmp a
