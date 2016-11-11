@@ -331,6 +331,23 @@ z_transp_at02:--z_transp_at02
 		,carno4 nvarchar(20)
 		,cardno4 nvarchar(20)
 		,date4 nvarchar(20)
+		--轉送
+		,carno5 nvarchar(20)
+		,cardno5 nvarchar(20)
+		,date5 nvarchar(20)
+		--移送
+		,carno6 nvarchar(20)
+		,cardno6 nvarchar(20)
+		,date6 nvarchar(20)
+		--移收
+		,carno7 nvarchar(20)
+		,cardno7 nvarchar(20)
+		,date7 nvarchar(20)
+		--轉收
+		,carno8 nvarchar(20)
+		,cardno8 nvarchar(20)
+		,date8 nvarchar(20)
+		
 		--應收
 		,total float
 		--應付
@@ -342,11 +359,19 @@ z_transp_at02:--z_transp_at02
 	insert into @tmp(gno,ordeaccy,ordeno,ordenoq
 		,datea,custno,cust,straddrno,straddr,por,pod,ucr,vr,vocc,product,casetype,mount
 		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo
-		,date1,date2,date3,date4)
+		,date1,date2,date3,date4
+		,carno5,cardno5,date5
+		,carno6,cardno6,date6
+		,carno7,cardno7,date7
+		,carno8,cardno8,date8)
 	select '1',a.ordeaccy,a.ordeno,a.ordenoq
 		,a.datea,a.custno,a.cust,a.straddrno,a.straddr,a.por,a.pod,a.ucr,a.vr,a.vocc,a.product,a.casetype,a.mount
 		,containerno1,containerno2,carno1,cardno1,carno2,cardno2,carno3,cardno3,carno4,cardno4,memo
 		,isnull(a.date1,''),isnull(a.date2,''),isnull(a.date3,''),isnull(a.date4,'')
+		,carno5,cardno5,isnull(a.date5,'')
+		,carno6,cardno6,isnull(a.date6,'')
+		,carno7,cardno7,isnull(a.date7,'')
+		,carno8,cardno8,isnull(a.date8,'')
 	from tranvcce a
 	outer apply(select * from calctypes where typea=a.stype ) b
 	where isnull(a.isdel,0)=0
@@ -360,9 +385,14 @@ z_transp_at02:--z_transp_at02
 	order by a.ordeaccy desc,a.ordeno desc,a.ordenoq
 	--and ISNULL(a.datea,'') between @t_btrandate and @t_etrandate
 	--以最後一個為主
-	update @tmp set xdate = case when len(date4)>0 then date4 
+	update @tmp set xdate = case 
+		when len(date4)>0 then date4 
+		when len(date8)>0 then date8 
 		when len(date3)>0 then date3
+		when len(date7)>0 then date7 
+		when len(date6)>0 then date6 
 		when len(date2)>0 then date2
+		when len(date5)>0 then date5
 		when len(date1)>0 then date1
 		else '' end 
 		--else datea end 
@@ -398,18 +428,37 @@ z_transp_at02:--z_transp_at02
 		,carno1 a14
 		,cardno1 a15
 		,date1 a16
-		,carno2 a17
-		,cardno2 a18
-		,date2 a19
-		,carno3 a20
-		,cardno3 a21
-		,date3 a22
-		,carno4 a23
-		,cardno4 a24
-		,date4 a25
-		,dbo.getComma(total,-1) a26
-		,dbo.getComma(total2,-1) a27
-		,memo a28
+		
+		,carno5 a17
+		,cardno5 a18 
+		,date5  a19
+		
+		,carno2 a20
+		,cardno2 a21
+		,date2 a22
+		
+		,carno6 a23
+		,cardno6 a24
+		,date6 a25
+		,carno7 a26
+		,cardno7 a27
+		,date7 a28
+		
+		,carno3 a29
+		,cardno3 a30
+		,date3 a31
+		
+		,carno8 a32
+		,cardno8 a33
+		,date8 a34
+		
+		,carno4 a35
+		,cardno4 a36
+		,date4 a37
+		
+		,dbo.getComma(total,-1) a38
+		,dbo.getComma(total2,-1) a39
+		,memo a40
 	from @tmp order by gno,pno;
 
 z_transp_at01:--z_transp_at01
