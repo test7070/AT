@@ -21,7 +21,7 @@
             var q_readonly = ['txtNoa','txtWorker','txtWorker2','txtStype'];
             var q_readonlys = [];
             var q_readonlyt = [];
-            var bbmNum = [['txtMount',10,0,1]];
+            var bbmNum = [['txtMount',10,0,1],['txtPrice',10,0,1],['txtPrice1',10,0,1],['txtPrice2',10,0,1]];
             var bbsNum = [];
             var bbtNum = [];
             var bbmMask = [['txtDatea','999/99/99'],['txtStrdate','999/99/99'],['txtDldate','999/99/99'],['txtEtc','999/99/99'],['txtEta','999/99/99'],['txtEtd','999/99/99'],['txtRedate','999/99/99'],['txtEf','999/99/99']];
@@ -645,10 +645,16 @@
 						<td><input type="text" id="txtEf" class="txt c1"/></td>
 						<td><span> </span><a class="lbl">交櫃地</a></td>
 						<td><input type="text" id="txtEmpdock2" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">貨主運費</a></td>
+						<td><input type="text" id="txtPrice" class="txt c1 num"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="" class="lbl">承攬公司</a></td>
 						<td colspan="3"><input type="text" id="txtMemo2" class="txt c1"/></td>
+						<td><span> </span><a id="" class="lbl">108領</a></td>
+						<td><input type="text" id="txtPrice1" class="txt c1 num"/></td>
+						<td><span> </span><a id="" class="lbl">108交</a></td>
+						<td><input type="text" id="txtPrice2" class="txt c1 num"/></td>
 					</tr>
 					<tr>
 						<td><span> </span><a id="lblMemo" class="lbl"> </a></td>

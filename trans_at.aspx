@@ -100,7 +100,7 @@
                 $('#btnIns').val($('#btnIns').val() + "(F8)");
                 $('#btnOk').val($('#btnOk').val() + "(F9)");
                 q_mask(bbmMask);
-                q_cmbParse("cmbCstype", ' ,領,送,收,交,移,整趟');
+                q_cmbParse("cmbCstype", ' ,領,轉送,送,移送,移收,收,轉收,交,貨主運費');
 
                 if (q_getPara('sys.project').toUpperCase()=='VA') {
                     $('#lblPo').text('工程案號');

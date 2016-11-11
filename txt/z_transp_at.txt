@@ -30,39 +30,43 @@ z_transp_at04:--z_transp_at04
 		,straddr nvarchar(50)
 		,total float
 		,total2 float
+		,total3 float --貨主運費
 		,ordeno nvarchar(20)
 		,cstype nvarchar(20)
-		
-		,t1 int
-		,t2 int
-		,t3 int
-		,t4 int
+	
 		,date1 nvarchar(10)
 		,date2 nvarchar(10)
 		,date3 nvarchar(10)
 		,date4 nvarchar(10)
+		,date5 nvarchar(10)
+		,date6 nvarchar(10)
+		,date7 nvarchar(10)
+		,date8 nvarchar(10)
 	)
 		
-	insert into @tmpa(trandate,carno,custno,cust,caseno,calctype,straddrno,straddr,total,total2,ordeno,cstype
-		,t1,t2,t3,t4,date1,date2,date3,date4)
-	select a.trandate,a.carno,a.custno,a.nick,a.caseno,a.calctype,a.straddrno,a.straddr,a.total,a.total2,a.ordeno,a.cstype
-		,case when a.cstype='領' then 1 else 0 end
-		,case when a.cstype='送' then 1 else 0 end
-		,case when a.cstype='收' then 1 else 0 end
-		,case when a.cstype='交' then 1 else 0 end
+	insert into @tmpa(trandate,carno,custno,cust,caseno,calctype,straddrno,straddr,total,total2,total3
+		,ordeno,cstype
+		,date1,date5,date2,date6,date7,date3,date8,date4)
+	select a.trandate,a.carno,a.custno,a.nick,a.caseno,a.calctype,a.straddrno,a.straddr
+		,case a.cstype when '貨主運費' then 0 else a.total end
+		,a.total2
+		,case a.cstype when '貨主運費' then a.total else 0 end
+		,a.ordeno,a.cstype
 		,case when a.cstype='領' then a.trandate else '' end
+		,case when a.cstype='轉送' then a.trandate else '' end
 		,case when a.cstype='送' then a.trandate else '' end
+		,case when a.cstype='移送' then a.trandate else '' end
+		,case when a.cstype='移收' then a.trandate else '' end
 		,case when a.cstype='收' then a.trandate else '' end
+		,case when a.cstype='轉收' then a.trandate else '' end
 		,case when a.cstype='交' then a.trandate else '' end
 	from view_trans a
 	where isnull(a.trandate,'')<=@t_etrandate
-	--isnull(a.trandate,'') between @t_btrandate and @t_etrandate
-	--and isnull(a.datea,'') between @t_bdate and @t_edate
-	and isnull(a.custno,'') between @t_bcustno and @t_ecustno
-	and (len(@t_carno)=0 or a.carno=@t_carno)
-	and (len(@t_calctype)=0 or charindex(','+a.calctype+',',','+@t_calctype+',')>0)
 	and isnull(a.straddrno,'') between @t_baddrno and @t_eaddrno
-	and (len(@t_caseno)=0 or @t_caseno=a.caseno or @t_caseno=a.caseno2)
+	and isnull(a.custno,'') between @t_bcustno and @t_ecustno
+	and (len(@t_carno)=0 or a.carno=@t_carno or a.cstype='貨主運費')--貨主運費 不管車牌 一律顯示
+	and (len(@t_calctype)=0 or charindex(','+a.calctype+',',','+@t_calctype+',')>0)
+	and (len(@t_caseno)=0 or @t_caseno=a.caseno or @t_caseno=a.caseno2 or a.cstype='貨主運費')--貨主運費 不管caseno 一律顯示
 	
 	update @tmpa set ordeno = REPLACE(ordeno,'-'+cstype,'')
 -------------------------------------------------------------------------------------	
@@ -81,23 +85,25 @@ z_transp_at04:--z_transp_at04
 		,straddr nvarchar(50)
 		,total float
 		,total2 float
+		,total3 float
+		,result float
 		,ordeno nvarchar(20)
 		,cstype nvarchar(20)
 		
-		,t1 int
-		,t2 int
-		,t3 int
-		,t4 int
 		,date1 nvarchar(10)
 		,date2 nvarchar(10)
 		,date3 nvarchar(10)
 		,date4 nvarchar(10)
+		,date5 nvarchar(10)
+		,date6 nvarchar(10)
+		,date7 nvarchar(10)
+		,date8 nvarchar(10)
 	)
 	insert into @tmp(gno,datea,custno,cust,caseno,calctype,straddrno,straddr,ordeno
-		,total,total2,t1,t2,t3,t4,date1,date2,date3,date4)
+		,total,total2,total3,date1,date2,date3,date4,date5,date6,date7,date8)
 	select '1',MAX(trandate),custno,cust,caseno,calctype,straddrno,straddr,ordeno
-		,SUM(ISNULL(total,0)),SUM(ISNULL(total2,0)),SUM(ISNULL(t1,0)),SUM(ISNULL(t2,0)),SUM(ISNULL(t3,0)),SUM(ISNULL(t4,0))
-		,MAX(date1),MAX(date2),MAX(date3),MAX(date4)
+		,SUM(ISNULL(total,0)),SUM(ISNULL(total2,0)),SUM(ISNULL(total3,0))
+		,MAX(date1),MAX(date2),MAX(date3),MAX(date4),MAX(date5),MAX(date6),MAX(date7),MAX(date8)
 	from @tmpa
 	group by custno,cust,straddrno,straddr,ordeno,caseno,calctype
 	
@@ -107,31 +113,31 @@ z_transp_at04:--z_transp_at04
 	from @tmp a
 	left join calctypes b on a.calctype=b.noa+b.noq
 
-	insert into @tmp(gno,datea,total,total2)
-	select '2',char(255),SUM(ISNULL(total,0)),SUM(ISNULL(total2,0)) from @tmp
+	insert into @tmp(gno,datea,total,total2,total3)
+	select '2',char(255),SUM(ISNULL(total,0)),SUM(ISNULL(total2,0)),SUM(ISNULL(total3,0)) from @tmp
+	
+	update @tmp set result = ISNULL(total,0)+ISNULL(total3,0)
 	
 	select gno
 		,row_number()over(order by datea,sel) rr
-		,carno a01
+		,datea a01
 		,cust a02
 		,caseno a03
 		,calctype a04
 		,straddr a05
-		--,case when t1>0 then N'✓' else '' end a06
-		--,case when t2>0 then N'✓' else '' end a07
-		--,case when t3>0 then N'✓' else '' end a08
-		--,case when t4>0 then N'✓' else '' end a09
-		,case when t1>0 then N'V' else '' end a06
-		,case when t2>0 then N'V' else '' end a07
-		,case when t3>0 then N'V' else '' end a08
-		,case when t4>0 then N'V' else '' end a09
-		,dbo.getComma(total,-1) a10
-		,datea a11
-		,date1 a12
-		,date2 a13
-		,date3 a14
-		,date4 a15
-		,dbo.getComma(total2,-1) a16
+		
+		,date1 a06
+		,date5 a07
+		,date2 a08
+		,date6 a09
+		,date7 a10
+		,date3 a11
+		,date8 a12
+		,date4 a13
+		,dbo.getComma(total2,-1) a14 
+		,dbo.getComma(total,-1) a15 
+		,dbo.getComma(total3,-1) a16
+		,dbo.getComma(result,-1) a17
 	from @tmp a 
 	order by datea,sel;
 

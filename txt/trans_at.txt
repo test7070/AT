@@ -50,7 +50,8 @@
 		,date7 nvarchar(20)
 		,date8 nvarchar(20)
 		
-		--,price float --客戶單價
+		,price float --訂單外加運費
+		
 		,price1 float--領
 		,price2 float--送
 		,price3 float--收
@@ -114,6 +115,7 @@
 		and a.datea>=x.datea order by x.datea desc) b
 	where len(ISNULL(a.carno1,''))>0
 	
+	
 	update @tmp set price2=b.driverprice,price2a=b.custprice
 	from @tmp a
 	outer apply(select top 1 x.* from addrs x left join addr y on x.noa=y.noa 
@@ -169,8 +171,14 @@
 		--and y.productno=a.productno 
 		and a.datea>=x.datea order by x.datea desc) b
 	where len(ISNULL(a.carno8,''))>0
+	
+	
+	update @tmp set price = ISNULL(b.price,0)
+		,price1 = ISNULL(a.price1,0) + ISNULL(b.price1,0)
+		,price4 = ISNULL(a.price4,0) + ISNULL(b.price2,0)
+	from @tmp a
+	left join view_tranorde b on a.ordeno=b.noa 
 	--------------------------------------------------------------------------------------------
-
 
 	IF OBJECT_ID('tempdb..#tranvcce_trans')is not null
 	BEGIN
@@ -222,32 +230,33 @@
 	declare @carno6 nvarchar(20)
 	declare @carno7 nvarchar(20)
 	declare @carno8 nvarchar(20)
+	declare @price float
 		
 	declare cursor_table cursor for
-	select sel,carno1,carno2,carno3,carno4,carno5,carno6,carno7,carno8 from @tmp
+	select sel,carno1,carno2,carno3,carno4,carno5,carno6,carno7,carno8,price from @tmp
 	open cursor_table
 	fetch next from cursor_table
-	into @sel,@carno1,@carno2,@carno3,@carno4,@carno5,@carno6,@carno7,@carno8
+	into @sel,@carno1,@carno2,@carno3,@carno4,@carno5,@carno6,@carno7,@carno8,@price
 	while(@@FETCH_STATUS <> -1)
 	begin
-		----整趟
-		--if len(@carno1)>0
-		--begin
-		--	insert into #tranvcce_trans(cstype,datea,trandate,custno,cust
-		--		,straddrno,straddr,productno,product,carno,cardno
-		--		,inmount,pton,mount,price,total
-		--		,outmount,pton2,mount2,price2,price3,discount,total2
-		--		,caseno,caseno2,ordeno
-		--		,calctype,carteamno,stype)
-		--	select '整趟',datea,datea,custno,cust
-		--		,straddrno,straddr,productno,product,'',''
-		--		,1,0,1,price,price
-		--		,0,0,0,0,0,0,0
-		--		,caseno,caseno2,ordeno+'-'+ordenoq+'-整趟'
-		--		,case when stype='進口' then 'A01' else 'B01' end,'01',stype
-		--	from @tmp
-		--	where sel=@sel
-		--end
+		--貨主運費
+		if len(@carno1)>0
+		begin
+			insert into #tranvcce_trans(cstype,datea,trandate,custno,cust
+				,straddrno,straddr,productno,product,carno,cardno
+				,inmount,pton,mount,price,total
+				,outmount,pton2,mount2,price2,price3,discount,total2
+				,caseno,caseno2,ordeno
+				,calctype,carteamno,stype)
+			select '貨主運費',datea,datea,custno,cust
+				,straddrno,straddr,productno,product,'',''
+				,1,0,1,price,price
+				,0,0,0,0,0,0,0
+				,caseno,caseno2,ordeno+'-'+ordenoq+'-貨主運費'
+				,case when stype='進口' then 'A01' else 'B01' end,'01',stype
+			from @tmp
+			where sel=@sel
+		end
 		--領
 		if len(@carno1)>0
 		begin
@@ -418,7 +427,7 @@
 		end
 		
 		fetch next from cursor_table
-		into @sel,@carno1,@carno2,@carno3,@carno4,@carno5,@carno6,@carno7,@carno8
+		into @sel,@carno1,@carno2,@carno3,@carno4,@carno5,@carno6,@carno7,@carno8,@price
 	end
 	close cursor_table
 	deallocate cursor_table
