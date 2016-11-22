@@ -837,8 +837,8 @@
 					<tr>
 						<td><span> </span><a id="lblStraddr" class="lbl btn"> </a></td>
 						<td colspan="3">
-						<input id="txtStraddrno"  type="text" style="float:left;width:30%;"/>
-						<input id="txtStraddr"  type="text" style="float:left;width:70%;"/>
+						<input id="txtStraddrno"  type="text" style="float:left;width:50%;"/>
+						<input id="txtStraddr"  type="text" style="float:left;width:50%;"/>
 						</td>
 						<td><span> </span><a id="lblUcc" class="lbl btn"> </a></td>
 						<td colspan="3">
