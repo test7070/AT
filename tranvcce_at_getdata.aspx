@@ -45,6 +45,7 @@
             public string carno7,cardno7,date7;
             public string carno8,cardno8,date8;
             public bool isrelay;
+            public string yard5,yard6;
         }
         public void Page_Load()
         {   
@@ -86,7 +87,7 @@
                     ,carno6,cardno6,date6
                     ,carno7,cardno7,date7
                     ,carno8,cardno8,date8
-                    ,isrelay
+                    ,isrelay,yard5,yard6
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -190,6 +191,9 @@
                 tmp.cardno8 = System.DBNull.Value.Equals(r.ItemArray[59]) ? "" : (System.String)r.ItemArray[59];
                 tmp.date8 = System.DBNull.Value.Equals(r.ItemArray[60]) ? "" : (System.String)r.ItemArray[60];
                 tmp.isrelay = System.DBNull.Value.Equals(r.ItemArray[61]) ? false : (System.Boolean)r.ItemArray[61];
+                tmp.yard5 = System.DBNull.Value.Equals(r.ItemArray[62]) ? "" : (System.String)r.ItemArray[62];
+                tmp.yard6 = System.DBNull.Value.Equals(r.ItemArray[63]) ? "" : (System.String)r.ItemArray[63];
+                
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));

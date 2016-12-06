@@ -30,6 +30,7 @@
             public string carno7,cardno7,date7;
             public string carno8,cardno8,date8;
             public bool isrelay;
+            public string yard5,yard6;
         }
         public class SendCommand
         { 
@@ -142,6 +143,7 @@
 	                    ,memo=@memo,edittime=getDate(),isassign=@isassign
 	                    ,mount=@mount,seal1=@seal1,seal2=@seal2
 	                    ,yard1=@yard1,yard2=@yard2,yard3=@yard3,yard4=@yard4
+	                    ,yard5=@yard5,yard6=@yard6
 	                    ,vr=@vr
 	                    ,date1=@date1,date2=@date2,date3=@date3,date4=@date4
 	                    ,carno5=@carno5,cardno5=@cardno5,date5=@date5
@@ -182,6 +184,8 @@
                     cmd.Parameters.AddWithValue("@yard2", itemIn.yard2);
                     cmd.Parameters.AddWithValue("@yard3", itemIn.yard3);
                     cmd.Parameters.AddWithValue("@yard4", itemIn.yard4);
+                    cmd.Parameters.AddWithValue("@yard5", itemIn.yard5);
+                    cmd.Parameters.AddWithValue("@yard6", itemIn.yard6);
                     cmd.Parameters.AddWithValue("@vr", itemIn.vr);
                     cmd.Parameters.AddWithValue("@date1", itemIn.date1);
                     cmd.Parameters.AddWithValue("@date2", itemIn.date2);

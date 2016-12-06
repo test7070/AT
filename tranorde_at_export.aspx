@@ -60,7 +60,7 @@
             function mainPost() {
                 q_mask(bbmMask);
                 document.title='訂單作業(出口)';
-                q_cmbParse("combCasetype", ' ,20呎,40呎,HQ,20呎冷凍櫃,40呎冷凍櫃,平板櫃,開頂櫃');
+                q_cmbParse("combCasetype", ' ,20呎,40呎,40呎八半,40呎九半,20呎冷凍櫃,40呎冷凍櫃,平板櫃,開頂櫃');
                 $("#combCasetype").change(function(e){
 					if($(this)[0].selectedIndex!=0)
 						$('#txtCasetype').val($("#combCasetype").val());   

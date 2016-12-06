@@ -388,8 +388,10 @@
 				goNextItem('txtDate1','txtCarno5');
 				
 				goNextItem('txtCarno5','txtCardno5');
+				
 				goNextItem('txtCardno5','txtDate5');
-				goNextItem('txtDate5','txtCarno2');
+				goNextItem('txtDate5','txtYard5');
+				goNextItem('txtYard5','txtCarno2');
 				
 				goNextItem('txtCarno2','txtCardno2');
 				goNextItem('txtCardno2','txtYard2');
@@ -894,7 +896,7 @@
 			<input type='button' id='btnPrint' name='btnPrint' style='font-size:16px;float:left;' value='列印'/>
 			<input type='button' id='btnAuthority' name='btnAuthority' style='font-size:16px;float:left;' value='權限'/>
 		</div>
-		<div style="min-width:3960px;width: 3960px;overflow-y:scroll;">
+		<div style="min-width:4100px;width: 4100px;overflow-y:scroll;">
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
@@ -916,6 +918,7 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(日期)</a><br></td>
 					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(日期)</a><br></td>
 					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車牌)</a><br><a>　(板台)</a></td>
@@ -925,6 +928,7 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車牌)</a><br><a>　(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(日期)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(日期)</a><br></td>
 					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車牌)</a><br><a>　(板台)</a></td>
@@ -950,7 +954,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="display:none;min-width:3960px;width: 3960px;overflow-y:scroll;">
+		<div style="display:none;min-width:4100px;width: 4100px;overflow-y:scroll;">
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
@@ -972,6 +976,7 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate1"style="display:block;width:90%;float:left;"></a><input id="txtDate1-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
 					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno5"style="display:block;width:100%;height:20px;"></a><a id="txtCardno5"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard5"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate5"style="display:block;width:90%;float:left;"></a><input id="txtDate5-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
 					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno2"style="display:block;width:100%;height:20px;"></a><a id="txtCardno2"style="display:block;width:100%;height:20px;"class="field2"></a></td>
@@ -981,6 +986,7 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno6"style="display:block;width:100%;height:20px;"></a><a id="txtCardno6"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate6"style="display:block;width:90%;float:left;"></a><input id="txtDate6-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno7"style="display:block;width:100%;height:20px;"></a><a id="txtCardno7"style="display:block;width:100%;height:20px;"class="field2"></a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard6"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate7"style="display:block;width:90%;float:left;"></a><input id="txtDate7-input" style="float:left;display:none;width:1%;" class="date-input"/></td>		
 					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno3"style="display:block;width:100%;height:20px;"></a><a id="txtCardno3"style="display:block;width:100%;height:20px;"class="field2"></a></td>
@@ -1006,7 +1012,7 @@
 				</tr>
 			</table>
 		</div>
-		<div style="min-width:3960px;width: 3960px;height:800px;overflow-y:scroll;">
+		<div style="min-width:4100px;width: 4100px;height:800px;overflow-y:scroll;">
 			<table class="tData">
 			</table>
 		</div>
