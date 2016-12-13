@@ -917,7 +917,7 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>領(日期)</a><br></td>
 					
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車牌)</a><br><a>送(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(日期)</a><br></td>
 					
@@ -925,9 +925,9 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>送(日期)</a><br></td>
 					
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車牌)</a><br><a>送(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(日期)</a><br></td>
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車牌)</a><br><a>收(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>移(日期)</a><br></td>
 					
@@ -935,7 +935,7 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(車場)</a><br></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>收(日期)</a><br></td>
 					
-					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車牌)</a><br><a>　(板台)</a></td>
+					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(車牌)</a><br><a>收(板台)</a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>轉(日期)</a><br></td>
 					
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a>交(車牌)</a><br><a>　(板台)</a></td>

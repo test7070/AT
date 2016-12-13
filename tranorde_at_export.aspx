@@ -45,7 +45,8 @@
                 bbsKey = ['noa', 'noq'];
                 bbtKey = ['noa', 'noq'];
                 q_brwCount();
-                q_content = "where=^^stype='出口'^^";
+                if(q_content.length==0)
+                	q_content = "where=^^stype='出口'^^";
                 q_gt(q_name, q_content, q_sqlCount, 1, 0, '', r_accy);
             });
 
