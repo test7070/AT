@@ -117,6 +117,7 @@
 								else
 									q_box("tranorde_at_import.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";stype='進口' and noa='" + t_ordeno + "';" + r_accy, '', "95%", "95%", q_getMsg("popTranorde"));
 							}else if($(this).attr('id').indexOf('txtContainerno_car_')>=0){
+								//??
 								var n = $(this).attr('id').replace(/(txtContainerno_car_)(.*)/g,'$2');
 								var t_containerno = $('#txtContainerno_car_'+n).text();
 								q_box("tranvcce_at.aspx?" + r_userno + ";" + r_name + ";" + q_time + ";;" + r_accy+";"+t_containerno, '', "95%", "95%", q_getMsg("popTranorde"));
