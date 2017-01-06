@@ -112,6 +112,7 @@ tranorde_tranvcce:--tranorde_tranvcce
 				,vocc = @vocc
 				,por=@por
 				,pod=@pod
+				,product=@product
 			where ISNULL(isdel,0)=0 and len(isnull(edittime,''))>0 and ordeaccy=@ordeaccy and ordeno=@ordeno and ordenoq=@ordenoq
 		end 
 		else
