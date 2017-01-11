@@ -71,7 +71,9 @@
             {
                 System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
                 connSource.Open();
-                string queryString = @"select recno,seq,ordeaccy,ordeno,ordenoq,datea,custno,cust,straddrno,straddr,vocc,casetype
+                string queryString = @"
+                set @edate = case when LEN(@edate)=0 then CHAR(255) else @edate end
+                select recno,seq,ordeaccy,ordeno,ordenoq,datea,custno,cust,straddrno,straddr,vocc,casetype
 	                ,containerno1,containerno2
 	                ,carno1,cardno1,msg1
 	                ,carno2,cardno2,msg2
@@ -99,8 +101,15 @@
 	                and (len(@so)=0 or charindex(@so,ucr)>0 or charindex(@so,vr)>0)
 	                and (len(@containerno)=0 or charindex(@containerno,containerno1)>0 or charindex(@containerno,containerno2)>0)
 	                and (len(@ordeno)=0 or charindex(@ordeno,ordeno)>0)
-	                and (len(@bdate)=0 or isnull(datea,'')>=@bdate)
-	                and (len(@edate)=0 or isnull(datea,'')<=@edate)
+	                and (case when len(ISNULL(date4,''))>0 then date4  
+	when len(ISNULL(date8,''))>0 then date8 
+	when len(ISNULL(date3,''))>0 then date3
+	when len(ISNULL(date7,''))>0 then date7
+	when len(ISNULL(date6,''))>0 then date6
+	when len(ISNULL(date2,''))>0 then date2
+	when len(ISNULL(date5,''))>0 then date5
+	when len(ISNULL(date1,''))>0 then date1
+	else datea end) between @bdate and @edate
 	                and (len(@relay)=0 or (@relay='0' and isnull(isrelay,0)=0) or (@relay='1' and isnull(isrelay,0)=1))
                 )a
                 where a.recno between @nstr and @nend
