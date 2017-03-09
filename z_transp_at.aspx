@@ -99,6 +99,10 @@
                     }, {/*11 [16]*/
                         type : '6',
                         name : 'casetype'
+                    }, {/*12 [17]*/
+                        type : '8',
+                        name : 'xoption',
+                        value : ['0@公司','1@外車']
                     }]
 				});
 				q_popAssign();

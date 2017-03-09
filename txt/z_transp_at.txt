@@ -292,6 +292,7 @@ z_transp_at02:--z_transp_at02
 	declare @t_eaddrno nvarchar(20) = case when '#non'=[14] then char(255) else [14] end
 	declare @t_caseno nvarchar(max)  = case when '#non'=[15] then '' else [15] end
 	declare @t_casetype nvarchar(max)  = case when '#non'=[16] then '' else [16] end
+	declare @t_option nvarchar(max)  = case when '#non'=[17] then '' else [17] end
 ----------------------------------------------------------------------------------------------------
 	declare @tmp table(
 		sel int identity(1,1)
@@ -384,6 +385,77 @@ z_transp_at02:--z_transp_at02
 	and (len(@t_casetype)=0 or a.casetype=@t_casetype)
 	order by a.ordeaccy desc,a.ordeno desc,a.ordenoq
 	--and ISNULL(a.datea,'') between @t_btrandate and @t_etrandate
+	
+	declare @sel int
+	declare @carno1 nvarchar(20)
+	declare @carno2 nvarchar(20)
+	declare @carno3 nvarchar(20)
+	declare @carno4 nvarchar(20)
+	declare @carno5 nvarchar(20)
+	declare @carno6 nvarchar(20)
+	declare @carno7 nvarchar(20)
+	declare @carno8 nvarchar(20)
+	
+	if LEN(@t_option)>0 and not(CHARINDEX('0',@t_option)>0 and CHARINDEX('1',@t_option)>0)
+	begin
+		declare cursor_table cursor for
+		select sel,carno1,carno2,carno3,carno4,carno5,carno6,carno7,carno8 from @tmp 
+		open cursor_table
+		fetch next from cursor_table
+		into @sel,@carno1,@carno2,@carno3,@carno4,@carno5,@carno6,@carno7,@carno8
+		while(@@FETCH_STATUS <> -1)
+		begin
+			if CHARINDEX('0',@t_option)>0
+			begin
+				if not exists(
+				select carno from car2 where carno=@carno1 and cartype='2'
+				union all
+				select carno from car2 where carno=@carno2 and cartype='2'
+				union all
+				select carno from car2 where carno=@carno3 and cartype='2'
+				union all
+				select carno from car2 where carno=@carno4 and cartype='2'
+				union all
+				select carno from car2 where carno=@carno5 and cartype='2'
+				union all
+				select carno from car2 where carno=@carno6 and cartype='2'
+				union all
+				select carno from car2 where carno=@carno7 and cartype='2'
+				union all
+				select carno from car2 where carno=@carno8 and cartype='2')
+				begin
+					delete @tmp where sel=@sel
+				end
+			end
+			else if CHARINDEX('1',@t_option)>0
+			begin
+				if not exists(
+				select carno from car2 where carno=@carno1 and cartype!='2'
+				union all
+				select carno from car2 where carno=@carno2 and cartype!='2'
+				union all
+				select carno from car2 where carno=@carno3 and cartype!='2'
+				union all
+				select carno from car2 where carno=@carno4 and cartype!='2'
+				union all
+				select carno from car2 where carno=@carno5 and cartype!='2'
+				union all
+				select carno from car2 where carno=@carno6 and cartype!='2'
+				union all
+				select carno from car2 where carno=@carno7 and cartype!='2'
+				union all
+				select carno from car2 where carno=@carno8 and cartype!='2')
+				begin
+					delete @tmp where sel=@sel
+				end
+			end
+			
+			fetch next from cursor_table
+			into @sel,@carno1,@carno2,@carno3,@carno4,@carno5,@carno6,@carno7,@carno8
+		end
+		close cursor_table
+		deallocate cursor_table
+	end
 	--以最後一個為主
 	update @tmp set xdate = case 
 		when len(date4)>0 then date4 
@@ -479,6 +551,8 @@ z_transp_at01:--z_transp_at01
 	declare @t_baddrno nvarchar(20) = case when '#non'=[13] then '' else [13] end
 	declare @t_eaddrno nvarchar(20) = case when '#non'=[14] then char(255) else [14] end
 	declare @t_caseno nvarchar(max)  = case when '#non'=[15] then '' else [15] end
+	declare @t_casetype nvarchar(max)  = case when '#non'=[16] then '' else [16] end
+	declare @t_option nvarchar(max)  = case when '#non'=[17] then '' else [17] end
 	---------------------------------------------------------------------
 	IF OBJECT_ID('tempdb..#z_transp_at01')is not null
 	BEGIN
@@ -539,6 +613,14 @@ z_transp_at01:--z_transp_at01
 	and (len(@t_calctype)=0 or CHARINDEX(','+a.calctype+',',','+@t_calctype+',')>0)
 	and ISNULL(a.straddrno,'') between @t_baddrno and @t_eaddrno
 	and (len(@t_caseno)=0 or CHARINDEX(','+a.caseno+',',','+@t_caseno+',')>0 or CHARINDEX(','+a.caseno2+',',','+@t_caseno+',')>0)
+	
+	if len(@t_option)>0
+	begin
+		delete #z_transp_at01
+		from #z_transp_at01 a
+		left join car2 b on a.carno=b.carno
+		where not( (CHARINDEX('0',@t_option)>0 and b.cartype='2') or (CHARINDEX('1',@t_option)>0 and b.cartype!='2'))
+	end
 	
 	update #z_transp_at01 set recno=b.recno
 	from #z_transp_at01 a
