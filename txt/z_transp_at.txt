@@ -386,6 +386,29 @@ z_transp_at02:--z_transp_at02
 	order by a.ordeaccy desc,a.ordeno desc,a.ordenoq
 	--and ISNULL(a.datea,'') between @t_btrandate and @t_etrandate
 	
+	--2017/03/10  改回判斷全部日期
+	----以最後一個為主
+	--update @tmp set xdate = case 
+	--	when len(date4)>0 then date4 
+	--	when len(date8)>0 then date8 
+	--	when len(date3)>0 then date3
+	--	when len(date7)>0 then date7 
+	--	when len(date6)>0 then date6 
+	--	when len(date2)>0 then date2
+	--	when len(date5)>0 then date5
+	--	when len(date1)>0 then date1
+	--	else '' end 
+	--delete @tmp where not( ISNULL(xdate,'') between @t_btrandate and @t_etrandate)
+	
+	delete @tmp where not (ISNULL(date1,'') between @t_btrandate and @t_etrandate
+		or ISNULL(date2,'') between @t_btrandate and @t_etrandate
+		or ISNULL(date3,'') between @t_btrandate and @t_etrandate
+		or ISNULL(date4,'') between @t_btrandate and @t_etrandate
+		or ISNULL(date5,'') between @t_btrandate and @t_etrandate
+		or ISNULL(date6,'') between @t_btrandate and @t_etrandate
+		or ISNULL(date7,'') between @t_btrandate and @t_etrandate
+		or ISNULL(date8,'') between @t_btrandate and @t_etrandate)
+	
 	declare @sel int
 	declare @carno1 nvarchar(20)
 	declare @carno2 nvarchar(20)
@@ -456,20 +479,6 @@ z_transp_at02:--z_transp_at02
 		close cursor_table
 		deallocate cursor_table
 	end
-	--以最後一個為主
-	update @tmp set xdate = case 
-		when len(date4)>0 then date4 
-		when len(date8)>0 then date8 
-		when len(date3)>0 then date3
-		when len(date7)>0 then date7 
-		when len(date6)>0 then date6 
-		when len(date2)>0 then date2
-		when len(date5)>0 then date5
-		when len(date1)>0 then date1
-		else '' end 
-		--else datea end 
-		
-	delete @tmp where not( ISNULL(xdate,'') between @t_btrandate and @t_etrandate)
 	
 	update @tmp set pno=b.recno
 	from @tmp a
