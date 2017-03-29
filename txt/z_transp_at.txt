@@ -33,6 +33,8 @@ z_transp_at04:--z_transp_at04
 		,total3 float --貨主運費
 		,ordeno nvarchar(20)
 		,cstype nvarchar(20)
+		,port2 nvarchar(20) --領櫃地
+		,empdock2 nvarchar(20) --交櫃地
 	
 		,date1 nvarchar(10)
 		,date2 nvarchar(10)
@@ -45,13 +47,13 @@ z_transp_at04:--z_transp_at04
 	)
 		
 	insert into @tmpa(trandate,carno,custno,cust,caseno,calctype,straddrno,straddr,total,total2,total3
-		,ordeno,cstype
+		,ordeno,cstype,port2,empdock2
 		,date1,date5,date2,date6,date7,date3,date8,date4)
 	select a.trandate,a.carno,a.custno,a.nick,a.caseno,a.calctype,a.straddrno,a.straddr
 		,case a.cstype when '貨主運費' then 0 else a.total end
 		,a.total2
 		,case a.cstype when '貨主運費' then a.total else 0 end
-		,a.ordeno,a.cstype
+		,a.ordeno,a.cstype,b.port2,b.empdock2
 		,case when a.cstype='領' then a.trandate else '' end
 		,case when a.cstype='轉送' then a.trandate else '' end
 		,case when a.cstype='送' then a.trandate else '' end
@@ -61,6 +63,7 @@ z_transp_at04:--z_transp_at04
 		,case when a.cstype='轉收' then a.trandate else '' end
 		,case when a.cstype='交' then a.trandate else '' end
 	from view_trans a
+	left join view_tranorde b on left(a.ordeno,12)=b.noa
 	where isnull(a.trandate,'')<=@t_etrandate
 	and isnull(a.straddrno,'') between @t_baddrno and @t_eaddrno
 	and isnull(a.custno,'') between @t_bcustno and @t_ecustno
@@ -89,6 +92,8 @@ z_transp_at04:--z_transp_at04
 		,result float
 		,ordeno nvarchar(20)
 		,cstype nvarchar(20)
+		,port2 nvarchar(20) --領櫃地
+		,empdock2 nvarchar(20) --交櫃地
 		
 		,date1 nvarchar(10)
 		,date2 nvarchar(10)
@@ -99,13 +104,13 @@ z_transp_at04:--z_transp_at04
 		,date7 nvarchar(10)
 		,date8 nvarchar(10)
 	)
-	insert into @tmp(gno,datea,custno,cust,caseno,calctype,straddrno,straddr,ordeno
+	insert into @tmp(gno,datea,custno,cust,caseno,calctype,straddrno,straddr,ordeno,port2,empdock2
 		,total,total2,total3,date1,date2,date3,date4,date5,date6,date7,date8)
-	select '1',MAX(trandate),custno,cust,caseno,calctype,straddrno,straddr,ordeno
+	select '1',MAX(trandate),custno,cust,caseno,calctype,straddrno,straddr,ordeno,port2,empdock2
 		,SUM(ISNULL(total,0)),SUM(ISNULL(total2,0)),SUM(ISNULL(total3,0))
 		,MAX(date1),MAX(date2),MAX(date3),MAX(date4),MAX(date5),MAX(date6),MAX(date7),MAX(date8)
 	from @tmpa
-	group by custno,cust,straddrno,straddr,ordeno,caseno,calctype
+	group by custno,cust,straddrno,straddr,ordeno,caseno,calctype,port2,empdock2
 	
 	delete @tmp where not( isnull(datea,'') between @t_btrandate and @t_etrandate)
 	
@@ -138,9 +143,10 @@ z_transp_at04:--z_transp_at04
 		,dbo.getComma(total,-1) a15 
 		,dbo.getComma(total3,-1) a16
 		,dbo.getComma(result,-1) a17
+		,port2 a18
+		,empdock2 a19
 	from @tmp a 
 	order by datea,sel;
-
 z_transp_at03:--z_transp_at03
 	SET QUOTED_IDENTIFIER OFF
 	
