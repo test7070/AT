@@ -31,7 +31,7 @@ z_transp_at04:--z_transp_at04
 		,total float
 		,total2 float
 		,total3 float --貨主運費
-		,ordeno nvarchar(20)
+		,ordeno nvarchar(30)
 		,cstype nvarchar(20)
 		,port2 nvarchar(20) --領櫃地
 		,empdock2 nvarchar(20) --交櫃地
@@ -73,7 +73,7 @@ z_transp_at04:--z_transp_at04
 	
 	update @tmpa set ordeno = REPLACE(ordeno,'-'+cstype,'')
 -------------------------------------------------------------------------------------	
-	declare @ordeno nvarchar(20)
+	declare @ordeno nvarchar(30)
 	
 	declare @tmp table(
 		sel int identity(1,1)
@@ -90,7 +90,7 @@ z_transp_at04:--z_transp_at04
 		,total2 float
 		,total3 float
 		,result float
-		,ordeno nvarchar(20)
+		,ordeno nvarchar(30)
 		,cstype nvarchar(20)
 		,port2 nvarchar(20) --領櫃地
 		,empdock2 nvarchar(20) --交櫃地
@@ -178,7 +178,7 @@ z_transp_at03:--z_transp_at03
 		,straddrno nvarchar(20)
 		,straddr nvarchar(50)
 		,total float
-		,ordeno nvarchar(20)
+		,ordeno nvarchar(30)
 		,cstype nvarchar(20)
 		
 		,t1 int
@@ -214,7 +214,7 @@ z_transp_at03:--z_transp_at03
 	
 	update @tmpa set ordeno = REPLACE(ordeno,'-'+cstype,'')
 -------------------------------------------------------------------------------------	
-	declare @ordeno nvarchar(20)
+	declare @ordeno nvarchar(30)
 	
 	declare @tmp table(
 		sel int identity(1,1)
@@ -228,7 +228,7 @@ z_transp_at03:--z_transp_at03
 		,straddrno nvarchar(20)
 		,straddr nvarchar(50)
 		,total float
-		,ordeno nvarchar(20)
+		,ordeno nvarchar(30)
 		,cstype nvarchar(20)
 		
 		,t1 int
@@ -305,7 +305,7 @@ z_transp_at02:--z_transp_at02
 		,gno nvarchar(10)
 		,pno int
 		,ordeaccy nvarchar(10)
-		,ordeno nvarchar(20)
+		,ordeno nvarchar(30)
 		,ordenoq nvarchar(10)
 		,datea nvarchar(10)
 		,custno nvarchar(20)
