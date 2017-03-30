@@ -211,11 +211,11 @@
 		,price2 float
 		,price3 float
 		,discount float
-		,total2 float
+		,total2 float 
 		
 		,caseno nvarchar(20)
 		,caseno2 nvarchar(20)
-		,ordeno nvarchar(20)
+		,ordeno nvarchar(30)
 		,cstype nvarchar(20)
 		,calctype nvarchar(20)
 		,carteamno nvarchar(20)
