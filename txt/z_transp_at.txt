@@ -180,29 +180,33 @@ z_transp_at03:--z_transp_at03
 		,total float
 		,ordeno nvarchar(30)
 		,cstype nvarchar(20)
+		,port2 nvarchar(20) --領櫃地
+		,empdock2 nvarchar(20) --交櫃地
 		
-		,t1 int
-		,t2 int
-		,t3 int
-		,t4 int
 		,date1 nvarchar(10)
 		,date2 nvarchar(10)
 		,date3 nvarchar(10)
 		,date4 nvarchar(10)
+		,date5 nvarchar(10)
+		,date6 nvarchar(10)
+		,date7 nvarchar(10)
+		,date8 nvarchar(10)
 	)
 		
 	insert into @tmpa(trandate,carno,custno,cust,caseno,calctype,straddrno,straddr,total,ordeno,cstype
-		,t1,t2,t3,t4,date1,date2,date3,date4)
+		,port2,empdock2,date1,date5,date2,date6,date7,date3,date8,date4)
 	select a.trandate,a.carno,a.custno,a.nick,a.caseno,a.calctype,a.straddrno,a.straddr,a.total2,a.ordeno,a.cstype
-		,case when a.cstype='領' then 1 else 0 end
-		,case when a.cstype='送' then 1 else 0 end
-		,case when a.cstype='收' then 1 else 0 end
-		,case when a.cstype='交' then 1 else 0 end
+		,b.port2,b.empdock2
 		,case when a.cstype='領' then a.trandate else '' end
+		,case when a.cstype='轉送' then a.trandate else '' end
 		,case when a.cstype='送' then a.trandate else '' end
+		,case when a.cstype='移送' then a.trandate else '' end
+		,case when a.cstype='移收' then a.trandate else '' end
 		,case when a.cstype='收' then a.trandate else '' end
+		,case when a.cstype='轉收' then a.trandate else '' end
 		,case when a.cstype='交' then a.trandate else '' end
 	from view_trans a
+	left join view_tranorde b on left(a.ordeno,12)=b.noa
 	where len(ISNULL(a.carno,''))>0
 	and isnull(a.trandate,'') between @t_btrandate and @t_etrandate
 	and isnull(a.datea,'') between @t_bdate and @t_edate
@@ -231,22 +235,24 @@ z_transp_at03:--z_transp_at03
 		,ordeno nvarchar(30)
 		,cstype nvarchar(20)
 		
-		,t1 int
-		,t2 int
-		,t3 int
-		,t4 int
+		,port2 nvarchar(20) --領櫃地
+		,empdock2 nvarchar(20) --交櫃地
+		
 		,date1 nvarchar(10)
 		,date2 nvarchar(10)
 		,date3 nvarchar(10)
 		,date4 nvarchar(10)
+		,date5 nvarchar(10)
+		,date6 nvarchar(10)
+		,date7 nvarchar(10)
+		,date8 nvarchar(10)
 	)
 	insert into @tmp(gno,carno,datea,custno,cust,caseno,calctype,straddrno,straddr,ordeno
-		,total,t1,t2,t3,t4,date1,date2,date3,date4)
+		,total,port2,empdock2,date1,date2,date3,date4,date5,date6,date7,date8)
 	select '1',carno,MAX(trandate),custno,cust,caseno,calctype,straddrno,straddr,ordeno
-		,SUM(ISNULL(total,0)),SUM(ISNULL(t1,0)),SUM(ISNULL(t2,0)),SUM(ISNULL(t3,0)),SUM(ISNULL(t4,0))
-		,MAX(date1),MAX(date2),MAX(date3),MAX(date4)
+		,SUM(ISNULL(total,0)),port2,empdock2,MAX(date1),MAX(date2),MAX(date3),MAX(date4),MAX(date5),MAX(date6),MAX(date7),MAX(date8)
 	from @tmpa
-	group by carno,custno,cust,caseno,calctype,straddrno,straddr,ordeno
+	group by carno,custno,cust,caseno,calctype,straddrno,straddr,ordeno,port2,empdock2
 	
 	update @tmp set calctype=ISNULL(b.typea,a.calctype)
 	from @tmp a
@@ -266,16 +272,22 @@ z_transp_at03:--z_transp_at03
 		--,case when t2>0 then N'✓' else '' end a07
 		--,case when t3>0 then N'✓' else '' end a08
 		--,case when t4>0 then N'✓' else '' end a09
-		,case when t1>0 then N'V' else '' end a06
-		,case when t2>0 then N'V' else '' end a07
-		,case when t3>0 then N'V' else '' end a08
-		,case when t4>0 then N'V' else '' end a09
+		--,case when t1>0 then N'V' else '' end a06
+		--,case when t2>0 then N'V' else '' end a07
+		--,case when t3>0 then N'V' else '' end a08
+		--,case when t4>0 then N'V' else '' end a09
 		,dbo.getComma(total,-1) a10
 		,datea a11
 		,date1 a12
-		,date2 a13
-		,date3 a14
-		,date4 a15
+		,date5 a13
+		,date2 a14
+		,date6 a15
+		,date7 a16
+		,date3 a17
+		,date8 a18
+		,date4 a19
+		,port2 a20
+		,empdock2 a21
 	from @tmp a 
 	order by datea,sel;
 
