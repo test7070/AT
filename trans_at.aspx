@@ -108,9 +108,6 @@
                     $('#cmbCstype').hide();
                     $('#lblPton2').text('司機補津貼');
                 }
-                if (q_getPara('sys.project').toUpperCase() == 'AT' || q_getPara('sys.project').toUpperCase() == 'YP') {
-                    $('#btnImport').show();
-                }
 
                 var t_carteam = '';
                 for (var i = 0; i < z_carteam.length; i++) {
@@ -831,7 +828,7 @@
 						<td><select id="cmbCstype" class="txt c1"></select></td>
 						<td></td>
 						<td>
-						<input id="btnImport" type="button" value="派車匯入" style="display:none;"/>
+						<input id="btnImport" type="button" value="派車匯入"/>
 						</td>
 					</tr>
 					<tr>
