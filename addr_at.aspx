@@ -50,8 +50,19 @@
 				q_getFormat();
 				q_mask(bbmMask);
 				bbsMask = [['txtDatea', r_picd]];
-				//q_cmbParse("cmbCustunit",' ,領,送,收,交,移,整趟','s');
-				q_cmbParse("cmbCustunit",' ,領,轉送,送,移送,移收,收,轉收,交','s');
+				
+				var t_custunit = '';
+				switch(q_getPara('sys.project').toUpperCase()){
+					case 'AT':
+						t_custunit = '領,轉送,送,移送,移收,收,轉收,交'.split(',');
+						break;
+					default:
+						t_custunit = '領,送,收,交'.split(',');
+						break;
+				}
+				for(var i=0;i<t_custunit.length;i++){
+					$('#listCustunit').append('<option value="'+t_custunit[i]+'"></option>');
+				}
 				
 				$('#txtNoa').change(function(e) {
 					$(this).val($.trim($(this).val()).toUpperCase());
@@ -134,6 +145,13 @@
 				for (var i = 0; i < q_bbsCount; i++) {
 				}
 				_bbsAssign();
+				switch(q_getPara('sys.project').toUpperCase()){
+					case 'AT':
+						$('.AT_show').show();
+						break;
+					default:
+						break;
+				}
 			}
 			function btnIns() {
 				_btnIns();
@@ -405,7 +423,7 @@
                     <td align="center" style="width:60px;">作業</td>
                     <td align="center" style="width:80px;"><a id='lblCustprice_s'> </a></td>
                     <td align="center" style="width:80px;"><a id='lblDriverprice_s'> </a></td>
-                    <td align="center" style="width:80px;"><a id='lblDriverprice2_s'> </a></td>
+                    <td align="center" style="width:80px;display:none;" class="AT_show"><a id='lblDriverprice2_s'> </a></td>
                     <td align="center" style="width:150px;"><a id='lblMemo_s'> </a></td>
                 </tr>
                 <tr  style='background:#cad3ff;'>
@@ -414,14 +432,14 @@
                     <input id="txtNoq.*" type="text" style="display: none;" />
                     </td>
                     <td ><input type="text" id="txtDatea.*" style="width:95%;" /></td>
-                    <td ><select id="cmbCustunit.*" style="width:95%;"></select></td>
+                    <td ><input type="text" id="txtCustunit.*" list="listCustunit" style="width:95%;" /></td>
                     <td >
                     <input type="text" id="txtCustprice.*" style="width:95%;text-align:right;" />
                     </td>
                     <td >
                     <input type="text" id="txtDriverprice.*" style="width:95%;text-align:right;" />
                     </td>
-                    <td >
+                    <td style="display:none;" class="AT_show">
                     <input type="text" id="txtDriverprice2.*" style="width:95%;text-align:right;" />
                     </td>
                     <td >
@@ -431,5 +449,6 @@
             </table>
         </div>
         <input id="q_sys" type="hidden" />
+        <datalist id="listCustunit"> </datalist>
     </body>
 </html>
