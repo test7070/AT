@@ -99,6 +99,7 @@
 	left join view_tranorde b on a.ordeno=b.noa
 	where a.datea between @t_bdate and @t_edate
 	and (len(@t_custno)=0 or a.custno=@t_custno)
+	and a.containerno1='SKLU1635420'
 	
 	--update @tmp set price=b.custprice
 	--from @tmp a
@@ -171,7 +172,8 @@
 		--and y.productno=a.productno 
 		and a.datea>=x.datea order by x.datea desc) b
 	where len(ISNULL(a.carno8,''))>0
-	
+
+
 	
 	update @tmp set price = ISNULL(b.price,0)
 		,price1 = ISNULL(a.price1,0) + ISNULL(b.price1,0)
@@ -354,7 +356,7 @@
 				,case when len(date5)>0 then date5 else datea end
 				,case when len(date5)>0 then date5 else datea end
 				,custno,cust
-				,straddrno,straddr,productno,product,carno4,cardno4
+				,straddrno,straddr,productno,product,carno5,cardno5
 				,1,0,1,price5a,price5a
 				,1,0,1,price5,0,0,price5
 				,caseno,caseno2,ordeno+'-'+ordenoq+'-轉送'
@@ -375,7 +377,7 @@
 				,case when len(date6)>0 then date6 else datea end
 				,case when len(date6)>0 then date6 else datea end
 				,custno,cust
-				,straddrno,straddr,productno,product,carno4,cardno4
+				,straddrno,straddr,productno,product,carno6,cardno6
 				,1,0,1,price6a,price6a
 				,1,0,1,price6,0,0,price6
 				,caseno,caseno2,ordeno+'-'+ordenoq+'-移送'
@@ -396,7 +398,7 @@
 				,case when len(date7)>0 then date7 else datea end
 				,case when len(date7)>0 then date7 else datea end
 				,custno,cust
-				,straddrno,straddr,productno,product,carno4,cardno4
+				,straddrno,straddr,productno,product,carno7,cardno7
 				,1,0,1,price7a,price7a
 				,1,0,1,price7,0,0,price7
 				,caseno,caseno2,ordeno+'-'+ordenoq+'-移收'
@@ -415,11 +417,11 @@
 				,calctype,carteamno,stype)
 			select '轉收'
 				,case when len(date8)>0 then date8 else datea end
-				,case when len(date7)>0 then date7 else datea end
+				,case when len(date8)>0 then date8 else datea end
 				,custno,cust
-				,straddrno,straddr,productno,product,carno4,cardno4
-				,1,0,1,price7a,price7a
-				,1,0,1,price7,0,0,price7
+				,straddrno,straddr,productno,product,carno8,cardno8
+				,1,0,1,price8a,price8a
+				,1,0,1,price8,0,0,price8
 				,caseno,caseno2,ordeno+'-'+ordenoq+'-轉收'
 				,case when stype='進口' then 'A01' else 'B01' end,'01',stype
 			from @tmp
