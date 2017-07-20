@@ -99,7 +99,7 @@
 	left join view_tranorde b on a.ordeno=b.noa
 	where a.datea between @t_bdate and @t_edate
 	and (len(@t_custno)=0 or a.custno=@t_custno)
-	and a.containerno1='SKLU1635420'
+--	and a.containerno1='SKLU1635420'
 	
 	--update @tmp set price=b.custprice
 	--from @tmp a
