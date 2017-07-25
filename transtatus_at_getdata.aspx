@@ -20,7 +20,7 @@
         {
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             //連接字串      
-            string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=" + HttpUtility.UrlDecode(Request.Headers["database"]);
+            string DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=DC";
 
             // action: car、card、yard
             //string action = Request.QueryString["action"];
@@ -149,7 +149,10 @@
 	from @tmp a
 	left join tranvcce b on a.seq=b.seq
 	where a.seq!=-1
-
+	
+	--太久的不顯示
+	delete @tmp where DATEDIFF(DD,GETDATE(),dbo.ChineseEraName2AD(datea))<-31
+	
 	select * from @tmp where seq!=-1";
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                 adapter.SelectCommand = cmd;
