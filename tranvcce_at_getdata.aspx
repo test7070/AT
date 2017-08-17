@@ -14,6 +14,7 @@
             public string bdate;
             public string edate;
             public string relay;
+            public string finish;
         }
         public class ParaOut
         {
@@ -46,6 +47,7 @@
             public string carno8,cardno8,date8;
             public bool isrelay;
             public string yard5,yard6;
+            public bool isfinish;
         }
         public void Page_Load()
         {   
@@ -89,7 +91,7 @@
                     ,carno6,cardno6,date6
                     ,carno7,cardno7,date7
                     ,carno8,cardno8,date8
-                    ,isrelay,yard5,yard6
+                    ,isrelay,yard5,yard6,isfinish
                 from(
 	                select ROW_NUMBER()over(order by ordeaccy desc,ordeno desc,ordenoq) recno
 	                ,*
@@ -111,6 +113,7 @@
 	when len(ISNULL(date1,''))>0 then date1
 	else datea end) between @bdate and @edate
 	                and (len(@relay)=0 or (@relay='0' and isnull(isrelay,0)=0) or (@relay='1' and isnull(isrelay,0)=1))
+	                and ((@finish='0' and isnull(isfinish,0)=0) or (@finish='1' and isnull(isfinish,0)=1))
                 )a
                 where a.recno between @nstr and @nend
                 
@@ -127,6 +130,7 @@
                 cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
                 cmd.Parameters.AddWithValue("@edate", itemIn.edate);
                 cmd.Parameters.AddWithValue("@relay", itemIn.relay);
+                cmd.Parameters.AddWithValue("@finish", itemIn.finish);
                 adapter.SelectCommand = cmd;
                 adapter.Fill(tranvcce);
                 connSource.Close();
@@ -202,7 +206,7 @@
                 tmp.isrelay = System.DBNull.Value.Equals(r.ItemArray[61]) ? false : (System.Boolean)r.ItemArray[61];
                 tmp.yard5 = System.DBNull.Value.Equals(r.ItemArray[62]) ? "" : (System.String)r.ItemArray[62];
                 tmp.yard6 = System.DBNull.Value.Equals(r.ItemArray[63]) ? "" : (System.String)r.ItemArray[63];
-                
+                tmp.isfinish = System.DBNull.Value.Equals(r.ItemArray[64]) ? false : (System.Boolean)r.ItemArray[64];
                 pout.Add(tmp);
             }
             Response.Write(serializer.Serialize(pout));

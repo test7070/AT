@@ -12,6 +12,7 @@
             public string bdate;
             public string edate;
             public string relay;
+            public string finish;
         }
         public class ParaOut
         {
@@ -54,7 +55,8 @@ and (case when len(ISNULL(date4,''))>0 then date4
 	when len(ISNULL(date5,''))>0 then date5
 	when len(ISNULL(date1,''))>0 then date1
 	else datea end) between @bdate and @edate
-and (len(@relay)=0 or (@relay='0' and isnull(isrelay,0)=0) or (@relay='1' and isnull(isrelay,0)=1))";
+and (len(@relay)=0 or (@relay='0' and isnull(isrelay,0)=0) or (@relay='1' and isnull(isrelay,0)=1))
+and ((@finish='0' and isnull(isfinish,0)=0) or (@finish='1' and isnull(isfinish,0)=1))";
                 
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                 cmd.Parameters.AddWithValue("@stype", itemIn.stype);
@@ -65,6 +67,7 @@ and (len(@relay)=0 or (@relay='0' and isnull(isrelay,0)=0) or (@relay='1' and is
                 cmd.Parameters.AddWithValue("@bdate", itemIn.bdate);
                 cmd.Parameters.AddWithValue("@edate", itemIn.edate);
                 cmd.Parameters.AddWithValue("@relay", itemIn.relay);
+                cmd.Parameters.AddWithValue("@finish", itemIn.finish);
                 adapter.SelectCommand = cmd;
                 adapter.Fill(tranvcce);
                 connSource.Close();

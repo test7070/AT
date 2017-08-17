@@ -55,45 +55,45 @@
             function LoadFinish(){
             	$('#q_report').q_report({
 					fileName : 'z_transp_at',
-					options : [{/*1-[1],[2]*/
+					options : [{/*1-[1],[2]*/    //1
                         type : '1',
                         name : 'datea'
-                    },{/*2-[3],[4]*/
+                    },{/*2-[3],[4]*/             //2
                         type : '1',
                         name : 'trandate'
-                    }, {/*3-[5],[6]*/
+                    }, {/*3-[5],[6]*/            //3
                         type : '2',
                         name : 'cust',
                         dbf : 'cust',
                         index : 'noa,comp',
                         src : 'cust_b.aspx'
-                    }, {/*4-[7],[8]*/
+                    }, {/*4-[7],[8]*/            //4
                         type : '2',
                         name : 'driver',
                         dbf : 'driver',
                         index : 'noa,namea',
                         src : 'driver_b.aspx'
-                    }, {/*5 [9]*/
+                    }, {/*5 [9]*/                 //5
                         type : '6',
                         name : 'carno'
-                    }, {/*6 [10]*/
+                    }, {/*6 [10]*/                //6
                         type : '6',
                         name : 'cardno'
-                    }, {/*7-[11]-車隊*/
+                    }, {/*7-[11]-車隊*/            //7  
                         type : '8',
                         name : 'carteam',
                         value : t_carteam.split(',')
-                    }, {/*8-[12]-計算類別*/
+                    }, {/*8-[12]-計算類別*/          //8
                         type : '8',
                         name : 'calctype',
                         value : t_calctypes.split(',')
-                    }, {/*9-[13],[14]-起迄地點*/
+                    }, {/*9-[13],[14]-起迄地點*/       //9
                         type : '2',
                         name : 'addr',
                         dbf : 'addr',
                         index : 'noa,addr',
                         src : 'addr_b.aspx'
-                    }, {/*10 [15]*/
+                    }, {/*10 [15]*/            
                         type : '6',
                         name : 'caseno'
                     }, {/*11 [16]*/

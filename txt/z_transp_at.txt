@@ -16,6 +16,7 @@ z_transp_at04:--z_transp_at04
 	declare @t_baddrno nvarchar(20) = case when '#non'=[13] then '' else [13] end
 	declare @t_eaddrno nvarchar(20) = case when '#non'=[14] then char(255) else [14] end
 	declare @t_caseno nvarchar(max)  = case when '#non'=[15] then '' else [15] end
+	declare @t_cartype nvarchar(max)  = case when '#non'=[17] then '' else [17] end
 	--------------------------------------------------------------------------------------------
 	--車牌	貨主	貨櫃號碼	進出口	起迄地點	領	送	收	交	應付總金額
 	declare @tmpa table(
@@ -64,12 +65,16 @@ z_transp_at04:--z_transp_at04
 		,case when a.cstype='交' then a.trandate else '' end
 	from view_trans a
 	left join view_tranorde b on left(a.ordeno,12)=b.noa
+	left join car2 c on a.carno=c.cartype
 	where isnull(a.trandate,'')<=@t_etrandate
 	and isnull(a.straddrno,'') between @t_baddrno and @t_eaddrno
 	and isnull(a.custno,'') between @t_bcustno and @t_ecustno
 	and (len(@t_carno)=0 or a.carno=@t_carno or a.cstype='貨主運費')--貨主運費 不管車牌 一律顯示
 	and (len(@t_calctype)=0 or charindex(','+a.calctype+',',','+@t_calctype+',')>0)
 	and (len(@t_caseno)=0 or @t_caseno=a.caseno or @t_caseno=a.caseno2 or a.cstype='貨主運費')--貨主運費 不管caseno 一律顯示
+	and (len(@t_cartype)=0 
+		or (charindex('0',@t_cartype)>0 and isnull(c.cartype,'')='2')
+		or (charindex('1',@t_cartype)>0 and isnull(c.cartype,'')!='2'))
 	
 	update @tmpa set ordeno = REPLACE(ordeno,'-'+cstype,'')
 -------------------------------------------------------------------------------------	

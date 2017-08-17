@@ -31,6 +31,7 @@
             public string carno8,cardno8,date8;
             public bool isrelay;
             public string yard5,yard6;
+            public bool isfinish;
         }
         public class SendCommand
         { 
@@ -42,6 +43,8 @@
         public void Page_Load()
         {
         	DCConnectionString = "Data Source=127.0.0.1,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=" + HttpUtility.UrlDecode(Request.Headers["database"]);
+
+            //DCConnectionString = "Data Source=59.125.143.171,1799;Persist Security Info=True;User ID=sa;Password=artsql963;Database=dc";
             try
             {
                 //參數
@@ -51,7 +54,7 @@
                 byte[] formData = Request.BinaryRead(formSize);
                 System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 var itemIn = serializer.Deserialize<ParaIn>(encoding.GetString(formData));
-                //string aa= "{\"recno\":4,\"seq\":3,\"isdel\":false,\"stype\":\"出口\",\"ucr\":\"\",\"por\":\"\",\"pod\":\"\",\"product\":\"\",\"ordeaccy\":\"104\",\"ordeno\":\"BB1040129001\",\"ordenoq\":\"002\",\"datea\":\"\",\"custno\":\"A001\",\"cust\":\"誼友交通事業股份有限公司\",\"straddrno\":\"C003-001\",\"straddr\":\"W-橋頭\",\"vocc\":\"\",\"casetype\":\"\",\"containerno1\":\"c\",\"containerno2\":\"\",\"carno1\":\"\",\"cardno1\":\"\",\"msg1\":\"\",\"carno2\":\"\",\"cardno2\":\"\",\"msg2\":\"\",\"carno3\":\"\",\"cardno3\":\"\",\"msg3\":\"\",\"carno4\":\"\",\"cardno4\":\"\",\"msg4\":\"\",\"memo\":\"\",\"issend1\":false,\"issend2\":false,\"issend3\":false,\"issend4\":false,\"isassign\":false,\"mount\":\"0\",\"seal1\":\"\",\"seal2\":\"\",\"edittime\":\"\"}";   
+                //string aa= @"{""recno"":1,""seq"":5667,""isdel"":false,""stype"":""進口"",""ucr"":"""",""por"":""65W"",""pod"":""燁輝屏東"",""product"":"""",""ordeaccy"":""105"",""ordeno"":""BB1050719002"",""ordenoq"":""010"",""datea"":""105/07/31"",""custno"":""A002"",""cust"":""祥興鋼鐵"",""straddrno"":"""",""straddr"":""65#-燁輝屏東"",""vocc"":""WMI"",""casetype"":""40"",""containerno1"":""."",""containerno2"":"""",""carno1"":"""",""cardno1"":"""",""msg1"":"""",""carno2"":"""",""cardno2"":"""",""msg2"":"""",""carno3"":"""",""cardno3"":"""",""msg3"":"""",""carno4"":"""",""cardno4"":"""",""msg4"":"""",""memo"":"""",""issend1"":false,""issend2"":false,""issend3"":false,""issend4"":false,""isassign"":false,""mount"":""20"",""seal1"":"""",""seal2"":"""",""yard1"":"""",""yard2"":"""",""yard3"":"""",""yard4"":"""",""vr"":"""",""date1"":"""",""date2"":"""",""date3"":"""",""date4"":"""",""carno5"":"""",""cardno5"":"""",""date5"":"""",""carno6"":"""",""cardno6"":"""",""date6"":"""",""carno7"":"""",""cardno7"":"""",""date7"":"""",""carno8"":"""",""cardno8"":"""",""date8"":"""",""isrelay"":true,""yard5"":"""",""yard6"":"""",""isfinish"":true}";   
                 //var itemIn = serializer.Deserialize<ParaIn>(aa);
                 //資料寫入
                 
@@ -151,6 +154,7 @@
 	                    ,carno7=@carno7,cardno7=@cardno7,date7=@date7
 	                    ,carno8=@carno8,cardno8=@cardno8,date8=@date8
 	                    ,isrelay=@isrelay
+	                    ,isfinish=@isfinish
 	                     where seq=@seq and isnull(isdel,0)=0";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(queryString, connSource);
                     cmd.Parameters.AddWithValue("@seq", itemIn.seq);
@@ -205,6 +209,7 @@
                     cmd.Parameters.AddWithValue("@cardno8", itemIn.cardno8);
                     cmd.Parameters.AddWithValue("@date8", itemIn.date8);
                     cmd.Parameters.AddWithValue("@isrelay", itemIn.isrelay?1:0);
+                    cmd.Parameters.AddWithValue("@isfinish", itemIn.isfinish? 1 : 0);
                     cmd.ExecuteNonQuery();
                     //--------------------------送資料給長輝--------------------------------------
                     bool isdelay = false;

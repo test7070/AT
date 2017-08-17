@@ -437,8 +437,9 @@
 					var bdate = $.trim($('#txtBdate').text());
 					var edate = $.trim($('#txtEdate').text());
 					var relay = $.trim($('#cmbRelay').val());
+					var finish = $.trim($('#cmbFinish').val());
 					Lock(1,{opacity:0});
-					loadCount(stype,cust,so,containerno,ordeno,bdate,edate,relay);
+					loadCount(stype,cust,so,containerno,ordeno,bdate,edate,relay,finish);
 				});
 				$('#txtCurpage').change(function(e){
 					$('#btnRefresh').click();
@@ -596,7 +597,10 @@
 					$('#btnSel_'+i).removeAttr('disabled');
 				}
 			}
-			function loadCount(stype,cust,so,containerno,ordeno,bdate,edate,relay){
+			function loadCount(stype,cust,so,containerno,ordeno,bdate,edate,relay,finish){
+				console.log("loadCount");
+				console.log(stype+" "+cust+" "+so+" "+containerno+" "+ordeno
+					+" "+bdate+" "+edate+" "+relay+" "+finish);
 				$.ajax({
 					stype:stype,
 					cust:cust,
@@ -606,11 +610,12 @@
 					bdate:bdate,
 					edate:edate,
 					relay:relay,
+					finish:finish,
 					totCount : 0,
                     url: 'tranvcce_at_getcount.aspx',
                     headers: { 'database': q_db },
                     type: 'POST',
-                    data: JSON.stringify({stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate,relay:relay}),
+                    data: JSON.stringify({stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate,relay:relay,finish:finish}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -631,7 +636,7 @@
 						$('#txtCurpage').val(curPage);
 						var nstr = (curPage-1) * _pageCount + 1;
 						var nend = curPage * _pageCount;
-                    	loadData(nstr,nend,this.stype,this.cust,this.so,this.containerno,this.ordeno,this.bdate,this.edate,this.relay);                  
+                    	loadData(nstr,nend,this.stype,this.cust,this.so,this.containerno,this.ordeno,this.bdate,this.edate,this.relay,this.finish);                  
                     },
                     error: function(jqXHR, exception) {
                         var errmsg = this.url+'資料讀取異常。\n';
@@ -653,12 +658,15 @@
                     }
                 });	
 			}
-			function loadData(nstr,nend,stype,cust,so,containerno,ordeno,bdate,edate,relay){
+			function loadData(nstr,nend,stype,cust,so,containerno,ordeno,bdate,edate,relay,finish){
+				console.log("loadData");
+				console.log(nstr+" "+nend+" "+stype+" "+cust+" "+so+" "+containerno
+					+" "+ordeno+" "+bdate+" "+edate+" "+relay+" "+finish);
 				$.ajax({
                     url: 'tranvcce_at_getdata.aspx',
                     headers: { 'database': q_db },
                     type: 'POST',
-                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate,relay:relay}),
+                    data: JSON.stringify({nstr:nstr,nend:nend,stype:stype,cust:cust,so:so,containerno:containerno,ordeno:ordeno,bdate:bdate,edate:edate,relay:relay,finish:finish}),
                     dataType: 'text',
                     timeout: 10000,
                     success: function(data){
@@ -706,6 +714,7 @@
 						_curData[n][t_field] = obj.eq(i).prop('checked');
 					}
 				}
+				console.log("updateData");
 				console.log(JSON.stringify(_curData[n]));
 				$.ajax({
 					n:n,
@@ -764,7 +773,7 @@
 				}
 				Lock(1,{opacity:0});
 				var data = {seq:_curData[n].seq,user:r_name};
-
+				console.log("deleteData");
 				console.log(JSON.stringify(data));
 				$.ajax({
 					n:n,
@@ -846,7 +855,7 @@
 		</style>
 	</head>
 	<body>
-		<div style="min-width:2300px;width: 2300px;height:40px;float:none;">
+		<div style="min-width:2400px;width: 2400px;height:40px;float:none;">
 			<div id='q_menu'></div>
 			<span style="display:block;width:50px;float:left;text-align: center;">&nbsp;</span>
 			<div style="display:block;width:160px;float:left;">
@@ -855,6 +864,12 @@
 					<option value="">全部</option>
 					<option value="進口">進口</option>
 					<option value="出口">出口</option>
+				</select>
+			</div>
+			<div style="display:block;width:100px;float:left;">
+				<select id="cmbFinish" style="float:left;width:80px;text-align: center;">
+					<option value="0">未完成</option>
+					<option value="1">已完成</option>
 				</select>
 			</div>
 			<div style="display:block;width:160px;float:left;">
@@ -900,6 +915,7 @@
 			<table class="tHeader">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black; font-weight: bolder;"><a>序</a></td>
+					<td align="center" style="width:40px; max-width:40px; color:black;"><a>完工</a></td>
 					<td align="center" style="width:120px; max-width:120px; color:black;"><a>單別</a><br><a>訂單號碼</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>日期</a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a>貨主</a></td>
@@ -958,6 +974,7 @@
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
+					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsfinish" /></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtStype" class="readonly"></a><BR><a id="txtOrdeno" class="readonly"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtDatea" style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCust" class="readonly"></a></td>
