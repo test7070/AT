@@ -19,7 +19,7 @@
             q_tables = 't';
             var q_name = "tranorde";
             var q_readonly = ['txtNoa','txtWorker','txtWorker2'];
-            var q_readonlys = [];
+            var q_readonlys = ['txtNoq'];
             var q_readonlyt = [];
             var bbmNum = [['txtMount',10,0,1]];
             var bbsNum = [];
@@ -475,7 +475,7 @@
                 font-size: medium;
             }
             .dbbs {
-                width:750px;
+                width:800px;
             }
             .dbbs .tbbs {
                 margin: 0;
@@ -743,6 +743,7 @@
 						<input id="btnPlus" type="button" style="font-size: medium; font-weight: bold;" value="＋"/>
 					</td>
 					<td style="width:20px;"> </td>
+					<td style="width:50px;">序號</td>
 					<td style="width:300px;"><a id='lblAddr'>起迄地點</a></td>
 					<td style="width:200px;"><a id='lblContainerno1'>櫃號一</a></td>
 					<td style="width:200px;"><a id='lblContainerno2'>櫃號二</a></td>
@@ -750,9 +751,9 @@
 				<tr  style='background:#cad3ff;'>
 					<td align="center">
 						<input id="btnMinus.*" type="button" style="font-size: medium; font-weight: bold;" value="－"/>
-						<input id="txtNoq.*" type="text" style="display: none;"/>
 					</td>
 					<td><a id="lblNo.*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
+					<td><input class="txt" id="txtNoq.*" type="text" style="width:95%;"/></td>
 					<td>
 						<input class="txt" id="txtAddrno.*" type="text" style="width:45%;float:left;" title=""/>
 						<input class="txt" id="txtAddr.*" type="text" style="width:45%;float:left;" title=""/>
@@ -777,7 +778,6 @@
 					<tr class="detail">
 						<td>
 							<input id="btnMinut..*"  type="button" style="font-size: medium; font-weight: bold;" value="－"/>
-							<input id="txtNoq..*" type="text" style="display: none;"/>
 						<td><a id="lblNo..*" style="font-weight: bold;text-align: center;display: block;"> </a></td>
 						<td>
 							<input class="txt" id="txtStraddrno..*" type="text" style="width:35%;float:left;"/>

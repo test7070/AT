@@ -46,13 +46,19 @@
                         type : '5',
                         name : 'enda',
                         value : (' @全部,Y@結案,N@未結案').split(',')
+                    }, {/*7-[10]*/
+                        type : '6',
+                        name : 'xnoa'
+                    }, {/*8-[11]*/
+                        type : '6',
+                        name : 'xnoq'
                     }]
 				});
 				q_popAssign();
 	            var t_para = new Array();
 	            try{
 	            	t_para = JSON.parse(q_getId()[3]);
-	            	$('#txtNoa').val(t_para.noa);
+	            	$('#txtXnoa').val(t_para.noa);
 	            }catch(e){
 	            	
 	            }    

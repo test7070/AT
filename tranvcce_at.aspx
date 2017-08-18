@@ -974,12 +974,12 @@
 			<table class="tSchema">
 				<tr>
 					<td align="center" style="width:50px; max-width:50px; color:black;"><input id="btnSel" type="button" class="btnSel"/></td>
-					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsfinish" /></td>
+					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsfinish" style="width:20px;height:20px;"/></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtStype" class="readonly"></a><BR><a id="txtOrdeno" class="readonly"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtDatea" style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtCust" class="readonly"></a></td>
 					<td align="center" style="width:190px; max-width:190px;color:black;"><a id="txtStraddrno" style="display:block;width:100%;height:20px;"></a><a id="txtStraddr" style="display:block;width:100%;height:20px;"class="field2"></a></td>
-					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsrelay" /></td>
+					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsrelay" style="width:20px;height:20px;"/></td>
 					<td align="center" style="width:130px; max-width:130px;color:black;"><a id="txtPor" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtPod" class="readonly"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtUcr" class="readonly" style="display:block;width:100%;height:20px;"></a><a id="txtVr" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:100px; max-width:100px;color:black;"><a id="txtVocc" class="readonly" style="display:block;width:100%;height:20px;"></a></td>
@@ -987,7 +987,7 @@
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtContainerno1"style="display:block;width:100%;height:20px;"></a><a id="txtContainerno2"style="display:block;width:100%;height:20px;" class="field2"></a></td>
 					<!--<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtSeal1"style="display:block;width:100%;height:20px;"></a><a id="txtSeal2"style="display:block;width:100%;height:20px;" class="field2"></a></td>-->
 					<td align="center" style="width:60px; max-width:60px;color:black;"><a id="txtMount"style="display:block;width:100%;"></a></td>
-					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" /></td>
+					<td align="center" style="width:40px; max-width:40px;color:black;"><input type="checkbox" id="chkIsassign" style="width:20px;height:20px;"/></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno1"style="display:block;width:100%;height:20px;"></a><a id="txtCardno1"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard1"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate1"style="display:block;width:90%;float:left;"></a><input id="txtDate1-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
@@ -1016,13 +1016,13 @@
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtCarno4"style="display:block;width:100%;height:20px;"></a><a id="txtCardno4"style="display:block;width:100%;height:20px;"class="field2"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtYard4"style="display:block;width:100%;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><a id="txtDate4"style="display:block;width:90%;float:left;"></a><input id="txtDate4-input" style="float:left;display:none;width:1%;" class="date-input"/></td>
-					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend1" /></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend1" style="width:20px;height:20px;"/></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg1"style="display:block;width:100%;height:20px;"></a></td>
-					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend2" /></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend2" style="width:20px;height:20px;"/></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg2"style="display:block;width:100%;height:20px;"></a></td>
-					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend3" /></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend3" style="width:20px;height:20px;"/></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg3"style="display:block;width:100%;height:20px;"></a></td>
-					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend4" /></td>
+					<td align="center" style="width:50px; max-width:50px;color:black;"><input type="checkbox" id="chkIssend4" style="width:20px;height:20px;"/></td>
 					<td align="center" style="width:90px; max-width:90px;color:black;"><a id="txtMsg4"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:120px; max-width:120px;color:black;"><a id="txtMemo"style="display:block;width:100%;height:20px;"></a></td>
 					<td align="center" style="width:80px; max-width:80px;color:black;"><input id="btnDelete" type="button" class="btnDelete" value="X"/></td>
