@@ -192,6 +192,7 @@
                         q_boxClose2(s2);
                         break;
                 }
+                b_pop="";
             }
 
             function _btnSeek() {
