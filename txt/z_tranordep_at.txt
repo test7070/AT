@@ -54,7 +54,7 @@ z_tranordep_at02:--z_tranordep_at02
 			insert into @tmp(gno,pno,noq,title,memo)select '1',1,@noq,'提單號碼',do2 from view_tranorde where noa=@t_noa and len(ISNULL(do2,''))>0
 			insert into @tmp(gno,pno,noq,title,memo)select '1',1,@noq,'掛號',vr from view_tranorde where noa=@t_noa and len(ISNULL(vr,''))>0
 			insert into @tmp(gno,pno,noq,title,memo)select '1',1,@noq,'艙號',manifest from view_tranorde where noa=@t_noa and len(ISNULL(manifest,''))>0
-			insert into @tmp(gno,pno,noq,title,memo)select '1',1,@noq,'結關日',ef from view_tranorde where noa=@t_noa
+			insert into @tmp(gno,pno,noq,title,memo)select '1',1,@noq,'重櫃期限',ef from view_tranorde where noa=@t_noa
 			insert into @tmp(gno,pno,noq,title,memo)select '1',1,@noq,'品名',product from view_tranorde where noa=@t_noa	and len(ISNULL(product,''))>0
 			insert into @tmp(gno)select '2'
 			
