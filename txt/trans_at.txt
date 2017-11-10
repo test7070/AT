@@ -51,7 +51,7 @@
 		,date8 nvarchar(20)
 		
 		,price float --訂單外加運費
-		
+		,price0 float--應收
 		,price1 float--領
 		,price2 float--送
 		,price3 float--收
@@ -80,7 +80,8 @@
 		,carno5,cardno5,date5
 		,carno6,cardno6,date6
 		,carno7,cardno7,date7
-		,carno8,cardno8,date8)
+		,carno8,cardno8,date8
+		,price)
 	select b.stype,a.ordeaccy,a.ordeno,a.ordenoq
 		,a.datea
 		,a.custno,a.cust,a.straddrno,a.straddr
@@ -95,18 +96,19 @@
 		,ltrim(rtrim(isnull(a.carno6,''))),a.cardno6,a.date6
 		,ltrim(rtrim(isnull(a.carno7,''))),a.cardno7,a.date7
 		,ltrim(rtrim(isnull(a.carno8,''))),a.cardno8,a.date8
+		,ISNULL(b.price,0)
 	from tranvcce a
 	left join view_tranorde b on a.ordeno=b.noa
 	where a.datea between @t_bdate and @t_edate
 	and (len(@t_custno)=0 or a.custno=@t_custno)
 --	and a.containerno1='SKLU1635420'
 	
-	--update @tmp set price=b.custprice
-	--from @tmp a
-	--outer apply(select top 1 x.* from addrs x left join addr y on x.noa=y.noa 
-	--	where x.custunit='整趟' and y.noa=a.straddrno 
-	--	--and y.productno=a.productno 
-	--	and a.datea>=x.datea order by x.datea desc) b
+	update @tmp set price0=b.custprice
+	from @tmp a
+	outer apply(select top 1 x.* from addrs x left join addr y on x.noa=y.noa 
+		where x.custunit='' and y.noa=a.straddrno 
+		--and y.productno=a.productno 
+		and a.datea>=x.datea order by x.datea desc) b
 	--現階段都只考慮公司車
 	update @tmp set price1=b.driverprice,price1a=b.custprice
 	from @tmp a
@@ -175,7 +177,7 @@
 
 
 	
-	update @tmp set price = ISNULL(b.price,0)
+	update @tmp set price = ISNULL(b.price,0) + price0
 		,price1 = ISNULL(a.price1,0) + ISNULL(b.price1,0)
 		,price4 = ISNULL(a.price4,0) + ISNULL(b.price2,0)
 	from @tmp a
