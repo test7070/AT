@@ -251,6 +251,36 @@
 								alert('資料已被刪除，請重新整理頁面。');
 								return;
 							}
+							//檢查日期格式
+							if(!($('#txtDate1_'+n).text().length==0 || $('#txtDate1_'+n).text().length==9)){
+								alert('領(日期)異常');
+								return;
+							}
+							if(!($('#txtDate5_'+n).text().length==0 || $('#txtDate5_'+n).text().length==9)){
+								alert('轉(日期)#1異常');
+								return;
+							}
+							if(!($('#txtDate2_'+n).text().length==0 || $('#txtDate2_'+n).text().length==9)){
+								alert('送(日期)異常');
+								return;
+							}
+							if(!($('#txtDate6_'+n).text().length==0 || $('#txtDate6_'+n).text().length==9)){
+								alert('移(日期)異常');
+								return;
+							}
+							if(!($('#txtDate3_'+n).text().length==0 || $('#txtDate3_'+n).text().length==9)){
+								alert('收(日期)異常');
+								return;
+							}
+							if(!($('#txtDate8_'+n).text().length==0 || $('#txtDate8_'+n).text().length==9)){
+								alert('轉(日期)#2異常');
+								return;
+							}
+							if(!($('#txtDate4_'+n).text().length==0 || $('#txtDate4_'+n).text().length==9)){
+								alert('交(日期)異常');
+								return;
+							}
+							
 							if($(this).hasClass('edit')){
 								$('#btnRefresh').removeClass('edit');
 								
