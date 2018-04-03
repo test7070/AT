@@ -271,10 +271,10 @@
                 });
                 $('#btnImport_trans').click(function() {
                     if (q_cur != 1 && q_cur != 2) {
-                        //var t_bdate = $.trim($('#txtBdate_import').val());
-                        //var t_edate = $.trim($('#txtEdate_import').val());
-                        var t_bdate = $.trim($('#txtMon_import').val() + '/01');
-                        var t_edate = $.trim($('#txtMon_import').val() + '/31');
+                        var t_bdate = $.trim($('#txtBdate_import').val());
+                        var t_edate = $.trim($('#txtEdate_import').val());
+                        //var t_bdate = $.trim($('#txtMon_import').val() + '/01');
+                        //var t_edate = $.trim($('#txtMon_import').val() + '/31');
                         var t_custno = $.trim($('#txtCustno_import').val());
                         if (t_bdate.length > 0 && t_edate.length > 0) {
                             Lock(1, {
@@ -696,7 +696,7 @@
 					<td style="width:80px;"></td>
 					<td style="width:80px;"></td>
 				</tr>
-				<tr style="height:35px;display:none;">
+				<tr style="height:35px;">
 					<td><span> </span><a id="lblDate_import" style="float:right; color: blue; font-size: medium;">日期</a></td>
 					<td colspan="4">
 					<input id="txtBdate_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
@@ -704,7 +704,7 @@
 					<input id="txtEdate_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
 					</td>
 				</tr>
-				<tr style="height:35px;">
+				<tr style="height:35px;display:none;">
 					<td><span> </span><a id="lblMon_import" style="float:right; color: blue; font-size: medium;">月份</a></td>
 					<td colspan="4">
 					<input id="txtMon_import"  type="text" style="float:left; width:100px; font-size: medium;"/>
